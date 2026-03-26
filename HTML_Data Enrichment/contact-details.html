@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fbfbfb;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── Side Menu ── */
+    .side-menu {
+      width: 67px; min-width: 67px; background: #222; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; padding-top: 12px;
+      box-shadow: 0px 8px 12px 0px rgba(45,45,45,0.15), 0px 4px 4px 0px rgba(34,34,34,0.18);
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+    }
+    .side-menu-logo { width: 67px; height: 64px; display: flex; align-items: center; justify-content: center; }
+    .logo-icon {
+      width: 40px; height: 40px; background: white; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 700; color: #222; letter-spacing: -1px;
+    }
+
+    /* ── Page wrapper ── */
+    .page-wrapper { margin-left: 67px; flex: 1; display: flex; flex-direction: column; background: #fbfbfb; min-height: 100vh; }
+
+    /* ── Page Header ── */
+    .page-header {
+      height: 72px; background: #fbfbfb; display: flex; align-items: center;
+      justify-content: flex-end; padding: 0 16px; flex-shrink: 0;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .account-name-wrapper { display: flex; align-items: center; gap: 24px; }
+    .account-name-text { font-size: 16px; font-weight: 400; color: #2d2d2d; text-align: right; white-space: nowrap; }
+    .account-icon {
+      width: 40px; height: 40px; border-radius: 50%; background: #2d2d2d;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+    .account-icon .material-icons-round { color: white; font-size: 22px; }
+
+    /* ── Page Content ── */
+    .page-content { display: flex; flex-direction: column; gap: 16px; align-items: center; padding: 0 50px 40px; width: 100%; }
+    .content-inner { display: flex; flex-direction: column; gap: 32px; width: 100%; max-width: 1273px; }
+
+    /* ── Header / Contact Card Section ── */
+    .header-contact-section { display: flex; flex-direction: column; gap: 16px; }
+    .back-header-group { display: flex; flex-direction: column; gap: 16px; }
+    .back-button {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 8px 8px 8px 4px; border-radius: 6px; cursor: pointer;
+      text-decoration: none; color: #2f82ff; transition: background 0.15s;
+    }
+    .back-button:hover { background: rgba(47,130,255,0.06); }
+    .back-button .material-icons-round { font-size: 20px; color: #2f82ff; }
+    .back-button-label { font-size: 16px; font-weight: 600; color: #2f82ff; line-height: normal; }
+    .header-row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .page-title { color: #2D2D2D; font-size: 32px; font-style: normal; font-weight: 600; line-height: normal; white-space: nowrap; }
+    .header-buttons { display: flex; align-items: center; gap: 8px; }
+    .outline-btn {
+      display: inline-flex; padding: 12px 24px; justify-content: center; align-items: center;
+      gap: 8px; border-radius: 10px; border: 1px solid rgba(45,45,45,0.20); background: #FFF;
+      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; color: #2d2d2d;
+      cursor: pointer; white-space: nowrap; transition: background 0.15s, border-color 0.15s;
+    }
+    .outline-btn:hover {
+      border: 1px solid rgba(45,45,45,0.30);
+      background: linear-gradient(0deg, rgba(45,45,45,0.10) 0%, rgba(45,45,45,0.10) 100%), #FFF;
+    }
+
+    /* ── Contact Card ── */
+    .contact-card {
+      background: white; border: 1px solid rgba(45,45,45,0.1); border-radius: 20px;
+      box-shadow: 0px 6px 15px 0px rgba(45,45,45,0.1); padding: 24px;
+      display: flex; align-items: flex-start; width: 100%;
+    }
+    .contact-card-inner { display: flex; flex-direction: column; gap: 16px; flex: 1; }
+    .icon-name-row { display: flex; align-items: center; gap: 24px; }
+    .avatar-wrap { position: relative; width: 57px; height: 57px; flex-shrink: 0; }
+    .avatar-wrap img { width: 57px; height: 57px; display: block; }
+    .name-type-col { display: flex; flex-direction: column; gap: 6px; }
+    .name-lang-row { display: flex; align-items: center; gap: 12px; }
+    .contact-name { font-size: 24px; font-weight: 700; color: #2d2d2d; line-height: 32px; white-space: nowrap; }
+    .lang-badge {
+      display: inline-flex; align-items: center; gap: 4px; padding: 2px 4px 2px 2px;
+      border-radius: 50px; border: 1px solid rgba(45,45,45,0.1);
+      background: linear-gradient(-75.3deg, rgba(255,255,255,0.2) 16.15%, rgba(255,255,255,0.1) 83.85%), #2d2d2d;
+      box-shadow: inset 0px 0px 1px 0px rgba(255,255,255,0.3); flex-shrink: 0;
+    }
+    .lang-badge .material-icons-round { font-size: 15px; color: #fbfbfb; }
+    .lang-badge-text { font-size: 12px; font-weight: 600; color: #fbfbfb; line-height: 15px; }
+    .contact-type-text { font-size: 15px; font-weight: 400; color: rgba(45,45,45,0.75); line-height: 20px; }
+    .labels-row { display: flex; align-items: center; gap: 8px; }
+    .label-tag {
+      display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px 2px 8px;
+      border-radius: 999px; border: 1px solid rgba(45,45,45,0.1);
+      background: linear-gradient(90deg, rgba(45,45,45,0.05) 0%, rgba(45,45,45,0.05) 100%), #ffffff;
+      box-shadow: inset 0px 0px 5px 0px rgba(255,255,255,0.1);
+    }
+    .label-tag-text { font-size: 12px; font-weight: 600; color: #2d2d2d; line-height: 15px; }
+    .label-close-btn { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .label-close-btn .material-icons-round { font-size: 14px; color: rgba(45,45,45,0.5); }
+    .add-label-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1px solid rgba(45,45,45,0.12); background: rgba(45,45,45,0.04);
+      display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s;
+    }
+    .add-label-btn:hover { background: rgba(45,45,45,0.08); }
+    .add-label-btn .material-icons-round { font-size: 18px; color: #2d2d2d; }
+
+    /* ── Details Section (Tabs + Container) ── */
+    .details-section { display: flex; flex-direction: column; align-items: flex-start; width: 100%; }
+
+    /* ── Tabs ── */
+    .tabs-bar {
+      display: flex; align-items: center; background: #eaeaea;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0px 0px 0px 0.25px rgba(45,45,45,0.1), 0px 10px 34px 0px rgba(45,45,45,0.05);
+      overflow: hidden;
+    }
+    .tab-active-wrap { display: flex; align-items: flex-end; flex-shrink: 0; }
+    .tab-active {
+      background: white; padding: 12px 24px; border-radius: 12px 12px 0 0;
+      font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 400; color: #2d2d2d;
+      text-align: center; white-space: nowrap; cursor: pointer; line-height: 22px; position: relative;
+    }
+    .tab-active::after {
+      content: ''; position: absolute; bottom: 0; right: -12px; width: 12px; height: 12px;
+      background: #eaeaea; border-bottom-left-radius: 12px; box-shadow: -4px 4px 0 4px white;
+    }
+    .tab-active::before {
+      content: ''; position: absolute; bottom: 0; left: -12px; width: 12px; height: 12px;
+      background: #eaeaea; border-bottom-right-radius: 12px; box-shadow: 4px 4px 0 4px white;
+    }
+    .tab-inactive {
+      background: #eaeaea; padding: 12px 24px; border-radius: 12px;
+      border-right: 1px solid rgba(45,45,45,0.1); font-family: 'Inter', sans-serif;
+      font-size: 17px; font-weight: 400; color: #2d2d2d; text-align: center;
+      white-space: nowrap; cursor: pointer; line-height: 22px; min-width: 130px;
+      display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+    }
+    .tab-inactive:hover { background: #e0e0e0; }
+
+    /* ── Main Container ── */
+    .main-container {
+      background: white; border: 1px solid rgba(45,45,45,0.1);
+      border-radius: 0 20px 20px 20px; box-shadow: 0px 6px 15px 0px rgba(45,45,45,0.1);
+      padding: 24px; width: 100%; display: flex; flex-direction: column; gap: 32px;
+    }
+
+    /* ── Tab Panels ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: flex; flex-direction: column; gap: 32px; }
+
+    /* ── Details tab shared styles ── */
+    .contact-details-section { display: flex; flex-direction: column; gap: 16px; }
+    .section-heading {
+      padding: 0 20px; font-family: 'Inter', sans-serif; font-size: 18px;
+      font-style: normal; font-weight: 600; color: #2D2D2D; line-height: 24px;
+    }
+    .details-card {
+      background: white; border-radius: 16px;
+      box-shadow: 0px 0px 0px 1px rgba(45,45,45,0.1), 0px 10px 34px 0px rgba(45,45,45,0.05);
+      overflow: hidden; width: 100%;
+    }
+    .detail-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 8px; border-bottom: 1px solid rgba(45,45,45,0.1); overflow: hidden;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row-top { align-items: flex-start; }
+    .detail-label { font-size: 16px; font-weight: 500; color: #2d2d2d; line-height: 24px; white-space: nowrap; flex-shrink: 0; }
+    .detail-value { font-size: 16px; font-weight: 400; color: rgba(45,45,45,0.75); line-height: 24px; white-space: nowrap; }
+    .value-edit-group { display: flex; align-items: center; gap: 12px; justify-content: flex-end; }
+    .edit-circle-btn {
+      width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(45,45,45,0.15);
+      background: rgba(45,45,45,0.04); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0; transition: background 0.15s;
+    }
+    .edit-circle-btn:hover { background: rgba(47,130,255,0.08); border-color: rgba(47,130,255,0.3); }
+    .edit-circle-btn .material-icons-round { font-size: 14px; color: #2f82ff; }
+    .emails-stack { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+    .deactivate-row { display: flex; align-items: center; justify-content: flex-end; }
+    .deactivate-btn {
+      padding: 12px 24px; border-radius: 10px; background: none; border: none;
+      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600;
+      color: #e8160b; cursor: pointer; line-height: 20px; transition: background 0.15s;
+    }
+    .deactivate-btn:hover { background: rgba(232,22,11,0.06); }
+
+    /* ══════════════════════════════════════
+       PAYMENT METHODS TAB
+    ══════════════════════════════════════ */
+    .pm-layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    /* ── Left Column ── */
+    .pm-left {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 310px;
+      flex-shrink: 0;
+    }
+
+    .pm-left-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pm-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #2d2d2d;
+      line-height: 24px;
+    }
+
+    .pm-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #2f82ff;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+    .pm-add-btn .material-icons-round { font-size: 16px; }
+
+    /* ── Payment Method Card ── */
+    .pm-card {
+      background: white;
+      border: 1.5px solid rgba(45,45,45,0.15);
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pm-card.selected {
+      border: 1.5px solid #2d2d2d;
+      box-shadow: 0px 0px 0px 3px rgba(45,45,45,0.06);
+    }
+    .pm-card:hover:not(.selected) { border-color: rgba(45,45,45,0.35); }
+
+    .pm-card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pm-bank-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .pm-bank-logo img { width: 100%; height: 100%; display: block; }
+
+    .pm-card-info { flex: 1; min-width: 0; }
+
+    .pm-card-number-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pm-card-number {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2d2d2d;
+      white-space: nowrap;
+    }
+
+    .pm-currency-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(45,45,45,0.6);
+      background: rgba(45,45,45,0.07);
+      border-radius: 4px;
+      padding: 1px 5px;
+      line-height: 16px;
+      flex-shrink: 0;
+    }
+
+    .pm-verified-icon {
+      flex-shrink: 0;
+    }
+    .pm-verified-icon .material-icons-round {
+      font-size: 18px;
+      color: #3D9F42;
+    }
+
+    .pm-card-sub {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(45,45,45,0.6);
+      line-height: 18px;
+    }
+
+    .pm-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pm-available-via {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pm-available-label {
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(45,45,45,0.5);
+      white-space: nowrap;
+    }
+
+    .pm-via-icons {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pm-via-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pm-default-btn {
+      font-size: 12px;
+      font-weight: 600;
+      color: #2f82ff;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    /* ── Right Column ── */
+    .pm-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+      background: white;
+      border-radius: 20px;
+      padding: 16px;
+      padding-bottom: 20px;
+      box-shadow: 0px 0px 0px 1px rgba(45,45,45,0.1), 0px 10px 34px 0px rgba(45,45,45,0.05);
+      position: relative;
+    }
+
+    .pm-expand-btn {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(45,45,45,0.08);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .pm-expand-btn:hover { background: rgba(45,45,45,0.15); }
+    .pm-expand-btn .material-icons-round {
+      font-size: 16px;
+      color: #2d2d2d;
+      line-height: 1;
+    }
+
+    /* Expanded state */
+    .pm-layout.pm-expanded .pm-left { display: none; }
+    .pm-layout.pm-expanded .pm-right {
+      border-radius: 0 20px 20px 20px;
+    }
+
+    /* Account header card */
+    .pm-account-header {
+      background: white;
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0px 0px 0px 0.5px rgba(0,0,0,0.25), 0px 0.5px 2.5px 0px rgba(45,45,45,0.4);
+      flex-shrink: 0;
+    }
+
+    .pm-header-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .pm-header-logo img { width: 100%; height: 100%; display: block; }
+
+    .pm-header-info { display: flex; flex-direction: column; gap: 2px; }
+    .pm-header-number { font-size: 17px; font-weight: 600; color: #2d2d2d; line-height: 24px; }
+    .pm-header-date { font-size: 13px; font-weight: 400; color: rgba(45,45,45,0.55); line-height: 18px; }
+
+    /* Sub-tabs — segmented control */
+    .pm-subtabs {
+      display: flex;
+      background: #f3f2f7;
+      padding: 2px;
+      gap: 4px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .pm-subtab {
+      flex: 1;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #2d2d2d;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.15s;
+    }
+    .pm-subtab.pm-subtab-active {
+      background: white;
+      border: 1px solid rgba(45,45,45,0.2);
+      font-weight: 500;
+    }
+    .pm-subtab:hover:not(.pm-subtab-active) { background: rgba(45,45,45,0.05); }
+
+    /* Sub-tab panels */
+    .pm-subpanel { display: none; }
+    .pm-subpanel.active {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
+    }
+
+    /* Risk panel */
+    .pm-risk-body {
+      background: linear-gradient(180deg, #fbfbfb 0%, #fafafa 100%);
+      border: 1px solid rgba(45,45,45,0.2);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-height: 420px;
+    }
+    .pm-risk-body span {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #2d2d2d;
+      line-height: 24px;
+    }
+
+    /* Details sub-cards */
+    .pm-detail-card {
+      background: white;
+      border: 1px solid rgba(45,45,45,0.1);
+      overflow: hidden;
+      border-radius: 0;
+    }
+    .pm-detail-card:first-child {
+      border-radius: 16px 16px 0 0;
+    }
+    .pm-detail-card:last-child {
+      border-radius: 0 0 16px 16px;
+      border-top: none;
+    }
+    .pm-detail-card:first-child:last-child {
+      border-radius: 16px;
+    }
+
+    .pm-card-section-heading {
+      padding: 14px 16px 4px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d2d2d;
+      line-height: 20px;
+    }
+
+    .pm-card-section-sub {
+      padding: 0 16px 12px;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(45,45,45,0.55);
+      line-height: 18px;
+    }
+
+    .pm-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 16px;
+      border-top: 1px solid rgba(45,45,45,0.08);
+    }
+
+    .pm-row-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #2d2d2d;
+      line-height: 20px;
+      flex-shrink: 0;
+    }
+
+    .pm-row-value {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(45,45,45,0.7);
+      line-height: 20px;
+      text-align: right;
+    }
+
+    .pm-row-value-green {
+      font-size: 14px;
+      font-weight: 600;
+      color: #3D9F42;
+      line-height: 20px;
+    }
+
+    .pm-token-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 60%;
+    }
+
+    .pm-token-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(45,45,45,0.65);
+      line-height: 18px;
+      word-break: break-all;
+      text-align: right;
+    }
+
+    .pm-copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      color: #2f82ff;
+    }
+    .pm-copy-btn .material-icons-round { font-size: 18px; }
+
+    .pm-send-btn {
+      display: flex;
+      width: calc(100% - 32px);
+      margin: 12px 16px 16px;
+      padding: 11px 16px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      border: 1px solid rgba(45,45,45,0.2);
+      background: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #2d2d2d;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .pm-send-btn:hover {
+      background: linear-gradient(0deg, rgba(45,45,45,0.06) 0%, rgba(45,45,45,0.06) 100%), #FFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Side Menu ── -->
+  <aside class="side-menu">
+    <div class="side-menu-logo">
+      <div class="logo-icon">U</div>
+    </div>
+  </aside>
+
+  <!-- ── Page Wrapper ── -->
+  <div class="page-wrapper">
+
+    <!-- ── Page Header ── -->
+    <header class="page-header">
+      <div class="account-name-wrapper">
+        <span class="account-name-text">ACME Company (acme_company)</span>
+        <div class="account-icon">
+          <span class="material-icons-round">person</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Page Content ── -->
+    <main class="page-content">
+      <div class="content-inner">
+
+        <!-- ── Header / Contact Card ── -->
+        <div class="header-contact-section">
+          <div class="back-header-group">
+            <a href="#" class="back-button">
+              <span class="material-icons-round">chevron_left</span>
+              <span class="back-button-label">Back</span>
+            </a>
+            <div class="header-row">
+              <h1 class="page-title">Contact Details</h1>
+              <div class="header-buttons">
+                <button class="outline-btn">Payment</button>
+                <button class="outline-btn">Collection</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Card -->
+          <div class="contact-card">
+            <div class="contact-card-inner">
+              <div class="icon-name-row">
+                <div class="avatar-wrap">
+                  <img src="Assets/Contact Icon.svg" alt="Contact Icon" />
+                </div>
+                <div class="name-type-col">
+                  <div class="name-lang-row">
+                    <span class="contact-name">John Smith</span>
+                    <div class="lang-badge">
+                      <span class="material-icons-round">language</span>
+                      <span class="lang-badge-text">En</span>
+                    </div>
+                  </div>
+                  <span class="contact-type-text">Individual</span>
+                </div>
+              </div>
+              <div class="labels-row">
+                <div class="label-tag">
+                  <span class="label-tag-text">Label</span>
+                  <div class="label-close-btn"><span class="material-icons-round">close</span></div>
+                </div>
+                <div class="label-tag">
+                  <span class="label-tag-text">Label</span>
+                  <div class="label-close-btn"><span class="material-icons-round">close</span></div>
+                </div>
+                <div class="add-label-btn"><span class="material-icons-round">add</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Details Section (Tabs + Container) ── -->
+        <div class="details-section">
+
+          <!-- Tabs -->
+          <div class="tabs-bar" id="tabs-bar">
+            <div class="tab-active-wrap">
+              <div class="tab-active" data-tab="details">Details</div>
+            </div>
+            <div class="tab-inactive" data-tab="activity">Activity</div>
+            <div class="tab-inactive" data-tab="payment-methods">Payment Methods</div>
+            <div class="tab-inactive" data-tab="verifications">Verifications</div>
+            <div class="tab-inactive" data-tab="cportal">cPortal</div>
+          </div>
+
+          <!-- Main container -->
+          <div class="main-container">
+
+            <!-- ══ DETAILS PANEL ══ -->
+            <div class="tab-panel active" id="panel-details">
+              <div style="display:flex; flex-direction:column; gap:32px; align-items:flex-end; width:100%;">
+                <div class="contact-details-section" style="width:100%;">
+                  <div class="section-heading">Contact Details</div>
+                  <div class="details-card">
+                    <div class="detail-row">
+                      <span class="detail-label">Contact Type</span>
+                      <span class="detail-value">Individual</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Contact ID</span>
+                      <span class="detail-value">john_smith</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">First &amp; Last Name</span>
+                      <div class="value-edit-group">
+                        <span class="detail-value">John Smith</span>
+                        <div class="edit-circle-btn"><span class="material-icons-round">edit</span></div>
+                      </div>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Email Address</span>
+                      <span class="detail-value">johnsmith@email.com</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Phone Number</span>
+                      <span class="detail-value">+1 (987) 987-9876</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Date of Birth</span>
+                      <span class="detail-value">-</span>
+                    </div>
+                    <div class="detail-row">
+                      <span class="detail-label">Address</span>
+                      <div class="value-edit-group">
+                        <span class="detail-value">3456 Fake St, Vancouver, BC, V1V 1V1</span>
+                        <div class="edit-circle-btn"><span class="material-icons-round">edit</span></div>
+                      </div>
+                    </div>
+                    <div class="detail-row detail-row-top">
+                      <span class="detail-label">Additional Email Address</span>
+                      <div class="emails-stack">
+                        <span class="detail-value">eva.doe@email.com</span>
+                        <span class="detail-value">matt.doe@email.com</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="deactivate-row">
+                  <button class="deactivate-btn">Deactivate</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ══ ACTIVITY PANEL ══ -->
+            <div class="tab-panel" id="panel-activity">
+              <p style="color:rgba(45,45,45,0.4); font-size:15px; padding:24px 0; text-align:center;">No activity to display.</p>
+            </div>
+
+            <!-- ══ PAYMENT METHODS PANEL ══ -->
+            <div class="tab-panel" id="panel-payment-methods">
+              <div class="pm-layout">
+
+                <!-- Left: list -->
+                <div class="pm-left">
+                  <div class="pm-left-header">
+                    <span class="pm-title">Payment Methods</span>
+                    <button class="pm-add-btn">
+                      <span class="material-icons-round">add</span>Add
+                    </button>
+                  </div>
+
+                  <!-- Payment method card (selected) -->
+                  <div class="pm-card selected">
+                    <div class="pm-card-top">
+                      <div class="pm-bank-logo">
+                        <img src="Assets/Bank Logos.svg" alt="RBC" />
+                      </div>
+                      <div class="pm-card-info">
+                        <div class="pm-card-number-row">
+                          <span class="pm-card-number">123-12345-***4321</span>
+                          <span class="pm-currency-badge">USD</span>
+                          <span class="pm-verified-icon">
+                            <span class="material-icons-round">check_circle</span>
+                          </span>
+                        </div>
+                        <div class="pm-card-sub">Bank Account &bull; Exp: -/-</div>
+                      </div>
+                    </div>
+                    <div class="pm-card-bottom">
+                      <div class="pm-available-via">
+                        <span class="pm-available-label">Available via:</span>
+                        <div class="pm-via-icons">
+                          <div class="pm-via-icon">
+                            <img src="Assets/image.svg" alt="IFT" style="height:14px;" />
+                          </div>
+                          <div class="pm-via-icon" style="margin-left:4px;">
+                            <img src="Assets/Logo Container.svg" alt="Logo" style="height:16px;" />
+                          </div>
+                        </div>
+                      </div>
+                      <button class="pm-default-btn">Default</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: account details -->
+                <div class="pm-right">
+
+                  <!-- Account header -->
+                  <div class="pm-account-header">
+                    <div class="pm-header-logo">
+                      <img src="Assets/Bank Logos.svg" alt="RBC" />
+                    </div>
+                    <div class="pm-header-info">
+                      <span class="pm-header-number">123-12345-***4321</span>
+                      <span class="pm-header-date">Added on 2025-09-09</span>
+                    </div>
+                  </div>
+
+                  <!-- Sub-tabs -->
+                  <div class="pm-subtabs" id="pm-subtabs">
+                    <div class="pm-subtab pm-subtab-active" data-subtab="pm-details">Details</div>
+                    <div class="pm-subtab" data-subtab="pm-risk">Risk</div>
+                    <div class="pm-subtab" data-subtab="pm-insights">Insights</div>
+                  </div>
+
+                  <!-- Details sub-panel -->
+                  <div class="pm-subpanel active" id="panel-pm-details">
+
+                    <!-- Account Details card -->
+                    <div class="pm-detail-card">
+                      <div class="pm-row" style="border-top:none;">
+                        <span class="pm-row-label">Currency</span>
+                        <span class="pm-row-value">CAD</span>
+                      </div>
+                      <div class="pm-row">
+                        <span class="pm-row-label">Account Type</span>
+                        <span class="pm-row-value">Bank Account</span>
+                      </div>
+                      <div class="pm-row">
+                        <span class="pm-row-label">Account Number</span>
+                        <span class="pm-row-value">002-12345-********4168</span>
+                      </div>
+                      <div class="pm-row">
+                        <span class="pm-row-label">Token</span>
+                        <div class="pm-token-group">
+                          <span class="pm-token-text">00d2bc4dc6dc5523d5e32acc2dd86e2a1f74506edec56cb0e01d191e56a0703e</span>
+                          <button class="pm-copy-btn" title="Copy token">
+                            <span class="material-icons-round">content_copy</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="pm-row">
+                        <span class="pm-row-label">Account Holder Name</span>
+                        <span class="pm-row-value">John Smith</span>
+                      </div>
+                      <div class="pm-row">
+                        <span class="pm-row-label">Default</span>
+                        <span class="pm-row-value">Yes</span>
+                      </div>
+                      <div class="pm-row">
+                        <span class="pm-row-label">Connection Type</span>
+                        <span class="pm-row-value">Manual</span>
+                      </div>
+                    </div>
+
+                    <!-- Verification Details card -->
+                    <div class="pm-detail-card">
+                      <div class="pm-card-section-heading">Verification Details</div>
+                      <div class="pm-card-section-sub">Last request sent on 2026-03-15 17:25:04</div>
+                      <div class="pm-row">
+                        <span class="pm-row-label">Verification Status</span>
+                        <span class="pm-row-value-green">Verified</span>
+                      </div>
+                      <button class="pm-send-btn">Send Verification Request</button>
+                    </div>
+
+                  </div>
+
+                  <!-- Risk sub-panel -->
+                  <div class="pm-subpanel" id="panel-pm-risk">
+                    <div class="pm-risk-body">
+                      <span>Risky data</span>
+                    </div>
+                  </div>
+
+                  <!-- Insights sub-panel -->
+                  <div class="pm-subpanel" id="panel-pm-insights">
+                    <div class="pm-detail-card" style="border-radius:0 0 16px 16px;">
+                      <p style="color:rgba(45,45,45,0.4); font-size:14px; padding:24px; text-align:center;">No insights available.</p>
+                    </div>
+                  </div>
+
+                  <!-- Expand circle button -->
+                  <button class="pm-expand-btn" title="Expand">
+                    <span class="material-icons-round">zoom_out_map</span>
+                  </button>
+
+                </div><!-- /pm-right -->
+              </div><!-- /pm-layout -->
+            </div>
+
+            <!-- ══ VERIFICATIONS PANEL ══ -->
+            <div class="tab-panel" id="panel-verifications">
+              <p style="color:rgba(45,45,45,0.4); font-size:15px; padding:24px 0; text-align:center;">No verifications to display.</p>
+            </div>
+
+            <!-- ══ CPORTAL PANEL ══ -->
+            <div class="tab-panel" id="panel-cportal">
+              <p style="color:rgba(45,45,45,0.4); font-size:15px; padding:24px 0; text-align:center;">cPortal content coming soon.</p>
+            </div>
+
+          </div><!-- /main-container -->
+        </div><!-- /details-section -->
+
+      </div><!-- /content-inner -->
+    </main>
+
+  </div><!-- /page-wrapper -->
+
+  <script>
+    // ── Main tab switching ──
+    const tabsBar = document.getElementById('tabs-bar');
+    const tabEls  = tabsBar.querySelectorAll('[data-tab]');
+
+    tabEls.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+
+        // Update tab visuals
+        tabEls.forEach(t => {
+          const isActive = t.dataset.tab === target;
+          if (isActive) {
+            // Wrap in active-wrap if not already
+            if (!t.parentElement.classList.contains('tab-active-wrap')) {
+              const wrap = document.createElement('div');
+              wrap.className = 'tab-active-wrap';
+              t.parentElement.insertBefore(wrap, t);
+              wrap.appendChild(t);
+            }
+            t.className = 'tab-active';
+          } else {
+            // Unwrap from tab-active-wrap if needed
+            if (t.parentElement.classList.contains('tab-active-wrap')) {
+              const wrap = t.parentElement;
+              wrap.parentElement.insertBefore(t, wrap);
+              wrap.remove();
+            }
+            t.className = 'tab-inactive';
+          }
+        });
+
+        // Switch panels
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        const panel = document.getElementById('panel-' + target);
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+    // ── Expand / collapse pm-right ──
+    const pmExpandBtn = document.querySelector('.pm-expand-btn');
+    if (pmExpandBtn) {
+      pmExpandBtn.addEventListener('click', () => {
+        const layout = pmExpandBtn.closest('.pm-layout');
+        const icon = pmExpandBtn.querySelector('.material-icons-round');
+        const expanded = layout.classList.toggle('pm-expanded');
+        icon.textContent = expanded ? 'zoom_in_map' : 'zoom_out_map';
+        pmExpandBtn.title = expanded ? 'Collapse' : 'Expand';
+      });
+    }
+
+    // ── Payment Methods sub-tabs ──
+    const pmSubtabs = document.getElementById('pm-subtabs');
+    if (pmSubtabs) {
+      pmSubtabs.querySelectorAll('[data-subtab]').forEach(st => {
+        st.addEventListener('click', () => {
+          const target = st.dataset.subtab;
+          pmSubtabs.querySelectorAll('[data-subtab]').forEach(s => s.classList.remove('pm-subtab-active'));
+          st.classList.add('pm-subtab-active');
+          document.querySelectorAll('.pm-subpanel').forEach(p => p.classList.remove('active'));
+          const panel = document.getElementById('panel-' + target);
+          if (panel) panel.classList.add('active');
+        });
+      });
+    }
+
+    // ── Copy token ──
+    document.querySelectorAll('.pm-copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const token = btn.previousElementSibling?.textContent?.trim();
+        if (token) navigator.clipboard.writeText(token).catch(() => {});
+      });
+    });
+  </script>
+
+</body>
+</html>
