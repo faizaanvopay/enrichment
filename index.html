@@ -42,10 +42,10 @@
     .account-name-wrapper { display: flex; align-items: center; gap: 24px; }
     .account-name-text { font-size: 16px; font-weight: 400; color: #2d2d2d; text-align: right; white-space: nowrap; }
     .account-icon {
-      width: 40px; height: 40px; border-radius: 50%; background: #2d2d2d;
+      width: 40px; height: 40px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center; cursor: pointer;
+      overflow: hidden;
     }
-    .account-icon .material-icons-round { color: white; font-size: 22px; }
 
     /* ── Page Content ── */
     .page-content { display: flex; flex-direction: column; gap: 16px; align-items: center; padding: 0 50px 40px; width: 100%; }
@@ -201,8 +201,8 @@
     ══════════════════════════════════════ */
     .pm-layout {
       display: flex;
-      gap: 24px;
-      align-items: flex-start;
+      gap: 0;
+      align-items: stretch;
       width: 100%;
     }
 
@@ -210,9 +210,12 @@
     .pm-left {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      width: 310px;
+      gap: 24px;
+      width: 426px;
       flex-shrink: 0;
+      padding-left: 24px;
+      padding-top: 24px;
+      align-self: stretch;
     }
 
     .pm-left-header {
@@ -222,10 +225,10 @@
     }
 
     .pm-title {
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 500;
       color: #2d2d2d;
-      line-height: 24px;
+      line-height: 30px;
     }
 
     .pm-add-btn {
@@ -247,17 +250,17 @@
     .pm-card {
       background: white;
       border: 1.5px solid rgba(45,45,45,0.15);
-      border-radius: 12px;
-      padding: 12px 14px;
+      border-radius: 20px;
+      padding: 16px 16px 16px 24px;
       cursor: pointer;
       transition: border-color 0.15s;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
     }
     .pm-card.selected {
-      border: 1.5px solid #2d2d2d;
-      box-shadow: 0px 0px 0px 3px rgba(45,45,45,0.06);
+      border: 2px solid #2d2d2d;
+      background: rgba(45,45,45,0.05);
     }
     .pm-card:hover:not(.selected) { border-color: rgba(45,45,45,0.35); }
 
@@ -285,20 +288,19 @@
     }
 
     .pm-card-number {
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 600;
       color: #2d2d2d;
       white-space: nowrap;
+      line-height: 24px;
     }
 
     .pm-currency-badge {
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(45,45,45,0.6);
-      background: rgba(45,45,45,0.07);
-      border-radius: 4px;
-      padding: 1px 5px;
-      line-height: 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #2d2d2d;
+      background: none;
+      line-height: 18px;
       flex-shrink: 0;
     }
 
@@ -331,8 +333,8 @@
 
     .pm-available-label {
       font-size: 11px;
-      font-weight: 400;
-      color: rgba(45,45,45,0.5);
+      font-weight: 600;
+      color: rgba(45,45,45,0.75);
       white-space: nowrap;
     }
 
@@ -358,6 +360,18 @@
       padding: 0;
     }
 
+    .pm-default-chip {
+      font-size: 12px;
+      font-weight: 600;
+      color: #2f82ff;
+      background: linear-gradient(90deg, rgba(47,130,255,0.2) 0%, rgba(47,130,255,0.2) 100%), #fff;
+      border: 1px solid rgba(47,130,255,0.1);
+      border-radius: 40px;
+      padding: 2px 8px;
+      line-height: 15px;
+      box-shadow: 4px 4px 9px 0px rgba(45,45,45,0.05);
+    }
+
     /* ── Right Column ── */
     .pm-right {
       flex: 1;
@@ -367,8 +381,7 @@
       min-width: 0;
       background: white;
       border-radius: 20px;
-      padding: 16px;
-      padding-bottom: 20px;
+      padding: 24px;
       box-shadow: 0px 0px 0px 1px rgba(45,45,45,0.1), 0px 10px 34px 0px rgba(45,45,45,0.05);
       position: relative;
     }
@@ -407,12 +420,34 @@
     .pm-account-header {
       background: white;
       border-radius: 16px;
-      padding: 16px 20px;
+      padding: 24px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 14px;
       box-shadow: 0px 0px 0px 0.5px rgba(0,0,0,0.25), 0px 0.5px 2.5px 0px rgba(45,45,45,0.4);
       flex-shrink: 0;
+    }
+
+    .pm-enrich-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(45,45,45,0.1);
+      background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 100%), #FFD147;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #2d2d2d;
+      cursor: pointer;
+      white-space: nowrap;
+      line-height: 18px;
+    }
+    .pm-enrich-btn:hover {
+      filter: brightness(0.95);
     }
 
     .pm-header-logo {
@@ -608,7 +643,7 @@
   <!-- ── Side Menu ── -->
   <aside class="side-menu">
     <div class="side-menu-logo">
-      <div class="logo-icon">U</div>
+      <img src="Assets/Logo Container.svg" alt="Logo" style="width:40px; height:40px;" />
     </div>
   </aside>
 
@@ -620,7 +655,7 @@
       <div class="account-name-wrapper">
         <span class="account-name-text">ACME Company (acme_company)</span>
         <div class="account-icon">
-          <span class="material-icons-round">person</span>
+          <img src="Assets/Icon.svg" alt="User" style="width:40px; height:40px; border-radius:50%;" />
         </div>
       </div>
     </header>
@@ -772,7 +807,7 @@
                   <div class="pm-card selected">
                     <div class="pm-card-top">
                       <div class="pm-bank-logo">
-                        <img src="Assets/Bank Logos.svg" alt="RBC" />
+                        <img src="Assets/Header/Bank Logos.svg" alt="RBC" />
                       </div>
                       <div class="pm-card-info">
                         <div class="pm-card-number-row">
@@ -789,15 +824,12 @@
                       <div class="pm-available-via">
                         <span class="pm-available-label">Available via:</span>
                         <div class="pm-via-icons">
-                          <div class="pm-via-icon">
-                            <img src="Assets/image.svg" alt="IFT" style="height:14px;" />
-                          </div>
-                          <div class="pm-via-icon" style="margin-left:4px;">
-                            <img src="Assets/Logo Container.svg" alt="Logo" style="height:16px;" />
+                          <div class="pm-via-icon" style="border:1px solid rgba(45,45,45,0.1); border-radius:5px; padding:2px 4px;">
+                            <img src="Assets/Header/ACH.svg" alt="ACH" style="height:14px;" />
                           </div>
                         </div>
                       </div>
-                      <button class="pm-default-btn">Default</button>
+                      <span class="pm-default-chip">Default</span>
                     </div>
                   </div>
                 </div>
@@ -807,13 +839,16 @@
 
                   <!-- Account header -->
                   <div class="pm-account-header">
-                    <div class="pm-header-logo">
-                      <img src="Assets/Bank Logos.svg" alt="RBC" />
+                    <div style="display:flex; align-items:center; gap:16px; flex:1;">
+                      <div class="pm-header-logo">
+                        <img src="Assets/Header/Bank Logos.svg" alt="BoA" />
+                      </div>
+                      <div class="pm-header-info">
+                        <span class="pm-header-number">123-12345-***4321</span>
+                        <span class="pm-header-date">Added on 2025-09-09</span>
+                      </div>
                     </div>
-                    <div class="pm-header-info">
-                      <span class="pm-header-number">123-12345-***4321</span>
-                      <span class="pm-header-date">Added on 2025-09-09</span>
-                    </div>
+                    <button class="pm-enrich-btn">Enrich Transaction Data</button>
                   </div>
 
                   <!-- Sub-tabs -->
@@ -830,7 +865,7 @@
                     <div class="pm-detail-card">
                       <div class="pm-row" style="border-top:none;">
                         <span class="pm-row-label">Currency</span>
-                        <span class="pm-row-value">CAD</span>
+                        <span class="pm-row-value">USD</span>
                       </div>
                       <div class="pm-row">
                         <span class="pm-row-label">Account Type</span>
