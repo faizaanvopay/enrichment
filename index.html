@@ -870,7 +870,43 @@
       border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
     }
     .category-drawer-close .material-icons-round { font-size: 18px; color: #2d2d2d; }
-    .category-drawer-body { flex: 1; overflow-y: auto; padding: 24px 32px; }
+    .category-drawer-body { flex: 1; overflow-y: auto; padding: 24px 18px; }
+
+    /* Drawer content layout */
+    .drawer-content { display: flex; gap: 24px; height: 100%; }
+    .drawer-left { width: 245px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+    .drawer-summary-card {
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
+      padding: 8px;
+    }
+    .drawer-summary-title { font-size: 15px; font-weight: 600; color: #2d2d2d; padding: 6px 8px 4px; }
+    .drawer-summary-row { padding: 12px 8px; border-bottom: 1px solid rgba(45,45,45,0.1); }
+    .drawer-summary-row:last-child { border-bottom: none; }
+    .drawer-summary-label { font-size: 13px; color: rgba(45,45,45,0.75); font-weight: 400; }
+    .drawer-summary-value { font-size: 15px; font-weight: 600; color: #2d2d2d; margin-top: 4px; }
+    .drawer-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .drawer-table-wrap {
+      background: #fff; border-radius: 20px; overflow: clip; flex: 1; display: flex; flex-direction: column;
+      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
+    }
+    .drawer-table-header {
+      background: #2d2d2d; border-radius: 14px; display: flex;
+      box-shadow: 0 10px 34px rgba(45,45,45,0.05);
+      border: 1px solid rgba(251,251,251,0.1); flex-shrink: 0;
+    }
+    .drawer-table-th {
+      flex: 1; padding: 16px 24px; font-size: 16px; font-weight: 600; color: #fbfbfb;
+      font-family: 'Inter', sans-serif; border-right: 1px solid rgba(251,251,251,0.1);
+    }
+    .drawer-table-th:last-child { border-right: none; }
+    .drawer-table-body { flex: 1; overflow-y: auto; }
+    .drawer-table-row { display: flex; border-bottom: 1px solid rgba(45,45,45,0.08); }
+    .drawer-table-row:nth-child(even) { background: rgba(45,45,45,0.03); }
+    .drawer-table-td {
+      flex: 1; padding: 16px 24px; font-size: 14px; color: #2d2d2d;
+      font-family: 'Inter', sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -1271,7 +1307,156 @@
         ]
       },
       fees: { nsf: 245, bank: 87 },
-      transactionsEnriched: 847
+      transactionsEnriched: 847,
+      transactions: {
+        'Employer Income': {
+          avgMonthly: 4666.67, avgDaysBetween: '14.2 days',
+          firstTransaction: 'Oct 3, 2025', lastDeposit: 'Dec 3, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 3, amount: 4800 },
+            { month: 'Nov 2025', count: 3, amount: 4200 },
+            { month: 'Dec 2025', count: 3, amount: 5000 }
+          ],
+          rows: [
+            { date: '2025-12-15, 09:14:33', description: 'ACH Direct Deposit - Payroll', amount: 2500 },
+            { date: '2025-12-01, 09:12:41', description: 'ACH Direct Deposit - Payroll', amount: 2500 },
+            { date: '2025-11-15, 09:11:58', description: 'ACH Direct Deposit - Payroll', amount: 2100 },
+            { date: '2025-11-01, 09:10:22', description: 'ACH Direct Deposit - Payroll', amount: 2100 },
+            { date: '2025-10-15, 09:08:47', description: 'ACH Direct Deposit - Payroll', amount: 2400 },
+            { date: '2025-10-01, 09:07:15', description: 'ACH Direct Deposit - Payroll', amount: 2400 }
+          ]
+        },
+        'Government Income': {
+          avgMonthly: 583.33, avgDaysBetween: '30.0 days',
+          firstTransaction: 'Oct 5, 2025', lastDeposit: 'Dec 5, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 1, amount: 575 },
+            { month: 'Nov 2025', count: 1, amount: 600 },
+            { month: 'Dec 2025', count: 1, amount: 575 }
+          ],
+          rows: [
+            { date: '2025-12-05, 06:00:12', description: 'ACH Government Benefit Payment', amount: 575 },
+            { date: '2025-11-05, 06:00:09', description: 'ACH Government Benefit Payment', amount: 600 },
+            { date: '2025-10-05, 06:00:11', description: 'ACH Government Benefit Payment', amount: 575 }
+          ]
+        },
+        'Tax Credits': {
+          avgMonthly: 583.33, avgDaysBetween: '30.5 days',
+          firstTransaction: 'Oct 20, 2025', lastDeposit: 'Dec 20, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 1, amount: 600 },
+            { month: 'Nov 2025', count: 1, amount: 575 },
+            { month: 'Dec 2025', count: 1, amount: 575 }
+          ],
+          rows: [
+            { date: '2025-12-20, 06:00:05', description: 'ACH Tax Credit - CRA', amount: 575 },
+            { date: '2025-11-20, 06:00:03', description: 'ACH Tax Credit - CRA', amount: 575 },
+            { date: '2025-10-20, 06:00:07', description: 'ACH Tax Credit - CRA', amount: 600 }
+          ]
+        },
+        'Rent': {
+          avgMonthly: 1720.00, avgDaysBetween: '30.0 days',
+          firstTransaction: 'Oct 1, 2025', lastDeposit: 'Dec 1, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 1, amount: 1720 },
+            { month: 'Nov 2025', count: 1, amount: 1720 },
+            { month: 'Dec 2025', count: 1, amount: 1720 }
+          ],
+          rows: [
+            { date: '2025-12-01, 08:00:00', description: 'ACH Payment - Rent', amount: 1720 },
+            { date: '2025-11-01, 08:00:00', description: 'ACH Payment - Rent', amount: 1720 },
+            { date: '2025-10-01, 08:00:00', description: 'ACH Payment - Rent', amount: 1720 }
+          ]
+        },
+        'Loans': {
+          avgMonthly: 860.00, avgDaysBetween: '30.0 days',
+          firstTransaction: 'Oct 10, 2025', lastDeposit: 'Dec 10, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 1, amount: 860 },
+            { month: 'Nov 2025', count: 1, amount: 860 },
+            { month: 'Dec 2025', count: 1, amount: 860 }
+          ],
+          rows: [
+            { date: '2025-12-10, 10:30:00', description: 'ACH Loan Payment - Auto', amount: 480 },
+            { date: '2025-12-10, 10:32:00', description: 'ACH Loan Payment - Student', amount: 380 },
+            { date: '2025-11-10, 10:30:00', description: 'ACH Loan Payment - Auto', amount: 480 },
+            { date: '2025-11-10, 10:32:00', description: 'ACH Loan Payment - Student', amount: 380 },
+            { date: '2025-10-10, 10:30:00', description: 'ACH Loan Payment - Auto', amount: 480 },
+            { date: '2025-10-10, 10:32:00', description: 'ACH Loan Payment - Student', amount: 380 }
+          ]
+        },
+        'Insurance': {
+          avgMonthly: 645.00, avgDaysBetween: '30.0 days',
+          firstTransaction: 'Oct 15, 2025', lastDeposit: 'Dec 15, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 1, amount: 645 },
+            { month: 'Nov 2025', count: 1, amount: 645 },
+            { month: 'Dec 2025', count: 1, amount: 645 }
+          ],
+          rows: [
+            { date: '2025-12-15, 07:00:00', description: 'ACH Insurance Premium - Health', amount: 420 },
+            { date: '2025-12-15, 07:02:00', description: 'ACH Insurance Premium - Auto', amount: 225 },
+            { date: '2025-11-15, 07:00:00', description: 'ACH Insurance Premium - Health', amount: 420 },
+            { date: '2025-11-15, 07:02:00', description: 'ACH Insurance Premium - Auto', amount: 225 },
+            { date: '2025-10-15, 07:00:00', description: 'ACH Insurance Premium - Health', amount: 420 },
+            { date: '2025-10-15, 07:02:00', description: 'ACH Insurance Premium - Auto', amount: 225 }
+          ]
+        },
+        'Utilities': {
+          avgMonthly: 430.00, avgDaysBetween: '30.0 days',
+          firstTransaction: 'Oct 18, 2025', lastDeposit: 'Dec 18, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 2, amount: 410 },
+            { month: 'Nov 2025', count: 2, amount: 440 },
+            { month: 'Dec 2025', count: 2, amount: 440 }
+          ],
+          rows: [
+            { date: '2025-12-18, 12:00:00', description: 'ACH Utility - Hydro', amount: 285 },
+            { date: '2025-12-18, 12:05:00', description: 'ACH Utility - Gas', amount: 155 },
+            { date: '2025-11-18, 12:00:00', description: 'ACH Utility - Hydro', amount: 275 },
+            { date: '2025-11-18, 12:05:00', description: 'ACH Utility - Gas', amount: 165 },
+            { date: '2025-10-18, 12:00:00', description: 'ACH Utility - Hydro', amount: 260 },
+            { date: '2025-10-18, 12:05:00', description: 'ACH Utility - Gas', amount: 150 }
+          ]
+        },
+        'Telecom': {
+          avgMonthly: 322.33, avgDaysBetween: '30.0 days',
+          firstTransaction: 'Oct 22, 2025', lastDeposit: 'Dec 22, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 2, amount: 315 },
+            { month: 'Nov 2025', count: 2, amount: 330 },
+            { month: 'Dec 2025', count: 2, amount: 322 }
+          ],
+          rows: [
+            { date: '2025-12-22, 09:00:00', description: 'ACH Payment - Rogers Wireless', amount: 95 },
+            { date: '2025-12-22, 09:05:00', description: 'ACH Payment - Bell Internet', amount: 227 },
+            { date: '2025-11-22, 09:00:00', description: 'ACH Payment - Rogers Wireless', amount: 95 },
+            { date: '2025-11-22, 09:05:00', description: 'ACH Payment - Bell Internet', amount: 235 },
+            { date: '2025-10-22, 09:00:00', description: 'ACH Payment - Rogers Wireless', amount: 95 },
+            { date: '2025-10-22, 09:05:00', description: 'ACH Payment - Bell Internet', amount: 220 }
+          ]
+        },
+        'Subscriptions': {
+          avgMonthly: 322.67, avgDaysBetween: '15.0 days',
+          firstTransaction: 'Oct 1, 2025', lastDeposit: 'Dec 15, 2025',
+          monthlySummary: [
+            { month: 'Oct 2025', count: 3, amount: 318 },
+            { month: 'Nov 2025', count: 3, amount: 325 },
+            { month: 'Dec 2025', count: 3, amount: 325 }
+          ],
+          rows: [
+            { date: '2025-12-15, 00:00:00', description: 'ACH - Netflix', amount: 22.99 },
+            { date: '2025-12-01, 00:00:00', description: 'ACH - Spotify', amount: 11.99 },
+            { date: '2025-12-01, 00:02:00', description: 'ACH - Gym Membership', amount: 289.99 },
+            { date: '2025-11-15, 00:00:00', description: 'ACH - Netflix', amount: 22.99 },
+            { date: '2025-11-01, 00:00:00', description: 'ACH - Spotify', amount: 11.99 },
+            { date: '2025-11-01, 00:02:00', description: 'ACH - Gym Membership', amount: 289.99 },
+            { date: '2025-10-15, 00:00:00', description: 'ACH - Netflix', amount: 22.99 },
+            { date: '2025-10-01, 00:00:00', description: 'ACH - Spotify', amount: 11.99 },
+            { date: '2025-10-01, 00:02:00', description: 'ACH - Gym Membership', amount: 284.00 }
+          ]
+        }
+      }
     };
 
     // ── Helpers ──
@@ -1520,7 +1705,52 @@
       var overlay = document.getElementById('category-drawer-overlay');
       var drawer = document.getElementById('category-drawer');
       var title = document.getElementById('category-drawer-title');
+      var body = document.getElementById('category-drawer-body');
       title.textContent = categoryName;
+
+      var txn = DATA.transactions[categoryName];
+      if (!txn) {
+        body.innerHTML = '<p style="color:rgba(45,45,45,0.5);padding:40px;text-align:center;">No transaction data available.</p>';
+      } else {
+        // Summary card 1
+        var card1 = '<div class="drawer-summary-card">' +
+          '<div class="drawer-summary-title">Summary</div>' +
+          '<div class="drawer-summary-row"><div class="drawer-summary-label">Avg. Monthly Income</div><div class="drawer-summary-value">' + fmtUSD(txn.avgMonthly) + '</div></div>' +
+          '<div class="drawer-summary-row"><div class="drawer-summary-label">Avg. Days Between</div><div class="drawer-summary-value">' + txn.avgDaysBetween + '</div></div>' +
+          '<div class="drawer-summary-row"><div class="drawer-summary-label">First Transaction</div><div class="drawer-summary-value">' + txn.firstTransaction + '</div></div>' +
+          '<div class="drawer-summary-row"><div class="drawer-summary-label">Last Deposit</div><div class="drawer-summary-value">' + txn.lastDeposit + '</div></div>' +
+          '</div>';
+
+        // Summary card 2 - monthly
+        var card2 = '<div class="drawer-summary-card"><div class="drawer-summary-title">Summary</div>';
+        txn.monthlySummary.forEach(function(m) {
+          card2 += '<div class="drawer-summary-row"><div class="drawer-summary-label">' + m.month + ' &bull; ' + m.count + ' transactions</div><div class="drawer-summary-value">' + fmtUSD(m.amount) + '</div></div>';
+        });
+        card2 += '</div>';
+
+        // Table
+        var tableRows = '';
+        txn.rows.forEach(function(r) {
+          tableRows += '<div class="drawer-table-row">' +
+            '<div class="drawer-table-td">' + r.date + '</div>' +
+            '<div class="drawer-table-td">' + r.description + '</div>' +
+            '<div class="drawer-table-td">' + fmtUSD(r.amount) + '</div>' +
+            '</div>';
+        });
+
+        body.innerHTML = '<div class="drawer-content">' +
+          '<div class="drawer-left">' + card1 + card2 + '</div>' +
+          '<div class="drawer-right"><div class="drawer-table-wrap">' +
+            '<div class="drawer-table-header">' +
+              '<div class="drawer-table-th">Transaction Date</div>' +
+              '<div class="drawer-table-th">Description</div>' +
+              '<div class="drawer-table-th">Amount</div>' +
+            '</div>' +
+            '<div class="drawer-table-body">' + tableRows + '</div>' +
+          '</div></div>' +
+          '</div>';
+      }
+
       overlay.style.display = 'block';
       requestAnimationFrame(function() {
         drawer.classList.add('open');
