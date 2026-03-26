@@ -785,6 +785,7 @@
       flex: 1; background: white; border-radius: 16px;
       box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
       padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;
+      overflow: visible;
     }
     .pie-card-header-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.75); }
     .pie-card-header-value { font-size: 17px; font-weight: 700; color: #2d2d2d; }
@@ -801,7 +802,7 @@
       padding-top: 12px; border-top: 1px solid rgba(45,45,45,0.1);
     }
     .pie-legend-color { display: flex; align-items: center; gap: 6px; }
-    .pie-legend-dot { width: 15px; height: 15px; border-radius: 50%; }
+    .pie-legend-dot { width: 15px; min-width: 15px; height: 15px; min-height: 15px; border-radius: 50%; flex-shrink: 0; }
     .pie-legend-name { font-size: 11px; color: rgba(45,45,45,0.75); }
     .pie-legend-pct { font-size: 12px; font-weight: 600; color: #2d2d2d; }
     .pie-legend-amt { font-size: 11px; color: rgba(45,45,45,0.5); }
@@ -836,13 +837,15 @@
     .chart-tooltip-pct { color: rgba(255,255,255,0.6); font-size: 12px; }
 
     /* ── SVG Pie Chart ── */
-    .pie-svg { display: block; margin: 0 auto; }
+    .pie-svg { display: block; margin: 0 auto; overflow: visible; }
     .pie-seg { cursor: pointer; transition: transform 0.2s, opacity 0.2s, filter 0.2s; }
     .pie-svg.has-hover .pie-seg:not(.hovered) { opacity: 0.4; }
     .pie-seg.hovered { filter: brightness(1.05); }
     .pie-seg-label { transition: opacity 0.2s; pointer-events: none; }
     .pie-svg.has-hover .pie-seg-label { opacity: 0; }
     .pie-svg.has-hover .pie-seg-label.label-hovered { opacity: 1; }
+    .pie-legend-item { transition: opacity 0.2s; }
+    .pie-legend-grid.has-hover .pie-legend-item:not(.legend-hovered) { opacity: 0.2; }
 
     /* ── Category Drawer ── */
     .category-drawer-overlay {
@@ -1381,7 +1384,7 @@
 
         return '<div class="pie-card">' +
           '<div><div class="pie-card-header-label">' + label + '</div><div class="pie-card-header-value">' + fmtUSD(total) + '</div></div>' +
-          buildPieSVG(categories, total, 120) +
+          buildPieSVG(categories, total, 150) +
           legendHTML +
           '<button class="pie-view-btn">View Transactions</button>' +
           '</div>';
@@ -1472,18 +1475,24 @@
 
       // ── Attach SVG pie segment hover/click listeners ──
       panel.querySelectorAll('.pie-svg').forEach(function(svg) {
+        var pieCard = svg.closest('.pie-card');
+        var legendGrid = pieCard ? pieCard.querySelector('.pie-legend-grid') : null;
         svg.querySelectorAll('.pie-seg').forEach(function(seg) {
           seg.addEventListener('mouseenter', function() {
             var idx = seg.dataset.idx;
             svg.classList.add('has-hover');
             seg.classList.add('hovered');
             seg.style.transform = 'translate(' + seg.dataset.dx + 'px, ' + seg.dataset.dy + 'px)';
-            // Highlight matching label
             svg.querySelectorAll('.pie-seg-label').forEach(function(lbl) {
-              if (lbl.dataset.idx === idx) {
-                lbl.classList.add('label-hovered');
-              }
+              if (lbl.dataset.idx === idx) lbl.classList.add('label-hovered');
             });
+            // Highlight matching legend item
+            if (legendGrid) {
+              legendGrid.classList.add('has-hover');
+              legendGrid.querySelectorAll('.pie-legend-item').forEach(function(li, liIdx) {
+                if (String(liIdx) === idx) li.classList.add('legend-hovered');
+              });
+            }
           });
           seg.addEventListener('mouseleave', function() {
             svg.classList.remove('has-hover');
@@ -1492,6 +1501,12 @@
             svg.querySelectorAll('.pie-seg-label').forEach(function(lbl) {
               lbl.classList.remove('label-hovered');
             });
+            if (legendGrid) {
+              legendGrid.classList.remove('has-hover');
+              legendGrid.querySelectorAll('.pie-legend-item').forEach(function(li) {
+                li.classList.remove('legend-hovered');
+              });
+            }
           });
           seg.addEventListener('click', function() {
             openCategoryDrawer(seg.dataset.cat);
