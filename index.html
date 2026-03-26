@@ -759,21 +759,21 @@
     .chart-legend-dot.income { background: #2F82FF; }
     .chart-legend-dot.expense { background: rgba(47,130,255,0.4); }
     .chart-area {
-      position: relative; padding-left: 105px; padding-bottom: 30px; height: 230px;
+      position: relative; margin-left: 105px; height: 200px; margin-bottom: 24px;
     }
-    .chart-grid { position: absolute; left: 105px; right: 0; top: 0; bottom: 30px; }
+    .chart-grid { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
     .chart-grid-line { position: absolute; left: 0; right: 0; height: 1px; background: rgba(45,45,45,0.05); }
     .chart-y-label {
-      position: absolute; left: -105px; width: 95px; font-size: 13px;
+      position: absolute; right: calc(100% + 10px); width: 95px; font-size: 13px;
       color: rgba(45,45,45,0.5); text-align: right; white-space: nowrap;
     }
     .chart-months-row {
-      position: absolute; left: 105px; right: 0; bottom: 0; top: 0;
+      position: absolute; left: 0; right: 0; top: 0; bottom: 0;
       display: flex; align-items: flex-end; justify-content: space-around;
     }
-    .chart-month { display: flex; flex-direction: column; align-items: center; }
-    .chart-bars { display: flex; gap: 4px; align-items: flex-end; height: 184px; margin-bottom: 30px; }
-    .chart-month-label { font-size: 13px; color: rgba(45,45,45,0.5); }
+    .chart-month { display: flex; flex-direction: column; align-items: center; position: relative; }
+    .chart-bars { display: flex; gap: 4px; align-items: flex-end; height: 184px; }
+    .chart-month-label { font-size: 13px; color: rgba(45,45,45,0.5); position: absolute; top: calc(100% + 8px); white-space: nowrap; }
     .chart-bar { width: 15px; border-radius: 3px; }
     .chart-bar.income { background: #2F82FF; }
     .chart-bar.expense { background: rgba(47,130,255,0.4); }
