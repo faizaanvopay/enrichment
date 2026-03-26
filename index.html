@@ -213,8 +213,7 @@
       gap: 24px;
       width: 426px;
       flex-shrink: 0;
-      padding-left: 24px;
-      padding-top: 24px;
+      padding: 0 24px 0 0;
       align-self: stretch;
     }
 
@@ -824,8 +823,8 @@
                       <div class="pm-available-via">
                         <span class="pm-available-label">Available via:</span>
                         <div class="pm-via-icons">
-                          <div class="pm-via-icon" style="border:1px solid rgba(45,45,45,0.1); border-radius:5px; padding:2px 4px;">
-                            <img src="Assets/Header/ACH.svg" alt="ACH" style="height:14px;" />
+                          <div class="pm-via-icon">
+                            <img src="Assets/Header/ACH.svg" alt="ACH" style="height:19px;" />
                           </div>
                         </div>
                       </div>
@@ -851,8 +850,8 @@
                     <button class="pm-enrich-btn">Enrich Transaction Data</button>
                   </div>
 
-                  <!-- Sub-tabs -->
-                  <div class="pm-subtabs" id="pm-subtabs">
+                  <!-- Sub-tabs (hidden by default, shown on expand) -->
+                  <div class="pm-subtabs" id="pm-subtabs" style="display:none;">
                     <div class="pm-subtab pm-subtab-active" data-subtab="pm-details">Details</div>
                     <div class="pm-subtab" data-subtab="pm-risk">Risk</div>
                     <div class="pm-subtab" data-subtab="pm-insights">Insights</div>
@@ -925,10 +924,7 @@
                     </div>
                   </div>
 
-                  <!-- Expand circle button -->
-                  <button class="pm-expand-btn" title="Expand">
-                    <span class="material-icons-round">zoom_out_map</span>
-                  </button>
+                  <!-- Expand circle button (removed per design) -->
 
                 </div><!-- /pm-right -->
               </div><!-- /pm-layout -->
