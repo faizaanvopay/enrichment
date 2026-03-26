@@ -1387,7 +1387,6 @@
     // Unlock Insights
     enrichUnlock?.addEventListener('click', () => {
       if (!enrichUnlock.classList.contains('enabled')) return;
-      localStorage.setItem('enriched', 'true');
       enrichOverlay.style.display = 'none';
       activateEnrichedView();
     });
@@ -1442,10 +1441,7 @@
       }
     }
 
-    // On load: check if enriched
-    if (localStorage.getItem('enriched') === 'true') {
-      activateEnrichedView();
-    }
+    // Always start fresh — no localStorage persistence
   </script>
 
 </body>
