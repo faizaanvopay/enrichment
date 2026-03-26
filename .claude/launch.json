@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Python Static Server",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/faizaansiddiqui/Desktop/HTML_Data Enrichment", "--listen", "8080", "--no-clipboard"],
+      "port": 8080
+    },
+    {
+      "name": "Node Static Server (npx serve)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", ".", "--listen", "3000"],
+      "port": 3000
+    }
+  ]
+}
