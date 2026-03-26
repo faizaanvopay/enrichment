@@ -635,6 +635,186 @@
     .pm-send-btn:hover {
       background: linear-gradient(0deg, rgba(45,45,45,0.06) 0%, rgba(45,45,45,0.06) 100%), #FFF;
     }
+
+    /* ══════════════════════════════════════
+       DATA ENRICHMENT MODAL
+    ══════════════════════════════════════ */
+    .enrich-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      backdrop-filter: blur(7px); background: rgba(45,45,45,0.2);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .enrich-modal {
+      background: white; border-radius: 20px; padding: 24px;
+      box-shadow: 10px 10px 34px rgba(0,0,0,0.05); max-width: 554px;
+    }
+    .enrich-header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;
+    }
+    .enrich-title { font-size: 24px; font-weight: 700; color: #2d2d2d; }
+    .enrich-close {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(45,45,45,0.08); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; padding: 0;
+    }
+    .enrich-close .material-icons-round { font-size: 16px; color: #2d2d2d; }
+    .enrich-cards { display: flex; gap: 18px; width: 506px; }
+    .enrich-card {
+      flex: 1; border-radius: 16px; padding: 16px; text-align: center;
+      cursor: pointer; position: relative; display: flex; flex-direction: column;
+      align-items: center; gap: 24px;
+    }
+    .enrich-card.basic {
+      background: #f3f2f7; box-shadow: 0 0 1px 0.5px rgba(0,0,0,0.4);
+    }
+    .enrich-card.enhanced {
+      background: linear-gradient(180deg, rgba(47,130,255,0) 0%, rgba(47,130,255,0.14) 100%), #fff;
+      border: 2px solid rgba(47,130,255,0.7);
+    }
+    .enrich-card.selected { border: 2px solid #2F82FF; }
+    .enrich-card .card-icon { width: 80px; height: 80px; font-size: 80px; color: #2F82FF; }
+    .enrich-card-title { font-size: 17px; font-weight: 700; color: #2d2d2d; }
+    .enrich-card-title.enhanced-title {
+      background: linear-gradient(105deg, #2F82FF 0%, rgba(47,130,255,0.5) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .enrich-card-desc { font-size: 16px; font-weight: 400; color: rgba(45,45,45,0.8); line-height: 24px; }
+    .enrich-radio {
+      position: absolute; top: 8px; right: 8px; width: 18px; height: 18px;
+      border-radius: 50%; border: 2px solid rgba(45,45,45,0.3); background: white;
+    }
+    .enrich-card.selected .enrich-radio {
+      border-color: #2F82FF; background: #2F82FF;
+      box-shadow: inset 0 0 0 3px white;
+    }
+    .enrich-unlock-btn {
+      width: 506px; height: 44px; background: #FFD147;
+      border: 1px solid rgba(45,45,45,0.1); border-radius: 10px;
+      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; color: #2d2d2d;
+      margin-top: 32px; cursor: pointer; opacity: 0.5; pointer-events: none;
+    }
+    .enrich-unlock-btn.enabled { opacity: 1; pointer-events: auto; }
+
+    /* ══════════════════════════════════════
+       POST-ENRICHMENT STYLES
+    ══════════════════════════════════════ */
+    .pm-enriched-btn {
+      display: inline-flex; gap: 4px; align-items: center; height: 32px;
+      padding: 6px 8px 6px 12px; border-radius: 8px;
+      border: 1px solid rgba(45,45,45,0.1);
+      background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%), #2F82FF;
+      color: #fbfbfb; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; white-space: nowrap;
+    }
+    .pm-enriched-btn .material-icons-round { font-size: 18px; }
+
+    .pm-seg-tabs {
+      display: flex; gap: 4px; background: #f3f2f7; border-radius: 10px; padding: 2px; width: 100%;
+    }
+    .pm-seg-tab {
+      flex: 1; height: 32px; display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+      color: #2d2d2d; cursor: pointer; border: 1px solid transparent;
+    }
+    .pm-seg-tab.active { background: white; border: 1px solid rgba(45,45,45,0.2); }
+
+    .pm-seg-panel { display: none; }
+    .pm-seg-panel.active { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+
+    /* ══════════════════════════════════════
+       INSIGHTS PANEL STYLES
+    ══════════════════════════════════════ */
+    .insights-banner {
+      background: rgba(47,130,255,0.05); border: 1px solid rgba(47,130,255,0.1);
+      border-radius: 8px; padding: 8px 16px; display: flex; align-items: center; gap: 6px; width: 100%;
+    }
+    .insights-banner .material-icons-round { color: #2F82FF; font-size: 24px; }
+    .insights-banner-text { font-size: 16px; color: rgba(45,45,45,0.75); }
+    .insights-banner-link { font-size: 16px; color: #2F82FF; cursor: pointer; white-space: nowrap; }
+
+    .insights-header-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .insights-enriched-label {
+      display: flex; align-items: center; gap: 8px; font-size: 15px; color: rgba(45,45,45,0.75);
+    }
+    .insights-enriched-label .material-icons-round { font-size: 20px; color: #3D9F42; }
+    .insights-dropdown {
+      display: flex; align-items: center; gap: 2px; height: 24px; padding: 6px 4px 6px 6px;
+      border-radius: 5px; border: 1px solid rgba(45,45,45,0.2); background: white;
+      font-family: 'Inter', sans-serif; font-size: 13px; color: #2d2d2d; cursor: pointer;
+    }
+    .insights-dropdown .material-icons-round { font-size: 16px; }
+
+    /* ── Chart Card ── */
+    .chart-card {
+      background: white; border-radius: 16px;
+      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
+      padding: 16px; width: 100%;
+    }
+    .chart-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .chart-net-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.5); }
+    .chart-net-value { font-size: 17px; font-weight: 700; color: #008107; }
+    .chart-legend { display: flex; flex-direction: column; gap: 10px; }
+    .chart-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(45,45,45,0.5); }
+    .chart-legend-dot { width: 15px; height: 15px; border-radius: 50%; }
+    .chart-legend-dot.income { background: #2F82FF; }
+    .chart-legend-dot.expense { background: rgba(47,130,255,0.4); }
+    .chart-area {
+      display: flex; align-items: flex-end; justify-content: space-around;
+      height: 200px; padding-left: 100px; position: relative;
+    }
+    .chart-grid { position: absolute; left: 100px; right: 0; top: 0; bottom: 20px; }
+    .chart-grid-line { position: absolute; left: 0; right: 0; height: 1px; background: rgba(45,45,45,0.05); }
+    .chart-y-label {
+      position: absolute; left: 0; width: 95px; font-size: 13px;
+      color: rgba(45,45,45,0.5); text-align: right;
+    }
+    .chart-month { display: flex; flex-direction: column; align-items: center; gap: 17px; }
+    .chart-bars { display: flex; gap: 4px; align-items: flex-end; height: 184px; }
+    .chart-bar { width: 15px; border-radius: 3px; }
+    .chart-bar.income { background: #2F82FF; }
+    .chart-bar.expense { background: rgba(47,130,255,0.4); }
+    .chart-month-label { font-size: 13px; color: rgba(45,45,45,0.5); }
+
+    /* ── Pie Chart Cards ── */
+    .pie-cards-row { display: flex; gap: 16px; width: 100%; }
+    .pie-card {
+      flex: 1; background: white; border-radius: 16px;
+      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
+      padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;
+    }
+    .pie-card-header-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.75); }
+    .pie-card-header-value { font-size: 17px; font-weight: 700; color: #2d2d2d; }
+    .pie-chart-circle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto; }
+    .pie-legend-grid { display: flex; flex-wrap: wrap; }
+    .pie-legend-item {
+      flex: 0 0 33.33%; display: flex; flex-direction: column; gap: 6px;
+      padding: 0 12px 12px 0; border-right: 1px solid rgba(45,45,45,0.1);
+    }
+    .pie-legend-item:nth-child(3n) { border-right: none; padding-right: 0; }
+    .pie-legend-grid-2row .pie-legend-item:nth-child(n+4) {
+      padding-top: 12px; border-top: 1px solid rgba(45,45,45,0.1);
+    }
+    .pie-legend-color { display: flex; align-items: center; gap: 6px; }
+    .pie-legend-dot { width: 15px; height: 15px; border-radius: 50%; }
+    .pie-legend-name { font-size: 11px; color: rgba(45,45,45,0.75); }
+    .pie-legend-pct { font-size: 12px; font-weight: 600; color: #2d2d2d; }
+    .pie-legend-amt { font-size: 11px; color: rgba(45,45,45,0.5); }
+    .pie-view-btn {
+      display: flex; height: 32px; align-items: center; justify-content: center;
+      border-radius: 8px; border: 1px solid rgba(45,45,45,0.2); background: white;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+      color: #2d2d2d; cursor: pointer; width: 100%;
+    }
+
+    /* ── Fee Cards ── */
+    .fee-cards-row { display: flex; gap: 16px; width: 100%; }
+    .fee-card {
+      flex: 1; background: white; border-radius: 16px;
+      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
+      padding: 16px; text-align: center;
+    }
+    .fee-card-value { font-size: 16px; font-weight: 600; color: #2d2d2d; margin-bottom: 8px; }
+    .fee-card-label { font-size: 12px; color: rgba(45,45,45,0.6); }
   </style>
 </head>
 <body>
@@ -926,6 +1106,106 @@
 
                   <!-- Expand circle button (removed per design) -->
 
+                  <!-- ══ ENRICHED VIEW (hidden until enrichment unlocked) ══ -->
+                  <div id="enriched-view" style="display:none;">
+                    <!-- Segmented tabs -->
+                    <div class="pm-seg-tabs" id="pm-seg-tabs">
+                      <div class="pm-seg-tab active" data-segtab="seg-details">Details</div>
+                      <div class="pm-seg-tab" data-segtab="seg-insights">Insights</div>
+                    </div>
+
+                    <!-- Details panel (cloned by JS) -->
+                    <div class="pm-seg-panel active" id="panel-seg-details"></div>
+
+                    <!-- Insights panel -->
+                    <div class="pm-seg-panel" id="panel-seg-insights" style="display:none;">
+                      <!-- Blue banner -->
+                      <div class="insights-banner">
+                        <span class="material-icons-round">auto_awesome</span>
+                        <span class="insights-banner-text">Get detailed insights into the financial habits &amp; risk score.</span>
+                        <span class="insights-banner-link">Learn More</span>
+                      </div>
+
+                      <!-- Enriched header -->
+                      <div class="insights-header-row">
+                        <div class="insights-enriched-label">
+                          <span class="material-icons-round">check_circle</span>
+                          100 Transactions Enriched
+                        </div>
+                        <button class="insights-dropdown">Last 90 day<span class="material-icons-round">expand_more</span></button>
+                      </div>
+
+                      <!-- Bar Chart -->
+                      <div class="chart-card">
+                        <div class="chart-header">
+                          <div>
+                            <div class="chart-net-label">Net</div>
+                            <div class="chart-net-value">+ USD 5,000.00</div>
+                          </div>
+                          <div class="chart-legend">
+                            <div class="chart-legend-item"><div class="chart-legend-dot income"></div>Total Income</div>
+                            <div class="chart-legend-item"><div class="chart-legend-dot expense"></div>Total Expense</div>
+                          </div>
+                        </div>
+                        <div class="chart-area">
+                          <div class="chart-grid">
+                            <div class="chart-grid-line" style="bottom:100%;"><span class="chart-y-label" style="top:-8px;">USD 10,000.00</span></div>
+                            <div class="chart-grid-line" style="bottom:80%;"><span class="chart-y-label" style="top:-8px;">USD 8,000.00</span></div>
+                            <div class="chart-grid-line" style="bottom:60%;"><span class="chart-y-label" style="top:-8px;">USD 6,000.00</span></div>
+                            <div class="chart-grid-line" style="bottom:40%;"><span class="chart-y-label" style="top:-8px;">USD 4,000.00</span></div>
+                            <div class="chart-grid-line" style="bottom:20%;"><span class="chart-y-label" style="top:-8px;">USD 2,000.00</span></div>
+                            <div class="chart-grid-line" style="bottom:0;"><span class="chart-y-label" style="top:-8px;">USD 0.00</span></div>
+                          </div>
+                          <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Oct</div></div>
+                          <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Nov</div></div>
+                          <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Dec</div></div>
+                        </div>
+                      </div>
+
+                      <!-- Pie Charts -->
+                      <div class="pie-cards-row">
+                        <!-- Total Income -->
+                        <div class="pie-card">
+                          <div>
+                            <div class="pie-card-header-label">Total Income</div>
+                            <div class="pie-card-header-value">USD 30,000.00</div>
+                          </div>
+                          <div class="pie-chart-circle" style="background:conic-gradient(#2F82FF 0% 80%, #6BAAFF 80% 90%, #A8CFFF 90% 100%);"></div>
+                          <div class="pie-legend-grid">
+                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#2F82FF;"></div><span class="pie-legend-name">Employer Income</span></div><div class="pie-legend-pct">80%</div><div class="pie-legend-amt">USD 3,000.00</div></div>
+                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#6BAAFF;"></div><span class="pie-legend-name">Government Income</span></div><div class="pie-legend-pct">10%</div><div class="pie-legend-amt">USD 4,500.00</div></div>
+                            <div class="pie-legend-item" style="border-right:none;"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#A8CFFF;"></div><span class="pie-legend-name">Tax Credits</span></div><div class="pie-legend-pct">10%</div><div class="pie-legend-amt">USD 3,500.00</div></div>
+                          </div>
+                          <button class="pie-view-btn">View Transactions</button>
+                        </div>
+
+                        <!-- Total Expense -->
+                        <div class="pie-card">
+                          <div>
+                            <div class="pie-card-header-label">Total Expense</div>
+                            <div class="pie-card-header-value">USD 15,000.00</div>
+                          </div>
+                          <div class="pie-chart-circle" style="background:conic-gradient(#2F82FF 0% 40%, #4D9BFF 40% 50%, #6BAAFF 50% 60%, #89BAFF 60% 70%, #A8CFFF 70% 80%, #C6E0FF 80% 100%);"></div>
+                          <div class="pie-legend-grid pie-legend-grid-2row">
+                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#2F82FF;"></div><span class="pie-legend-name">Rent</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 3,000.00</div></div>
+                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#4D9BFF;"></div><span class="pie-legend-name">Loans</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 4,500.00</div></div>
+                            <div class="pie-legend-item" style="border-right:none;"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#6BAAFF;"></div><span class="pie-legend-name">Insurance</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 3,500.00</div></div>
+                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#89BAFF;"></div><span class="pie-legend-name">Utilities</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 2,000.00</div></div>
+                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#A8CFFF;"></div><span class="pie-legend-name">Telecom</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 1,000.00</div></div>
+                            <div class="pie-legend-item" style="border-right:none;"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#C6E0FF;"></div><span class="pie-legend-name">Subscriptions</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 1,000.00</div></div>
+                          </div>
+                          <button class="pie-view-btn">View Transactions</button>
+                        </div>
+                      </div>
+
+                      <!-- Fee Cards -->
+                      <div class="fee-cards-row">
+                        <div class="fee-card"><div class="fee-card-value">USD 1,000.00</div><div class="fee-card-label">NSF Fee</div></div>
+                        <div class="fee-card"><div class="fee-card-value">USD 1,000.00</div><div class="fee-card-label">Bank Fee</div></div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div><!-- /pm-right -->
               </div><!-- /pm-layout -->
             </div>
@@ -947,6 +1227,35 @@
     </main>
 
   </div><!-- /page-wrapper -->
+
+  <!-- ══ DATA ENRICHMENT MODAL ══ -->
+  <div class="enrich-overlay" id="enrich-overlay" style="display:none;">
+    <div class="enrich-modal">
+      <div class="enrich-header">
+        <span class="enrich-title">Data Enrichment</span>
+        <button class="enrich-close" id="enrich-close"><span class="material-icons-round">close</span></button>
+      </div>
+      <div class="enrich-cards">
+        <div class="enrich-card basic" data-plan="basic">
+          <div class="enrich-radio"></div>
+          <span class="material-icons-round card-icon">payments</span>
+          <div>
+            <div class="enrich-card-title">Basic</div>
+            <div class="enrich-card-desc">Get insights into how this contact manages their finances by viewing they income &amp; expense breakdown.</div>
+          </div>
+        </div>
+        <div class="enrich-card enhanced" data-plan="enhanced">
+          <div class="enrich-radio"></div>
+          <span class="material-icons-round card-icon">auto_awesome</span>
+          <div>
+            <div class="enrich-card-title enhanced-title">Enhanced</div>
+            <div class="enrich-card-desc">Get detailed insights into the financial habits of this contact by viewing their income, expenses, transaction habits &amp; risk score.</div>
+          </div>
+        </div>
+      </div>
+      <button class="enrich-unlock-btn" id="enrich-unlock">Unlock Insights</button>
+    </div>
+  </div>
 
   <script>
     // ── Main tab switching ──
@@ -1021,6 +1330,102 @@
         if (token) navigator.clipboard.writeText(token).catch(() => {});
       });
     });
+
+    // ── Data Enrichment Modal ──
+    const enrichOverlay = document.getElementById('enrich-overlay');
+    const enrichClose = document.getElementById('enrich-close');
+    const enrichUnlock = document.getElementById('enrich-unlock');
+    const enrichCards = document.querySelectorAll('.enrich-card');
+    const pmEnrichBtn = document.querySelector('.pm-enrich-btn');
+
+    // Open modal
+    if (pmEnrichBtn) {
+      pmEnrichBtn.addEventListener('click', () => {
+        enrichOverlay.style.display = 'flex';
+      });
+    }
+
+    // Close modal
+    if (enrichClose) {
+      enrichClose.addEventListener('click', () => {
+        enrichOverlay.style.display = 'none';
+      });
+    }
+    enrichOverlay?.addEventListener('click', (e) => {
+      if (e.target === enrichOverlay) enrichOverlay.style.display = 'none';
+    });
+
+    // Card selection
+    enrichCards.forEach(card => {
+      card.addEventListener('click', () => {
+        enrichCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        enrichUnlock.classList.add('enabled');
+      });
+    });
+
+    // Unlock Insights
+    enrichUnlock?.addEventListener('click', () => {
+      if (!enrichUnlock.classList.contains('enabled')) return;
+      localStorage.setItem('enriched', 'true');
+      enrichOverlay.style.display = 'none';
+      activateEnrichedView();
+    });
+
+    // Activate enriched view
+    function activateEnrichedView() {
+      // Hide the Enrich Transaction Data button, show the blue "Get Enhanced Insights" button
+      const enrichBtn = document.querySelector('.pm-enrich-btn');
+      if (enrichBtn) {
+        enrichBtn.outerHTML = '<button class="pm-enriched-btn"><span class="material-icons-round">auto_awesome</span>Get Enhanced Insights</button>';
+      }
+
+      // Hide old sub-tabs and sub-panels
+      const oldSubtabs = document.getElementById('pm-subtabs');
+      if (oldSubtabs) oldSubtabs.style.display = 'none';
+      document.querySelectorAll('.pm-subpanel').forEach(p => p.style.display = 'none');
+
+      // Show enriched view
+      const enrichedView = document.getElementById('enriched-view');
+      if (enrichedView) {
+        enrichedView.style.display = 'flex';
+        enrichedView.style.flexDirection = 'column';
+        enrichedView.style.gap = '16px';
+        enrichedView.style.width = '100%';
+      }
+
+      // Clone details + verification cards into seg-details panel
+      const segDetails = document.getElementById('panel-seg-details');
+      const oldDetailsPanel = document.getElementById('panel-pm-details');
+      if (segDetails && oldDetailsPanel && segDetails.children.length === 0) {
+        segDetails.innerHTML = oldDetailsPanel.innerHTML;
+      }
+
+      // Seg tab switching
+      const segTabs = document.getElementById('pm-seg-tabs');
+      if (segTabs) {
+        segTabs.querySelectorAll('.pm-seg-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            segTabs.querySelectorAll('.pm-seg-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.pm-seg-panel').forEach(p => {
+              p.classList.remove('active');
+              p.style.display = 'none';
+            });
+            const panel = document.getElementById('panel-' + tab.dataset.segtab);
+            if (panel) {
+              panel.classList.add('active');
+              panel.style.display = 'flex';
+            }
+          });
+        });
+      }
+    }
+
+    // On load: check if enriched
+    if (localStorage.getItem('enriched') === 'true') {
+      activateEnrichedView();
+    }
   </script>
 
 </body>
