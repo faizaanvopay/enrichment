@@ -822,6 +822,35 @@
     }
     .fee-card-value { font-size: 16px; font-weight: 600; color: #2d2d2d; margin-bottom: 8px; }
     .fee-card-label { font-size: 12px; color: rgba(45,45,45,0.6); }
+
+    /* ── Bar Chart Tooltip ── */
+    .chart-tooltip {
+      position: absolute; background: #2d2d2d; color: #fff; border-radius: 10px;
+      padding: 12px 16px; font-size: 13px; pointer-events: none; z-index: 10;
+      white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0; transition: opacity 0.15s; line-height: 1.6;
+    }
+    .chart-tooltip.visible { opacity: 1; }
+    .chart-tooltip-row { display: flex; justify-content: space-between; gap: 24px; }
+    .chart-tooltip-divider { height: 1px; background: rgba(255,255,255,0.15); margin: 6px 0; }
+    .chart-tooltip-net { color: #4ADE80; font-weight: 600; }
+    .chart-tooltip-pct { color: rgba(255,255,255,0.6); font-size: 12px; }
+
+    /* ── Pie Chart Hover Expansion ── */
+    .pie-hover-wrap {
+      position: relative; width: 120px; height: 120px; margin: 0 auto;
+      transition: width 0.25s, height 0.25s;
+    }
+    .pie-card:hover .pie-hover-wrap { width: 200px; height: 200px; }
+    .pie-chart-circle { width: 100%; height: 100%; border-radius: 50%; position: relative; transition: width 0.25s, height 0.25s; }
+    .pie-card:hover .pie-legend-grid { opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.2s, max-height 0.2s; }
+    .pie-legend-grid { transition: opacity 0.2s, max-height 0.5s; max-height: 300px; }
+    .pie-card:hover .pie-inner-pct { opacity: 0; }
+    .pie-inner-pct { transition: opacity 0.2s; }
+    .pie-connector-group { position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
+    .pie-card:hover .pie-connector-group { opacity: 1; }
+    .pie-connector-label { position: absolute; font-size: 11px; font-weight: 500; color: #2d2d2d; white-space: nowrap; transform: translate(-50%, -50%); }
+    .pie-connector-line { position: absolute; background: rgba(45,45,45,0.3); transform-origin: 0 0; height: 1px; }
   </style>
 </head>
 <body>
@@ -1124,106 +1153,8 @@
                     <!-- Details panel (cloned by JS) -->
                     <div class="pm-seg-panel active" id="panel-seg-details"></div>
 
-                    <!-- Insights panel -->
-                    <div class="pm-seg-panel" id="panel-seg-insights" style="display:none;">
-                      <!-- Blue banner -->
-                      <div class="insights-banner">
-                        <span class="material-icons-round">auto_awesome</span>
-                        <span class="insights-banner-text">Get detailed insights into the financial habits &amp; risk score.</span>
-                        <span class="insights-banner-link">Learn More</span>
-                      </div>
-
-                      <!-- Enriched header -->
-                      <div class="insights-header-row">
-                        <div class="insights-enriched-label">
-                          <span class="material-icons-round">check_circle</span>
-                          100 Transactions Enriched
-                        </div>
-                        <button class="insights-dropdown">Last 90 day<span class="material-icons-round">expand_more</span></button>
-                      </div>
-
-                      <!-- Bar Chart -->
-                      <div class="chart-card">
-                        <div class="chart-header">
-                          <div>
-                            <div class="chart-net-label">Net</div>
-                            <div class="chart-net-value">+ USD 5,000.00</div>
-                          </div>
-                          <div class="chart-legend">
-                            <div class="chart-legend-item"><div class="chart-legend-dot income"></div>Total Income</div>
-                            <div class="chart-legend-item"><div class="chart-legend-dot expense"></div>Total Expense</div>
-                          </div>
-                        </div>
-                        <div class="chart-area">
-                          <div class="chart-grid">
-                            <div class="chart-grid-line" style="bottom:100%;"><span class="chart-y-label" style="top:-8px;">USD 10,000.00</span></div>
-                            <div class="chart-grid-line" style="bottom:80%;"><span class="chart-y-label" style="top:-8px;">USD 8,000.00</span></div>
-                            <div class="chart-grid-line" style="bottom:60%;"><span class="chart-y-label" style="top:-8px;">USD 6,000.00</span></div>
-                            <div class="chart-grid-line" style="bottom:40%;"><span class="chart-y-label" style="top:-8px;">USD 4,000.00</span></div>
-                            <div class="chart-grid-line" style="bottom:20%;"><span class="chart-y-label" style="top:-8px;">USD 2,000.00</span></div>
-                            <div class="chart-grid-line" style="bottom:0;"><span class="chart-y-label" style="top:-8px;">USD 0.00</span></div>
-                          </div>
-                          <div class="chart-months-row">
-                            <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Oct</div></div>
-                            <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Nov</div></div>
-                            <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Dec</div></div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Pie Charts -->
-                      <div class="pie-cards-row">
-                        <!-- Total Income -->
-                        <div class="pie-card">
-                          <div>
-                            <div class="pie-card-header-label">Total Income</div>
-                            <div class="pie-card-header-value">USD 30,000.00</div>
-                          </div>
-                          <div class="pie-chart-circle" style="background:conic-gradient(#2F82FF 0% 80%, #6BAAFF 80% 90%, #A8CFFF 90% 100%);">
-                            <span class="pie-pct" style="top:76%; left:68%;">80%</span>
-                            <span class="pie-pct" style="top:32%; left:24%;">10%</span>
-                            <span class="pie-pct" style="top:20%; left:40%;">10%</span>
-                          </div>
-                          <div class="pie-legend-grid">
-                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#2F82FF;"></div><span class="pie-legend-name">Employer Income</span></div><div class="pie-legend-pct">80%</div><div class="pie-legend-amt">USD 3,000.00</div></div>
-                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#6BAAFF;"></div><span class="pie-legend-name">Government Income</span></div><div class="pie-legend-pct">10%</div><div class="pie-legend-amt">USD 4,500.00</div></div>
-                            <div class="pie-legend-item" style="border-right:none;"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#A8CFFF;"></div><span class="pie-legend-name">Tax Credits</span></div><div class="pie-legend-pct">10%</div><div class="pie-legend-amt">USD 3,500.00</div></div>
-                          </div>
-                          <button class="pie-view-btn">View Transactions</button>
-                        </div>
-
-                        <!-- Total Expense -->
-                        <div class="pie-card">
-                          <div>
-                            <div class="pie-card-header-label">Total Expense</div>
-                            <div class="pie-card-header-value">USD 15,000.00</div>
-                          </div>
-                          <div class="pie-chart-circle" style="background:conic-gradient(#2F82FF 0% 40%, #4D9BFF 40% 50%, #6BAAFF 50% 60%, #89BAFF 60% 70%, #A8CFFF 70% 80%, #C6E0FF 80% 100%);">
-                            <span class="pie-pct" style="top:40%; left:80%;">40%</span>
-                            <span class="pie-pct" style="top:80%; left:60%;">10%</span>
-                            <span class="pie-pct" style="top:80%; left:40%;">10%</span>
-                            <span class="pie-pct" style="top:68%; left:24%;">10%</span>
-                            <span class="pie-pct" style="top:50%; left:18%;">10%</span>
-                            <span class="pie-pct" style="top:24%; left:32%;">20%</span>
-                          </div>
-                          <div class="pie-legend-grid pie-legend-grid-2row">
-                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#2F82FF;"></div><span class="pie-legend-name">Rent</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 3,000.00</div></div>
-                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#4D9BFF;"></div><span class="pie-legend-name">Loans</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 4,500.00</div></div>
-                            <div class="pie-legend-item" style="border-right:none;"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#6BAAFF;"></div><span class="pie-legend-name">Insurance</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 3,500.00</div></div>
-                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#89BAFF;"></div><span class="pie-legend-name">Utilities</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 2,000.00</div></div>
-                            <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#A8CFFF;"></div><span class="pie-legend-name">Telecom</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 1,000.00</div></div>
-                            <div class="pie-legend-item" style="border-right:none;"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#C6E0FF;"></div><span class="pie-legend-name">Subscriptions</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 1,000.00</div></div>
-                          </div>
-                          <button class="pie-view-btn">View Transactions</button>
-                        </div>
-                      </div>
-
-                      <!-- Fee Cards -->
-                      <div class="fee-cards-row">
-                        <div class="fee-card"><div class="fee-card-value">USD 1,000.00</div><div class="fee-card-label">NSF Fee</div></div>
-                        <div class="fee-card"><div class="fee-card-value">USD 1,000.00</div><div class="fee-card-label">Bank Fee</div></div>
-                      </div>
-                    </div>
+                    <!-- Insights panel (populated by renderInsights()) -->
+                    <div class="pm-seg-panel" id="panel-seg-insights" style="display:none;"></div>
                   </div>
 
                 </div><!-- /pm-right -->
@@ -1278,6 +1209,249 @@
   </div>
 
   <script>
+    // ── Data Object ──
+    const DATA = {
+      months: [
+        { label: 'Oct', income: 5800, expense: 4200 },
+        { label: 'Nov', income: 5500, expense: 3900 },
+        { label: 'Dec', income: 6200, expense: 4800 }
+      ],
+      income: {
+        total: 17500,
+        categories: [
+          { name: 'Employer Income', amount: 14000, color: '#2F82FF' },
+          { name: 'Government Income', amount: 1750, color: '#6BAAFF' },
+          { name: 'Tax Credits', amount: 1750, color: '#A8CFFF' }
+        ]
+      },
+      expense: {
+        total: 12900,
+        categories: [
+          { name: 'Rent', amount: 5160, color: '#2F82FF' },
+          { name: 'Loans', amount: 2580, color: '#4D9BFF' },
+          { name: 'Insurance', amount: 1935, color: '#6BAAFF' },
+          { name: 'Utilities', amount: 1290, color: '#89BAFF' },
+          { name: 'Telecom', amount: 967, color: '#A8CFFF' },
+          { name: 'Subscriptions', amount: 968, color: '#C6E0FF' }
+        ]
+      },
+      fees: { nsf: 245, bank: 87 },
+      transactionsEnriched: 847
+    };
+
+    // ── Helpers ──
+    function fmtUSD(val) {
+      return 'USD ' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function getTextColor(hex) {
+      const r = parseInt(hex.slice(1,3),16)/255;
+      const g = parseInt(hex.slice(3,5),16)/255;
+      const b = parseInt(hex.slice(5,7),16)/255;
+      const L = 0.2126*r + 0.7152*g + 0.0722*b;
+      return L > 0.55 ? '#2d2d2d' : 'rgba(251,251,251,0.75)';
+    }
+
+    // ── Render Insights ──
+    function renderInsights() {
+      const panel = document.getElementById('panel-seg-insights');
+      if (!panel) return;
+
+      const net = DATA.income.total - DATA.expense.total;
+      const netSign = net >= 0 ? '+ ' : '- ';
+      const netFormatted = netSign + fmtUSD(Math.abs(net));
+
+      // ── Bar chart computations ──
+      const allVals = DATA.months.flatMap(m => [m.income, m.expense]);
+      const rawMax = Math.max(...allVals);
+      const maxValue = Math.ceil(rawMax / 1000) * 1000;
+      const barMaxPx = 184;
+      const ySteps = 6;
+
+      let gridHTML = '';
+      for (let i = 0; i < ySteps; i++) {
+        const val = maxValue - (maxValue / (ySteps - 1)) * i;
+        const pct = (i / (ySteps - 1)) * 100;
+        gridHTML += '<div class="chart-grid-line" style="bottom:' + (100 - pct) + '%;"><span class="chart-y-label" style="top:-8px;">' + fmtUSD(Math.round(val)) + '</span></div>';
+      }
+
+      let monthsHTML = '';
+      DATA.months.forEach(m => {
+        const incH = Math.round((m.income / maxValue) * barMaxPx);
+        const expH = Math.round((m.expense / maxValue) * barMaxPx);
+        monthsHTML += '<div class="chart-month" data-month="' + m.label + '">' +
+          '<div class="chart-bars">' +
+          '<div class="chart-bar income" style="height:' + incH + 'px;"></div>' +
+          '<div class="chart-bar expense" style="height:' + expH + 'px;"></div>' +
+          '</div>' +
+          '<div class="chart-month-label">' + m.label + '</div>' +
+          '</div>';
+      });
+
+      // ── Pie chart builder ──
+      function buildPieCard(label, total, categories) {
+        const pcts = categories.map(c => (c.amount / total) * 100);
+
+        // Conic gradient
+        let gradParts = [];
+        let cumPct = 0;
+        categories.forEach((c, i) => {
+          const start = cumPct;
+          cumPct += pcts[i];
+          gradParts.push(c.color + ' ' + start.toFixed(2) + '% ' + cumPct.toFixed(2) + '%');
+        });
+        const conicGrad = 'conic-gradient(' + gradParts.join(', ') + ')';
+
+        // Inner % labels (positioned using angular math)
+        const pieR = 60; // half of 120px default
+        const labelR = 38;
+        let innerLabels = '';
+        cumPct = 0;
+        categories.forEach((c, i) => {
+          const midPct = cumPct + pcts[i] / 2;
+          cumPct += pcts[i];
+          // CSS conic-gradient starts at 12 o'clock (top), goes clockwise
+          const angleDeg = (midPct / 100) * 360 - 90; // -90 because 0deg = right in math
+          const angleRad = angleDeg * Math.PI / 180;
+          const x = pieR + labelR * Math.cos(angleRad);
+          const y = pieR + labelR * Math.sin(angleRad);
+          const txtColor = getTextColor(c.color);
+          innerLabels += '<span class="pie-pct pie-inner-pct" style="left:' + x.toFixed(1) + 'px;top:' + y.toFixed(1) + 'px;color:' + txtColor + ';">' + Math.round(pcts[i]) + '%</span>';
+        });
+
+        // Connector group (shown on hover)
+        let connectorHTML = '';
+        cumPct = 0;
+        categories.forEach((c, i) => {
+          const midPct = cumPct + pcts[i] / 2;
+          cumPct += pcts[i];
+          const angleDeg = (midPct / 100) * 360 - 90;
+          const angleRad = angleDeg * Math.PI / 180;
+          // Inner point (on pie edge) — use 50% as pie radius
+          const innerX = 50 + 50 * Math.cos(angleRad);
+          const innerY = 50 + 50 * Math.sin(angleRad);
+          // Outer point (for label) — 130% of radius
+          const outerX = 50 + 65 * Math.cos(angleRad);
+          const outerY = 50 + 65 * Math.sin(angleRad);
+
+          // Line: positioned absolutely, from innerX,innerY rotated toward outerX,outerY
+          const dx = outerX - innerX;
+          const dy = outerY - innerY;
+          const len = Math.sqrt(dx*dx + dy*dy);
+          const lineAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+          connectorHTML += '<div class="pie-connector-line" style="left:' + innerX.toFixed(1) + '%;top:' + innerY.toFixed(1) + '%;width:' + len.toFixed(1) + '%;transform:rotate(' + lineAngle.toFixed(1) + 'deg);"></div>';
+          connectorHTML += '<div class="pie-connector-label" style="left:' + outerX.toFixed(1) + '%;top:' + outerY.toFixed(1) + '%;">' + c.name + ' ' + Math.round(pcts[i]) + '%</div>';
+        });
+
+        // Legend
+        const is2Row = categories.length > 3;
+        let legendHTML = '<div class="pie-legend-grid' + (is2Row ? ' pie-legend-grid-2row' : '') + '">';
+        categories.forEach((c, i) => {
+          const isLastInRow = (i + 1) % 3 === 0;
+          const borderStyle = isLastInRow ? ' style="border-right:none;"' : '';
+          legendHTML += '<div class="pie-legend-item"' + borderStyle + '>' +
+            '<div class="pie-legend-color"><div class="pie-legend-dot" style="background:' + c.color + ';"></div><span class="pie-legend-name">' + c.name + '</span></div>' +
+            '<div class="pie-legend-pct">' + Math.round(pcts[i]) + '%</div>' +
+            '<div class="pie-legend-amt">' + fmtUSD(c.amount) + '</div>' +
+            '</div>';
+        });
+        legendHTML += '</div>';
+
+        return '<div class="pie-card">' +
+          '<div><div class="pie-card-header-label">' + label + '</div><div class="pie-card-header-value">' + fmtUSD(total) + '</div></div>' +
+          '<div class="pie-hover-wrap">' +
+            '<div class="pie-chart-circle" style="background:' + conicGrad + ';">' + innerLabels + '</div>' +
+            '<div class="pie-connector-group">' + connectorHTML + '</div>' +
+          '</div>' +
+          legendHTML +
+          '<button class="pie-view-btn">View Transactions</button>' +
+          '</div>';
+      }
+
+      // ── Assemble full HTML ──
+      const html =
+        // Banner
+        '<div class="insights-banner">' +
+          '<span class="material-icons-round">auto_awesome</span>' +
+          '<span class="insights-banner-text">Get detailed insights into the financial habits &amp; risk score.</span>' +
+          '<span class="insights-banner-link">Learn More</span>' +
+        '</div>' +
+
+        // Header row
+        '<div class="insights-header-row">' +
+          '<div class="insights-enriched-label">' +
+            '<span class="material-icons-round">check_circle</span>' +
+            DATA.transactionsEnriched + ' Transactions Enriched' +
+          '</div>' +
+          '<button class="insights-dropdown">Last 90 day<span class="material-icons-round">expand_more</span></button>' +
+        '</div>' +
+
+        // Bar chart
+        '<div class="chart-card" style="position:relative;">' +
+          '<div class="chart-tooltip" id="chart-tooltip"></div>' +
+          '<div class="chart-header">' +
+            '<div><div class="chart-net-label">Net</div><div class="chart-net-value">' + netFormatted + '</div></div>' +
+            '<div class="chart-legend">' +
+              '<div class="chart-legend-item"><div class="chart-legend-dot income"></div>Total Income</div>' +
+              '<div class="chart-legend-item"><div class="chart-legend-dot expense"></div>Total Expense</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="chart-area">' +
+            '<div class="chart-grid">' + gridHTML + '</div>' +
+            '<div class="chart-months-row">' + monthsHTML + '</div>' +
+          '</div>' +
+        '</div>' +
+
+        // Pie charts
+        '<div class="pie-cards-row">' +
+          buildPieCard('Total Income', DATA.income.total, DATA.income.categories) +
+          buildPieCard('Total Expense', DATA.expense.total, DATA.expense.categories) +
+        '</div>' +
+
+        // Fee cards
+        '<div class="fee-cards-row">' +
+          '<div class="fee-card"><div class="fee-card-value">' + fmtUSD(DATA.fees.nsf) + '</div><div class="fee-card-label">NSF Fee</div></div>' +
+          '<div class="fee-card"><div class="fee-card-value">' + fmtUSD(DATA.fees.bank) + '</div><div class="fee-card-label">Bank Fee</div></div>' +
+        '</div>';
+
+      panel.innerHTML = html;
+
+      // ── Attach bar chart tooltip listeners ──
+      const tooltip = document.getElementById('chart-tooltip');
+      const chartCard = tooltip?.closest('.chart-card');
+      if (tooltip && chartCard) {
+        const monthEls = chartCard.querySelectorAll('.chart-month');
+        monthEls.forEach(el => {
+          el.style.cursor = 'pointer';
+          el.addEventListener('mouseenter', () => {
+            const label = el.dataset.month;
+            const mData = DATA.months.find(m => m.label === label);
+            if (!mData) return;
+            const mNet = mData.income - mData.expense;
+            const pctOfIncome = Math.round((mData.expense / mData.income) * 100);
+            tooltip.innerHTML =
+              '<div class="chart-tooltip-row"><span>Total Income</span><span>' + fmtUSD(mData.income) + '</span></div>' +
+              '<div class="chart-tooltip-row"><span>Total Expense</span><span>' + fmtUSD(mData.expense) + '</span></div>' +
+              '<div class="chart-tooltip-divider"></div>' +
+              '<div class="chart-tooltip-row"><span class="chart-tooltip-net">Net</span><span class="chart-tooltip-net">' + (mNet >= 0 ? '+ ' : '- ') + fmtUSD(Math.abs(mNet)) + '</span></div>' +
+              '<div class="chart-tooltip-pct">' + pctOfIncome + '% of Income</div>';
+            tooltip.classList.add('visible');
+
+            // Position above the bars, centered
+            const cardRect = chartCard.getBoundingClientRect();
+            const elRect = el.getBoundingClientRect();
+            const tipW = tooltip.offsetWidth;
+            const tipH = tooltip.offsetHeight;
+            tooltip.style.left = (elRect.left - cardRect.left + elRect.width / 2 - tipW / 2) + 'px';
+            tooltip.style.top = (elRect.top - cardRect.top - tipH - 8) + 'px';
+          });
+          el.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('visible');
+          });
+        });
+      }
+    }
+
     // ── Main tab switching ──
     const tabsBar = document.getElementById('tabs-bar');
     const tabEls  = tabsBar.querySelectorAll('[data-tab]');
@@ -1419,6 +1593,9 @@
       if (segDetails && oldDetailsPanel && segDetails.children.length === 0) {
         segDetails.innerHTML = oldDetailsPanel.innerHTML;
       }
+
+      // Render insights panel
+      renderInsights();
 
       // Seg tab switching
       const segTabs = document.getElementById('pm-seg-tabs');
