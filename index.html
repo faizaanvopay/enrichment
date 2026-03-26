@@ -759,17 +759,21 @@
     .chart-legend-dot.income { background: #2F82FF; }
     .chart-legend-dot.expense { background: rgba(47,130,255,0.4); }
     .chart-area {
-      display: flex; align-items: flex-end; justify-content: space-around;
-      height: 220px; position: relative; padding-left: 105px;
+      position: relative; padding-left: 105px; padding-bottom: 30px; height: 230px;
     }
-    .chart-grid { position: absolute; left: 105px; right: 0; top: 0; bottom: 20px; }
+    .chart-grid { position: absolute; left: 105px; right: 0; top: 0; bottom: 30px; }
     .chart-grid-line { position: absolute; left: 0; right: 0; height: 1px; background: rgba(45,45,45,0.05); }
     .chart-y-label {
       position: absolute; left: -105px; width: 95px; font-size: 13px;
       color: rgba(45,45,45,0.5); text-align: right; white-space: nowrap;
     }
-    .chart-month { display: flex; flex-direction: column; align-items: center; gap: 17px; }
+    .chart-months-row {
+      position: absolute; left: 105px; right: 0; bottom: 30px; top: 0;
+      display: flex; align-items: flex-end; justify-content: space-around;
+    }
+    .chart-month { display: flex; flex-direction: column; align-items: center; }
     .chart-bars { display: flex; gap: 4px; align-items: flex-end; height: 184px; }
+    .chart-month-label { font-size: 13px; color: rgba(45,45,45,0.5); margin-top: 10px; }
     .chart-bar { width: 15px; border-radius: 3px; }
     .chart-bar.income { background: #2F82FF; }
     .chart-bar.expense { background: rgba(47,130,255,0.4); }
@@ -785,7 +789,7 @@
     .pie-card-header-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.75); }
     .pie-card-header-value { font-size: 17px; font-weight: 700; color: #2d2d2d; }
     .pie-chart-circle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto; position: relative; }
-    .pie-pct { position: absolute; font-size: 10px; font-weight: 400; color: rgba(251,251,251,0.75); white-space: nowrap; }
+    .pie-pct { position: absolute; font-size: 10px; font-weight: 400; color: rgba(251,251,251,0.75); white-space: nowrap; transform: translate(-50%,-50%); }
     .pie-legend-grid { display: flex; flex-wrap: wrap; }
     .pie-legend-item {
       flex: 0 0 33.33%; display: flex; flex-direction: column; gap: 6px;
@@ -1159,9 +1163,11 @@
                             <div class="chart-grid-line" style="bottom:20%;"><span class="chart-y-label" style="top:-8px;">USD 2,000.00</span></div>
                             <div class="chart-grid-line" style="bottom:0;"><span class="chart-y-label" style="top:-8px;">USD 0.00</span></div>
                           </div>
-                          <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Oct</div></div>
-                          <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Nov</div></div>
-                          <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Dec</div></div>
+                          <div class="chart-months-row">
+                            <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Oct</div></div>
+                            <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Nov</div></div>
+                            <div class="chart-month"><div class="chart-bars"><div class="chart-bar income" style="height:184px;"></div><div class="chart-bar expense" style="height:96px;"></div></div><div class="chart-month-label">Dec</div></div>
+                          </div>
                         </div>
                       </div>
 
@@ -1174,9 +1180,9 @@
                             <div class="pie-card-header-value">USD 30,000.00</div>
                           </div>
                           <div class="pie-chart-circle" style="background:conic-gradient(#2F82FF 0% 80%, #6BAAFF 80% 90%, #A8CFFF 90% 100%);">
-                            <span class="pie-pct" style="bottom:18%; left:12%;">80%</span>
-                            <span class="pie-pct" style="top:12%; right:20%;">10%</span>
-                            <span class="pie-pct" style="top:38%; right:2%;">10%</span>
+                            <span class="pie-pct" style="top:76%; left:68%;">80%</span>
+                            <span class="pie-pct" style="top:32%; left:24%;">10%</span>
+                            <span class="pie-pct" style="top:20%; left:40%;">10%</span>
                           </div>
                           <div class="pie-legend-grid">
                             <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#2F82FF;"></div><span class="pie-legend-name">Employer Income</span></div><div class="pie-legend-pct">80%</div><div class="pie-legend-amt">USD 3,000.00</div></div>
@@ -1193,12 +1199,12 @@
                             <div class="pie-card-header-value">USD 15,000.00</div>
                           </div>
                           <div class="pie-chart-circle" style="background:conic-gradient(#2F82FF 0% 40%, #4D9BFF 40% 50%, #6BAAFF 50% 60%, #89BAFF 60% 70%, #A8CFFF 70% 80%, #C6E0FF 80% 100%);">
-                            <span class="pie-pct" style="bottom:15%; left:25%;">40%</span>
-                            <span class="pie-pct" style="bottom:18%; right:15%;">10%</span>
-                            <span class="pie-pct" style="right:2%; top:38%;">10%</span>
-                            <span class="pie-pct" style="top:8%; right:18%;">20%</span>
-                            <span class="pie-pct" style="top:12%; left:18%;">10%</span>
-                            <span class="pie-pct" style="left:2%; top:35%;">10%</span>
+                            <span class="pie-pct" style="top:40%; left:80%;">40%</span>
+                            <span class="pie-pct" style="top:80%; left:60%;">10%</span>
+                            <span class="pie-pct" style="top:80%; left:40%;">10%</span>
+                            <span class="pie-pct" style="top:68%; left:24%;">10%</span>
+                            <span class="pie-pct" style="top:50%; left:18%;">10%</span>
+                            <span class="pie-pct" style="top:24%; left:32%;">20%</span>
                           </div>
                           <div class="pie-legend-grid pie-legend-grid-2row">
                             <div class="pie-legend-item"><div class="pie-legend-color"><div class="pie-legend-dot" style="background:#2F82FF;"></div><span class="pie-legend-name">Rent</span></div><div class="pie-legend-pct">50%</div><div class="pie-legend-amt">USD 3,000.00</div></div>
