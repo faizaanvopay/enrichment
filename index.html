@@ -789,7 +789,6 @@
     .pie-card-header-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.75); }
     .pie-card-header-value { font-size: 17px; font-weight: 700; color: #2d2d2d; }
     .pie-chart-circle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto; position: relative; }
-    .pie-pct { position: absolute; font-size: 10px; font-weight: 400; color: rgba(251,251,251,0.75); white-space: nowrap; transform: translate(-50%,-50%); }
     .pie-legend-grid { display: flex; flex-wrap: wrap; }
     .pie-legend-item {
       flex: 0 0 33.33%; display: flex; flex-direction: column; gap: 6px;
@@ -836,21 +835,39 @@
     .chart-tooltip-net { color: #4ADE80; font-weight: 600; }
     .chart-tooltip-pct { color: rgba(255,255,255,0.6); font-size: 12px; }
 
-    /* ── Pie Chart Hover Expansion ── */
-    .pie-hover-wrap {
-      position: relative; width: 120px; height: 120px; margin: 0 auto;
-      transition: width 0.25s, height 0.25s;
+    /* ── SVG Pie Chart ── */
+    .pie-svg { display: block; margin: 0 auto; }
+    .pie-seg { cursor: pointer; transition: transform 0.2s, opacity 0.2s, filter 0.2s; }
+    .pie-svg.has-hover .pie-seg:not(.hovered) { opacity: 0.4; }
+    .pie-seg.hovered { filter: brightness(1.05); }
+    .pie-seg-label { transition: opacity 0.2s; pointer-events: none; }
+    .pie-svg.has-hover .pie-seg-label { opacity: 0; }
+    .pie-svg.has-hover .pie-seg-label.label-hovered { opacity: 1; }
+
+    /* ── Category Drawer ── */
+    .category-drawer-overlay {
+      position: fixed; inset: 0; z-index: 300; background: rgba(45,45,45,0.2);
+      backdrop-filter: blur(4px);
     }
-    .pie-card:hover .pie-hover-wrap { width: 200px; height: 200px; }
-    .pie-chart-circle { width: 100%; height: 100%; border-radius: 50%; position: relative; transition: width 0.25s, height 0.25s; }
-    .pie-card:hover .pie-legend-grid { opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.2s, max-height 0.2s; }
-    .pie-legend-grid { transition: opacity 0.2s, max-height 0.5s; max-height: 300px; }
-    .pie-card:hover .pie-inner-pct { opacity: 0; }
-    .pie-inner-pct { transition: opacity 0.2s; }
-    .pie-connector-group { position: absolute; inset: 0; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
-    .pie-card:hover .pie-connector-group { opacity: 1; }
-    .pie-connector-label { position: absolute; font-size: 11px; font-weight: 500; color: #2d2d2d; white-space: nowrap; transform: translate(-50%, -50%); }
-    .pie-connector-line { position: absolute; background: rgba(45,45,45,0.3); transform-origin: 0 0; height: 1px; }
+    .category-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; left: 75px;
+      background: #fbfbfb; box-shadow: -10px 0 34px rgba(0,0,0,0.1);
+      display: flex; flex-direction: column; transform: translateX(100%);
+      transition: transform 0.3s ease; border-radius: 20px 0 0 20px;
+    }
+    .category-drawer.open { transform: translateX(0); }
+    .category-drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 32px; border-bottom: 1px solid rgba(45,45,45,0.1);
+      flex-shrink: 0;
+    }
+    .category-drawer-title { font-size: 24px; font-weight: 700; color: #2d2d2d; }
+    .category-drawer-close {
+      width: 32px; height: 32px; border-radius: 50%; background: rgba(45,45,45,0.08);
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .category-drawer-close .material-icons-round { font-size: 18px; color: #2d2d2d; }
+    .category-drawer-body { flex: 1; overflow-y: auto; padding: 24px 32px; }
   </style>
 </head>
 <body>
@@ -1179,6 +1196,21 @@
 
   </div><!-- /page-wrapper -->
 
+  <!-- ══ CATEGORY DRAWER ══ -->
+  <div class="category-drawer-overlay" id="category-drawer-overlay" style="display:none;">
+    <div class="category-drawer" id="category-drawer">
+      <div class="category-drawer-header">
+        <span class="category-drawer-title" id="category-drawer-title">Employer Income</span>
+        <button class="category-drawer-close" id="category-drawer-close">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+      <div class="category-drawer-body" id="category-drawer-body">
+        <p style="color:rgba(45,45,45,0.5); padding:40px; text-align:center;">Transaction details will appear here.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ DATA ENRICHMENT MODAL ══ -->
   <div class="enrich-overlay" id="enrich-overlay" style="display:none;">
     <div class="enrich-modal">
@@ -1288,65 +1320,55 @@
           '</div>';
       });
 
-      // ── Pie chart builder ──
-      function buildPieCard(label, total, categories) {
-        const pcts = categories.map(c => (c.amount / total) * 100);
-
-        // Conic gradient
-        let gradParts = [];
+      // ── SVG Pie chart builder ──
+      function buildPieSVG(categories, total, size) {
+        const r = size / 2;
         let cumPct = 0;
-        categories.forEach((c, i) => {
-          const start = cumPct;
-          cumPct += pcts[i];
-          gradParts.push(c.color + ' ' + start.toFixed(2) + '% ' + cumPct.toFixed(2) + '%');
-        });
-        const conicGrad = 'conic-gradient(' + gradParts.join(', ') + ')';
+        let paths = '';
+        let labels = '';
 
-        // Inner % labels (positioned using angular math)
-        const pieR = 60; // half of 120px default
-        const labelR = 38;
-        let innerLabels = '';
-        cumPct = 0;
-        categories.forEach((c, i) => {
-          const midPct = cumPct + pcts[i] / 2;
-          cumPct += pcts[i];
-          // CSS conic-gradient starts at 12 o'clock (top), goes clockwise
-          const angleDeg = (midPct / 100) * 360 - 90; // -90 because 0deg = right in math
-          const angleRad = angleDeg * Math.PI / 180;
-          const x = pieR + labelR * Math.cos(angleRad);
-          const y = pieR + labelR * Math.sin(angleRad);
-          const txtColor = getTextColor(c.color);
-          innerLabels += '<span class="pie-pct pie-inner-pct" style="left:' + x.toFixed(1) + 'px;top:' + y.toFixed(1) + 'px;color:' + txtColor + ';">' + Math.round(pcts[i]) + '%</span>';
-        });
+        categories.forEach(function(cat, i) {
+          const pct = (cat.amount / total) * 100;
+          const startAngle = (cumPct / 100) * 360 - 90;
+          const endAngle = ((cumPct + pct) / 100) * 360 - 90;
+          const midAngle = (startAngle + endAngle) / 2;
+          const midRad = midAngle * Math.PI / 180;
 
-        // Connector group (shown on hover)
-        let connectorHTML = '';
-        cumPct = 0;
-        categories.forEach((c, i) => {
-          const midPct = cumPct + pcts[i] / 2;
-          cumPct += pcts[i];
-          const angleDeg = (midPct / 100) * 360 - 90;
-          const angleRad = angleDeg * Math.PI / 180;
-          // Inner point (on pie edge) — use 50% as pie radius
-          const innerX = 50 + 50 * Math.cos(angleRad);
-          const innerY = 50 + 50 * Math.sin(angleRad);
-          // Outer point (for label) — 130% of radius
-          const outerX = 50 + 65 * Math.cos(angleRad);
-          const outerY = 50 + 65 * Math.sin(angleRad);
+          const largeArc = pct > 50 ? 1 : 0;
+          const x1 = r + r * Math.cos(startAngle * Math.PI / 180);
+          const y1 = r + r * Math.sin(startAngle * Math.PI / 180);
+          const x2 = r + r * Math.cos(endAngle * Math.PI / 180);
+          const y2 = r + r * Math.sin(endAngle * Math.PI / 180);
 
-          // Line: positioned absolutely, from innerX,innerY rotated toward outerX,outerY
-          const dx = outerX - innerX;
-          const dy = outerY - innerY;
-          const len = Math.sqrt(dx*dx + dy*dy);
-          const lineAngle = Math.atan2(dy, dx) * 180 / Math.PI;
-          connectorHTML += '<div class="pie-connector-line" style="left:' + innerX.toFixed(1) + '%;top:' + innerY.toFixed(1) + '%;width:' + len.toFixed(1) + '%;transform:rotate(' + lineAngle.toFixed(1) + 'deg);"></div>';
-          connectorHTML += '<div class="pie-connector-label" style="left:' + outerX.toFixed(1) + '%;top:' + outerY.toFixed(1) + '%;">' + c.name + ' ' + Math.round(pcts[i]) + '%</div>';
+          const hoverDx = (4 * Math.cos(midRad)).toFixed(1);
+          const hoverDy = (4 * Math.sin(midRad)).toFixed(1);
+
+          const txtColor = getTextColor(cat.color);
+          const labelR = r * 0.65;
+          const lx = r + labelR * Math.cos(midRad);
+          const ly = r + labelR * Math.sin(midRad);
+          const roundPct = Math.round(pct);
+
+          paths += '<path d="M' + r + ',' + r + ' L' + x1.toFixed(2) + ',' + y1.toFixed(2) + ' A' + r + ',' + r + ' 0 ' + largeArc + ',1 ' + x2.toFixed(2) + ',' + y2.toFixed(2) + ' Z" ' +
+            'fill="' + cat.color + '" class="pie-seg" data-idx="' + i + '" data-cat="' + cat.name + '" data-pct="' + roundPct + '" ' +
+            'data-dx="' + hoverDx + '" data-dy="' + hoverDy + '" ' +
+            'style="transform-origin:' + r + 'px ' + r + 'px;" />';
+
+          labels += '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle" dominant-baseline="central" ' +
+            'fill="' + txtColor + '" font-size="10" font-family="Inter,sans-serif" font-weight="500" class="pie-seg-label" data-idx="' + i + '">' + roundPct + '%</text>';
+
+          cumPct += pct;
         });
 
+        return '<svg viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size + '" class="pie-svg">' + paths + labels + '</svg>';
+      }
+
+      function buildPieCard(label, total, categories) {
         // Legend
+        const pcts = categories.map(function(c) { return (c.amount / total) * 100; });
         const is2Row = categories.length > 3;
         let legendHTML = '<div class="pie-legend-grid' + (is2Row ? ' pie-legend-grid-2row' : '') + '">';
-        categories.forEach((c, i) => {
+        categories.forEach(function(c, i) {
           const isLastInRow = (i + 1) % 3 === 0;
           const borderStyle = isLastInRow ? ' style="border-right:none;"' : '';
           legendHTML += '<div class="pie-legend-item"' + borderStyle + '>' +
@@ -1359,10 +1381,7 @@
 
         return '<div class="pie-card">' +
           '<div><div class="pie-card-header-label">' + label + '</div><div class="pie-card-header-value">' + fmtUSD(total) + '</div></div>' +
-          '<div class="pie-hover-wrap">' +
-            '<div class="pie-chart-circle" style="background:' + conicGrad + ';">' + innerLabels + '</div>' +
-            '<div class="pie-connector-group">' + connectorHTML + '</div>' +
-          '</div>' +
+          buildPieSVG(categories, total, 120) +
           legendHTML +
           '<button class="pie-view-btn">View Transactions</button>' +
           '</div>';
@@ -1450,7 +1469,60 @@
           });
         });
       }
+
+      // ── Attach SVG pie segment hover/click listeners ──
+      panel.querySelectorAll('.pie-svg').forEach(function(svg) {
+        svg.querySelectorAll('.pie-seg').forEach(function(seg) {
+          seg.addEventListener('mouseenter', function() {
+            var idx = seg.dataset.idx;
+            svg.classList.add('has-hover');
+            seg.classList.add('hovered');
+            seg.style.transform = 'translate(' + seg.dataset.dx + 'px, ' + seg.dataset.dy + 'px)';
+            // Highlight matching label
+            svg.querySelectorAll('.pie-seg-label').forEach(function(lbl) {
+              if (lbl.dataset.idx === idx) {
+                lbl.classList.add('label-hovered');
+              }
+            });
+          });
+          seg.addEventListener('mouseleave', function() {
+            svg.classList.remove('has-hover');
+            seg.classList.remove('hovered');
+            seg.style.transform = '';
+            svg.querySelectorAll('.pie-seg-label').forEach(function(lbl) {
+              lbl.classList.remove('label-hovered');
+            });
+          });
+          seg.addEventListener('click', function() {
+            openCategoryDrawer(seg.dataset.cat);
+          });
+        });
+      });
     }
+
+    // ── Category Drawer ──
+    function openCategoryDrawer(categoryName) {
+      var overlay = document.getElementById('category-drawer-overlay');
+      var drawer = document.getElementById('category-drawer');
+      var title = document.getElementById('category-drawer-title');
+      title.textContent = categoryName;
+      overlay.style.display = 'block';
+      requestAnimationFrame(function() {
+        drawer.classList.add('open');
+      });
+    }
+
+    function closeCategoryDrawer() {
+      var drawer = document.getElementById('category-drawer');
+      var overlay = document.getElementById('category-drawer-overlay');
+      drawer.classList.remove('open');
+      setTimeout(function() { overlay.style.display = 'none'; }, 300);
+    }
+
+    document.getElementById('category-drawer-close')?.addEventListener('click', closeCategoryDrawer);
+    document.getElementById('category-drawer-overlay')?.addEventListener('click', function(e) {
+      if (e.target === document.getElementById('category-drawer-overlay')) closeCategoryDrawer();
+    });
 
     // ── Main tab switching ──
     const tabsBar = document.getElementById('tabs-bar');
