@@ -1,0 +1,6 @@
+{
+  "outputDirectory": "data-enrichment",
+  "rewrites": [
+    { "source": "/", "destination": "/contact-details.html" }
+  ]
+}
