@@ -916,17 +916,17 @@
       box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px 0 rgba(45,45,45,0.40);
     }
     .drawer-graph-card { padding: 16px; position: relative; }
-    .drawer-graph-header { display: flex; gap: 24px; margin-bottom: 16px; }
+    .drawer-graph-header { display: flex; gap: 24px; margin-bottom: 32px; }
     .drawer-graph-stat-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.5); line-height: 18px; }
     .drawer-graph-stat-value { font-size: 17px; font-weight: 700; color: #2d2d2d; line-height: 22px; }
     .drawer-line-svg { width: 100%; overflow: visible; }
     .drawer-chart-line { stroke: #2F82FF; stroke-width: 2; fill: none; }
-    .drawer-chart-fill { fill: rgba(47,130,255,0.1); }
+    .drawer-chart-fill { fill: url(#drawerLineGradient); }
     .drawer-chart-point { fill: #2F82FF; cursor: pointer; transition: r 0.15s; }
     .drawer-chart-point:hover { r: 5; }
     .drawer-chart-grid { stroke: rgba(45,45,45,0.05); stroke-width: 1; }
-    .drawer-chart-y-label { font-size: 11px; fill: rgba(45,45,45,0.5); font-family: 'Inter',sans-serif; }
-    .drawer-chart-x-label { font-size: 11px; fill: rgba(45,45,45,0.5); font-family: 'Inter',sans-serif; text-anchor: middle; }
+    .drawer-chart-y-label { font-size: 11px; fill: rgba(45,45,45,0.5); font-family: 'Inter',sans-serif; font-weight: 400; }
+    .drawer-chart-x-label { font-size: 11px; fill: rgba(45,45,45,0.5); font-family: 'Inter',sans-serif; font-weight: 400; text-anchor: middle; }
     .drawer-chart-tooltip {
       position: absolute; background: #F4F4F4; background-blend-mode: plus-lighter;
       color: #2d2d2d; border-radius: 10px; padding: 10px 14px; font-size: 13px;
@@ -1911,6 +1911,10 @@
         }).join('');
 
         var svgHTML = '<svg viewBox="0 0 ' + svgW + ' ' + svgH + '" class="drawer-line-svg" preserveAspectRatio="xMidYMid meet">' +
+          '<defs><linearGradient id="drawerLineGradient" x1="0" y1="' + padT + '" x2="0" y2="' + (padT + chartH) + '" gradientUnits="userSpaceOnUse">' +
+            '<stop offset="0%" stop-color="#2F82FF" stop-opacity="0.2"/>' +
+            '<stop offset="100%" stop-color="#2F82FF" stop-opacity="0"/>' +
+          '</linearGradient></defs>' +
           gridLines + xLabels +
           '<polygon points="' + fillStr + '" class="drawer-chart-fill" />' +
           '<polyline points="' + polylineStr + '" class="drawer-chart-line" />' +
