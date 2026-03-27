@@ -978,7 +978,7 @@
     .chart-header-stat-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.5); line-height: 18px; }
     .chart-header-stat-value { font-size: 17px; font-weight: 700; color: #2d2d2d; line-height: 22px; }
 
-    .enhanced-stat-row { display: flex; gap: 10px; width: 100%; }
+    .enhanced-stat-row { display: flex; gap: 10px; width: 100%; margin-top: 16px; }
     .enhanced-stat-card {
       flex: 1; background: #fff; border-radius: 12px; padding: 8px;
       box-shadow: 0 0 0 1px rgba(45,45,45,0.10), 0 10px 34px 0 rgba(45,45,45,0.05);
@@ -1157,7 +1157,7 @@
                     <div class="detail-row">
                       <span class="detail-label">Address</span>
                       <div class="value-edit-group">
-                        <span class="detail-value">3456 Fake St, Vancouver, BC, V1V 1V1</span>
+                        <span class="detail-value">3456 Fake St, Seattle, WA, 123 321</span>
                         <div class="edit-circle-btn"><span class="material-icons-round">edit</span></div>
                       </div>
                     </div>
@@ -1821,7 +1821,7 @@
           '<div class="chart-header">' +
             (window.enrichPlan === 'enhanced'
               ? '<div class="chart-header-stats">' +
-                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Net</div><div class="chart-header-stat-value">' + netFormatted + '</div></div>' +
+                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Net Balance</div><div class="chart-header-stat-value">' + netFormatted + '</div></div>' +
                   '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgBalance) + '</div></div>' +
                   '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Month-End Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgMonthEndBalance) + '</div></div>' +
                 '</div>'
