@@ -1004,8 +1004,9 @@
     .risk-meter-card {
       background: #fff; border-radius: 20px; padding: 8px;
       box-shadow: 0 0 0 1px rgba(45,45,45,0.10), 0 10px 34px 0 rgba(45,45,45,0.05);
-      width: 100%;
+      width: 100%; cursor: pointer; transition: box-shadow 0.2s;
     }
+    .risk-meter-card:hover { box-shadow: 0 0 0 1px rgba(45,45,45,0.2), 0 2px 8px rgba(45,45,45,0.12); }
     .risk-meter-inner {
       background: #fff; border-radius: 16px; padding: 16px;
       box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
@@ -1825,7 +1826,7 @@
                   '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgBalance) + '</div></div>' +
                   '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Month-End Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgMonthEndBalance) + '</div></div>' +
                 '</div>'
-              : '<div><div class="chart-net-label">Net</div><div class="chart-net-value">' + netFormatted + '</div></div>') +
+              : '<div><div class="chart-net-label">Net Balance</div><div class="chart-net-value">' + netFormatted + '</div></div>') +
             '<div class="chart-legend">' +
               '<div class="chart-legend-item"><div class="chart-legend-dot income"></div>Total Income</div>' +
               '<div class="chart-legend-item"><div class="chart-legend-dot expense"></div>Total Expense</div>' +
@@ -1878,7 +1879,7 @@
                 '<div class="risk-data-row"><div class="risk-data-label">Overdraft</div><div class="risk-data-value">' + DATA.enhanced.risk.overdraft + '</div></div>' +
               '</div>' +
               '<div class="fee-cards-row" style="justify-content:center;">' +
-                '<div class="fee-card" data-category="Bank Fee" style="width:100%;"><div class="fee-card-value">' + fmtUSD(DATA.enhanced.bankFee) + '</div><div class="fee-card-label">Bank Fee</div></div>' +
+                '<div class="fee-card fee-card-full" data-category="Bank Fee" style="width:100%;"><div class="fee-card-value">' + fmtUSD(DATA.enhanced.bankFee) + '</div><div class="fee-card-label">Bank Fee</div></div>' +
               '</div>';
             })()
           : '<div class="fee-cards-row">' +
@@ -1950,12 +1951,36 @@
             });
 
             // Recalculate net for visible months
-            var filteredNet = 0;
+            var filteredIncome = 0, filteredExpense = 0;
             DATA.months.forEach(function(m) {
-              if (visibleMonths.indexOf(m.label) !== -1) filteredNet += m.income - m.expense;
+              if (visibleMonths.indexOf(m.label) !== -1) {
+                filteredIncome += m.income;
+                filteredExpense += m.expense;
+              }
             });
+            var filteredNet = filteredIncome - filteredExpense;
+
+            // Update net value
             var netEl = panel.querySelector('.chart-net-value');
             if (netEl) netEl.textContent = (filteredNet >= 0 ? '+ ' : '- ') + fmtUSD(Math.abs(filteredNet));
+
+            // Update enhanced header stats
+            var statValues = panel.querySelectorAll('.chart-header-stat-value');
+            if (statValues.length >= 1) statValues[0].textContent = (filteredNet >= 0 ? '+ ' : '- ') + fmtUSD(Math.abs(filteredNet));
+
+            // Update total income/expense in pie card headers
+            var pieHeaders = panel.querySelectorAll('.pie-card-header-value');
+            if (pieHeaders.length >= 1) pieHeaders[0].textContent = fmtUSD(filteredIncome);
+            if (pieHeaders.length >= 2) pieHeaders[1].textContent = fmtUSD(filteredExpense);
+
+            // Update enriched label transaction count
+            var monthCount = visibleMonths.length;
+            var txnPerMonth = Math.round(DATA.transactionsEnriched / 3);
+            var filteredTxnCount = txnPerMonth * monthCount;
+            var enrichLabel = panel.querySelector('.insights-enriched-label');
+            if (enrichLabel) {
+              enrichLabel.innerHTML = '<span class="material-icons-round">check_circle</span>' + filteredTxnCount + ' Transactions Enriched';
+            }
           });
         });
       }
@@ -2014,6 +2039,22 @@
           openTransactionsDrawer(btn.dataset.type);
         });
       });
+
+      // ── Attach NSF risk meter click listener ──
+      var riskCard = panel.querySelector('.risk-meter-card');
+      if (riskCard) {
+        riskCard.addEventListener('click', function() {
+          openCategoryDrawer('NSF Fee');
+        });
+      }
+
+      // ── Attach enhanced bank fee click listener ──
+      var enhBankFee = panel.querySelector('.fee-card-full');
+      if (enhBankFee) {
+        enhBankFee.addEventListener('click', function() {
+          openCategoryDrawer('Bank Fee');
+        });
+      }
     }
 
     // ── Category Drawer ──
