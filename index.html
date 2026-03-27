@@ -173,7 +173,7 @@
     }
     .detail-row {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 8px; border-bottom: 1px solid rgba(45,45,45,0.1); overflow: hidden;
+      padding: 16px 32px; border-bottom: 1px solid rgba(45,45,45,0.1); overflow: hidden;
     }
     .detail-row:last-child { border-bottom: none; }
     .detail-row-top { align-items: flex-start; }
@@ -1611,13 +1611,6 @@
 
       // ── Assemble full HTML ──
       const html =
-        // Banner
-        '<div class="insights-banner">' +
-          '<span class="material-icons-round">auto_awesome</span>' +
-          '<span class="insights-banner-text">Get detailed insights into the financial habits &amp; risk score.</span>' +
-          '<span class="insights-banner-link">Learn More</span>' +
-        '</div>' +
-
         // Header row
         '<div class="insights-header-row">' +
           '<div class="insights-enriched-label">' +
@@ -1925,10 +1918,10 @@
 
     // Activate enriched view
     function activateEnrichedView() {
-      // Hide the Enrich Transaction Data button, show the blue "Get Enhanced Insights" button
+      // Hide the Enrich Transaction Data button after enrichment
       const enrichBtn = document.querySelector('.pm-enrich-btn');
       if (enrichBtn) {
-        enrichBtn.outerHTML = '<button class="pm-enriched-btn"><span class="material-icons-round">auto_awesome</span>Get Enhanced Insights</button>';
+        enrichBtn.style.display = 'none';
       }
 
       // Hide old sub-tabs and sub-panels
