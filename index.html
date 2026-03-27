@@ -804,8 +804,8 @@
       overflow: visible;
     }
     .pie-card-header { display: flex; flex-direction: column; gap: 4px; }
-    .pie-card-header-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.75); }
-    .pie-card-header-value { font-size: 17px; font-weight: 700; color: #008107; }
+    .pie-card-header-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.5); line-height: 18px; }
+    .pie-card-header-value { font-size: 17px; font-weight: 700; color: #2d2d2d; line-height: 22px; }
     .pie-chart-circle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto; position: relative; }
     .pie-legend-grid { display: flex; flex-wrap: wrap; }
     .pie-legend-item {
@@ -973,7 +973,7 @@
     }
     /* Enhanced tier styles */
     .chart-header-stats { display: flex; align-items: center; }
-    .chart-header-stat { display: flex; flex-direction: column; gap: 2px; padding-right: 20px; }
+    .chart-header-stat { display: flex; flex-direction: column; gap: 4px; padding-right: 20px; }
     .chart-header-stat + .chart-header-stat { padding-left: 20px; border-left: 1px solid rgba(45,45,45,0.1); }
     .chart-header-stat-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.5); line-height: 18px; }
     .chart-header-stat-value { font-size: 17px; font-weight: 700; color: #2d2d2d; line-height: 22px; }
@@ -1822,11 +1822,11 @@
           '<div class="chart-header">' +
             (window.enrichPlan === 'enhanced'
               ? '<div class="chart-header-stats">' +
-                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Net Balance</div><div class="chart-header-stat-value">' + netFormatted + '</div></div>' +
+                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Net Balance</div><div class="chart-header-stat-value" style="color:#008107;">' + netFormatted + '</div></div>' +
                   '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgBalance) + '</div></div>' +
                   '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Month-End Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgMonthEndBalance) + '</div></div>' +
                 '</div>'
-              : '<div><div class="chart-net-label">Net Balance</div><div class="chart-net-value">' + netFormatted + '</div></div>') +
+              : '<div style="display:flex;flex-direction:column;gap:4px;"><div class="chart-net-label">Net Balance</div><div class="chart-net-value">' + netFormatted + '</div></div>') +
             '<div class="chart-legend">' +
               '<div class="chart-legend-item"><div class="chart-legend-dot income"></div>Total Income</div>' +
               '<div class="chart-legend-item"><div class="chart-legend-dot expense"></div>Total Expense</div>' +
