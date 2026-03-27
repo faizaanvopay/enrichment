@@ -23,7 +23,7 @@
       box-shadow: 0px 8px 12px 0px rgba(45,45,45,0.15), 0px 4px 4px 0px rgba(34,34,34,0.18);
       position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
     }
-    .side-menu-logo { width: 67px; height: 64px; display: flex; align-items: center; justify-content: center; }
+    .side-menu-logo { width: 67px; height: 64px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .logo-icon {
       width: 40px; height: 40px; background: white; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
@@ -678,7 +678,9 @@
       background: linear-gradient(105deg, #2F82FF 0%, rgba(47,130,255,0.5) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .enrich-card-desc { font-size: 16px; font-weight: 400; color: rgba(45,45,45,0.8); line-height: 24px; }
+    .enrich-card-desc { font-size: 16px; font-weight: 400; color: rgba(45,45,45,0.8); line-height: 24px; text-align: left; }
+    .enrich-card-desc ul { margin: 0; padding-left: 24px; list-style: disc; }
+    .enrich-card-desc li { margin-bottom: 0; }
     .enrich-radio {
       position: absolute; top: 8px; right: 8px; width: 18px; height: 18px;
       border-radius: 50%; border: 2px solid rgba(45,45,45,0.3); background: white;
@@ -743,6 +745,20 @@
       font-family: 'Inter', sans-serif; font-size: 13px; color: #2d2d2d; cursor: pointer;
     }
     .insights-dropdown .material-icons-round { font-size: 16px; }
+    .insights-dropdown-wrap { position: relative; }
+    .filter-menu {
+      position: absolute; top: 100%; right: 0; margin-top: 4px; z-index: 20;
+      background: white; border-radius: 10px; padding: 4px;
+      box-shadow: 0 4px 16px rgba(45,45,45,0.15), 0 0 0 1px rgba(45,45,45,0.08);
+      display: none; min-width: 140px;
+    }
+    .filter-menu.open { display: block; }
+    .filter-menu-item {
+      padding: 8px 12px; font-size: 13px; font-family: 'Inter', sans-serif;
+      color: #2d2d2d; cursor: pointer; border-radius: 6px; white-space: nowrap;
+    }
+    .filter-menu-item:hover { background: rgba(45,45,45,0.06); }
+    .filter-menu-item.active { font-weight: 600; color: #2F82FF; }
 
     /* ── Chart Card ── */
     .chart-card {
@@ -787,6 +803,7 @@
       padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;
       overflow: visible;
     }
+    .pie-card-header { display: flex; flex-direction: column; gap: 4px; }
     .pie-card-header-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.75); }
     .pie-card-header-value { font-size: 17px; font-weight: 700; color: #2d2d2d; }
     .pie-chart-circle { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto; position: relative; }
@@ -1264,7 +1281,13 @@
           <span class="material-icons-round card-icon">payments</span>
           <div>
             <div class="enrich-card-title">Basic</div>
-            <div class="enrich-card-desc">Get insights into how this contact manages their finances by viewing they income &amp; expense breakdown.</div>
+            <div class="enrich-card-desc">
+              <ul>
+                <li>See how money flows in and out.</li>
+                <li>Understand income vs spending at a glance.</li>
+                <li>Get a snapshot of their finances.</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="enrich-card enhanced" data-plan="enhanced">
@@ -1272,7 +1295,13 @@
           <span class="material-icons-round card-icon">auto_awesome</span>
           <div>
             <div class="enrich-card-title enhanced-title">Enhanced</div>
-            <div class="enrich-card-desc">Get detailed insights into the financial habits of this contact by viewing their income, expenses, transaction habits &amp; risk score.</div>
+            <div class="enrich-card-desc">
+              <ul>
+                <li>Dive deeper into income and expenses</li>
+                <li>Spot spending patterns and habits</li>
+                <li>Understand financial behavior and risk level</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -1602,10 +1631,10 @@
         legendHTML += '</div>';
 
         return '<div class="pie-card">' +
-          '<div><div class="pie-card-header-label">' + label + '</div><div class="pie-card-header-value">' + fmtUSD(total) + '</div></div>' +
+          '<div class="pie-card-header"><div class="pie-card-header-label">' + label + '</div><div class="pie-card-header-value">' + fmtUSD(total) + '</div></div>' +
           buildPieSVG(categories, total, 150) +
           legendHTML +
-          '<button class="pie-view-btn">View Transactions</button>' +
+          '<button class="pie-view-btn" data-type="' + (label.indexOf('Income') !== -1 ? 'income' : 'expense') + '">View ' + (label.indexOf('Income') !== -1 ? 'Income' : 'Expense') + ' Transactions</button>' +
           '</div>';
       }
 
@@ -1617,7 +1646,14 @@
             '<span class="material-icons-round">check_circle</span>' +
             DATA.transactionsEnriched + ' Transactions Enriched' +
           '</div>' +
-          '<button class="insights-dropdown">Last 90 day<span class="material-icons-round">expand_more</span></button>' +
+          '<div class="insights-dropdown-wrap">' +
+            '<button class="insights-dropdown" id="filter-btn">Last 90 days<span class="material-icons-round">expand_more</span></button>' +
+            '<div class="filter-menu" id="filter-menu">' +
+              '<div class="filter-menu-item active" data-days="90">Last 90 days</div>' +
+              '<div class="filter-menu-item" data-days="60">Last 60 days</div>' +
+              '<div class="filter-menu-item" data-days="30">Last 30 days</div>' +
+            '</div>' +
+          '</div>' +
         '</div>' +
 
         // Bar chart
@@ -1685,6 +1721,43 @@
         });
       }
 
+      // ── Filter dropdown ──
+      var filterBtn = document.getElementById('filter-btn');
+      var filterMenu = document.getElementById('filter-menu');
+      if (filterBtn && filterMenu) {
+        filterBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          filterMenu.classList.toggle('open');
+        });
+        document.addEventListener('click', function() { filterMenu.classList.remove('open'); });
+        filterMenu.querySelectorAll('.filter-menu-item').forEach(function(item) {
+          item.addEventListener('click', function(e) {
+            e.stopPropagation();
+            filterMenu.querySelectorAll('.filter-menu-item').forEach(function(i) { i.classList.remove('active'); });
+            item.classList.add('active');
+            var days = parseInt(item.dataset.days);
+            filterBtn.innerHTML = item.textContent + '<span class="material-icons-round">expand_more</span>';
+            filterMenu.classList.remove('open');
+
+            // Filter months: 90=all, 60=Nov+Dec, 30=Dec only
+            var monthMap = { 90: ['Oct','Nov','Dec'], 60: ['Nov','Dec'], 30: ['Dec'] };
+            var visibleMonths = monthMap[days] || monthMap[90];
+            var chartMonths = panel.querySelectorAll('.chart-month');
+            chartMonths.forEach(function(cm) {
+              cm.style.display = visibleMonths.indexOf(cm.dataset.month) !== -1 ? '' : 'none';
+            });
+
+            // Recalculate net for visible months
+            var filteredNet = 0;
+            DATA.months.forEach(function(m) {
+              if (visibleMonths.indexOf(m.label) !== -1) filteredNet += m.income - m.expense;
+            });
+            var netEl = panel.querySelector('.chart-net-value');
+            if (netEl) netEl.textContent = (filteredNet >= 0 ? '+ ' : '- ') + fmtUSD(Math.abs(filteredNet));
+          });
+        });
+      }
+
       // ── Attach SVG pie segment hover/click listeners ──
       panel.querySelectorAll('.pie-svg').forEach(function(svg) {
         var pieCard = svg.closest('.pie-card');
@@ -1730,6 +1803,13 @@
       panel.querySelectorAll('.fee-card[data-category]').forEach(function(card) {
         card.addEventListener('click', function() {
           openCategoryDrawer(card.dataset.category);
+        });
+      });
+
+      // ── Attach View Transactions button listeners ──
+      panel.querySelectorAll('.pie-view-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          openTransactionsDrawer(btn.dataset.type);
         });
       });
     }
@@ -1789,6 +1869,67 @@
       requestAnimationFrame(function() {
         drawer.classList.add('open');
       });
+    }
+
+    // ── Transactions Drawer (Income / Expense aggregate) ──
+    function openTransactionsDrawer(type) {
+      var overlay = document.getElementById('category-drawer-overlay');
+      var drawer = document.getElementById('category-drawer');
+      var title = document.getElementById('category-drawer-title');
+      var body = document.getElementById('category-drawer-body');
+      title.textContent = type === 'income' ? 'Income Transactions' : 'Expense Transactions';
+
+      var categories = type === 'income' ? DATA.income.categories : DATA.expense.categories;
+      var totalAmount = type === 'income' ? DATA.income.total : DATA.expense.total;
+
+      // Collect all rows with category name
+      var allRows = [];
+      categories.forEach(function(cat) {
+        var txn = DATA.transactions[cat.name];
+        if (txn && txn.rows) {
+          txn.rows.forEach(function(r) {
+            allRows.push({ date: r.date, category: cat.name, description: r.description, amount: r.amount });
+          });
+        }
+      });
+      allRows.sort(function(a, b) { return b.date.localeCompare(a.date); });
+
+      // Summary card
+      var avgMonthly = totalAmount / 3;
+      var card1 = '<div class="drawer-summary-card">' +
+        '<div class="drawer-summary-title">Summary</div>' +
+        '<div class="drawer-summary-row"><div class="drawer-summary-label">Total ' + (type === 'income' ? 'Income' : 'Expense') + '</div><div class="drawer-summary-value">' + fmtUSD(totalAmount) + '</div></div>' +
+        '<div class="drawer-summary-row"><div class="drawer-summary-label">Avg. Monthly</div><div class="drawer-summary-value">' + fmtUSD(avgMonthly) + '</div></div>' +
+        '<div class="drawer-summary-row"><div class="drawer-summary-label">Categories</div><div class="drawer-summary-value">' + categories.length + '</div></div>' +
+        '<div class="drawer-summary-row"><div class="drawer-summary-label">Transactions</div><div class="drawer-summary-value">' + allRows.length + '</div></div>' +
+        '</div>';
+
+      // Table
+      var tableRows = '';
+      allRows.forEach(function(r) {
+        tableRows += '<div class="drawer-table-row">' +
+          '<div class="drawer-table-td">' + r.date + '</div>' +
+          '<div class="drawer-table-td">' + r.category + '</div>' +
+          '<div class="drawer-table-td">' + r.description + '</div>' +
+          '<div class="drawer-table-td">' + fmtUSD(r.amount) + '</div>' +
+          '</div>';
+      });
+
+      body.innerHTML = '<div class="drawer-content">' +
+        '<div class="drawer-left">' + card1 + '</div>' +
+        '<div class="drawer-right"><div class="drawer-table-wrap">' +
+          '<div class="drawer-table-header">' +
+            '<div class="drawer-table-th">Transaction Date</div>' +
+            '<div class="drawer-table-th">Category</div>' +
+            '<div class="drawer-table-th">Description</div>' +
+            '<div class="drawer-table-th">Amount</div>' +
+          '</div>' +
+          '<div class="drawer-table-body">' + tableRows + '</div>' +
+        '</div></div>' +
+        '</div>';
+
+      overlay.style.display = 'block';
+      requestAnimationFrame(function() { drawer.classList.add('open'); });
     }
 
     function closeCategoryDrawer() {
@@ -1867,6 +2008,11 @@
         });
       });
     }
+
+    // ── Side menu logo click → reset page ──
+    document.querySelector('.side-menu-logo')?.addEventListener('click', function() {
+      window.location.reload();
+    });
 
     // ── Copy token ──
     document.querySelectorAll('.pm-copy-btn').forEach(btn => {
