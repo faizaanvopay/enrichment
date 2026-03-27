@@ -2051,9 +2051,7 @@
           '</div>';
       });
 
-      body.innerHTML = '<div class="drawer-content">' +
-        '<div class="drawer-left">' + card1 + '</div>' +
-        '<div class="drawer-right"><div class="drawer-table-wrap">' +
+      body.innerHTML = '<div class="drawer-table-wrap" style="height:100%;">' +
           '<div class="drawer-table-header">' +
             '<div class="drawer-table-th">Transaction Date</div>' +
             '<div class="drawer-table-th">Category</div>' +
@@ -2061,7 +2059,6 @@
             '<div class="drawer-table-th">Amount</div>' +
           '</div>' +
           '<div class="drawer-table-body">' + tableRows + '</div>' +
-        '</div></div>' +
         '</div>';
 
       overlay.style.display = 'block';
