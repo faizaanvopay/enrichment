@@ -796,11 +796,11 @@
     .chart-month-label { font-size: 13px; color: rgba(45,45,45,0.5); }
 
     /* ── Pie Chart Cards ── */
-    .pie-cards-row { display: flex; gap: 16px; width: 100%; }
+    .pie-cards-row { display: flex; gap: 16px; width: 100%; align-items: stretch; }
     .pie-card {
       flex: 1; background: white; border-radius: 16px;
       box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
-      padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px;
+      padding: 16px; display: flex; flex-direction: column; gap: 16px;
       overflow: visible;
     }
     .pie-card-header { display: flex; flex-direction: column; gap: 4px; }
@@ -827,7 +827,7 @@
       display: flex; height: 32px; align-items: center; justify-content: center;
       border-radius: 8px; border: 1px solid rgba(45,45,45,0.2); background: white;
       font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
-      color: #2d2d2d; cursor: pointer; width: 100%;
+      color: #2d2d2d; cursor: pointer; width: 100%; margin-top: auto;
     }
 
     /* ── Fee Cards ── */
@@ -1337,7 +1337,7 @@
         ]
       },
       fees: { nsf: 245, bank: 87 },
-      transactionsEnriched: 847,
+      transactionsEnriched: 60,
       transactions: {
         'Employer Income': {
           avgMonthly: 4666.67, avgDaysBetween: '14.2 days',
