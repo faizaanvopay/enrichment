@@ -971,6 +971,62 @@
       flex: 1; padding: 16px 24px; font-size: 14px; color: #2d2d2d;
       font-family: 'Inter', sans-serif;
     }
+    /* Enhanced tier styles */
+    .chart-header-stats { display: flex; align-items: center; }
+    .chart-header-stat { display: flex; flex-direction: column; gap: 2px; padding-right: 20px; }
+    .chart-header-stat + .chart-header-stat { padding-left: 20px; border-left: 1px solid rgba(45,45,45,0.1); }
+    .chart-header-stat-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.5); line-height: 18px; }
+    .chart-header-stat-value { font-size: 17px; font-weight: 700; color: #2d2d2d; line-height: 22px; }
+
+    .enhanced-stat-row { display: flex; gap: 10px; width: 100%; }
+    .enhanced-stat-card {
+      flex: 1; background: #fff; border-radius: 12px; padding: 8px;
+      box-shadow: 0 0 0 1px rgba(45,45,45,0.10), 0 10px 34px 0 rgba(45,45,45,0.05);
+      overflow: hidden; white-space: nowrap;
+    }
+    .enhanced-stat-card-label { font-size: 13px; font-weight: 400; color: rgba(45,45,45,0.75); line-height: 18px; }
+    .enhanced-stat-card-value { font-size: 15px; font-weight: 600; color: #2d2d2d; line-height: 20px; }
+
+    .enhanced-detail-card {
+      border-radius: 8px; padding: 8px; font-size: 13px;
+      box-shadow: 0 0 0 1px rgba(45,45,45,0.10), 0 10px 34px 0 rgba(45,45,45,0.05);
+      background: #fff;
+    }
+    .enhanced-detail-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 12px 0; border-bottom: 1px solid rgba(45,45,45,0.1); line-height: 18px;
+    }
+    .enhanced-detail-row:first-child { padding-top: 0; }
+    .enhanced-detail-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .enhanced-detail-label { font-weight: 500; color: #2d2d2d; flex: 1; }
+    .enhanced-detail-value { font-weight: 400; color: rgba(45,45,45,0.6); text-align: right; flex: 1; }
+
+    .risk-meter-card {
+      background: #fff; border-radius: 20px; padding: 8px;
+      box-shadow: 0 0 0 1px rgba(45,45,45,0.10), 0 10px 34px 0 rgba(45,45,45,0.05);
+      width: 100%;
+    }
+    .risk-meter-inner {
+      background: #fff; border-radius: 16px; padding: 16px;
+      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+    }
+    .risk-gauge-wrap { position: relative; width: 140px; height: 70px; }
+    .risk-gauge-svg { width: 140px; height: 70px; }
+    .risk-gauge-text { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); text-align: center; white-space: nowrap; }
+    .risk-gauge-score { font-size: 20px; font-weight: 600; color: #2d2d2d; }
+    .risk-gauge-total { font-size: 13px; font-weight: 400; color: #2d2d2d; }
+    .risk-label-wrap { text-align: center; }
+    .risk-label-title { font-size: 16px; font-weight: 600; color: #2d2d2d; line-height: 24px; }
+    .risk-label-sub { font-size: 12px; font-weight: 400; color: rgba(45,45,45,0.6); }
+    .risk-data-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 12px 8px; border-bottom: 1px solid rgba(45,45,45,0.1);
+      font-size: 13px; line-height: 18px;
+    }
+    .risk-data-row:last-child { border-bottom: none; }
+    .risk-data-label { font-weight: 500; color: #2d2d2d; flex: 1; }
+    .risk-data-value { font-weight: 400; color: rgba(45,45,45,0.6); text-align: right; flex: 1; }
   </style>
 </head>
 <body>
@@ -1384,6 +1440,38 @@
       },
       fees: { nsf: 245, bank: 87 },
       transactionsEnriched: 60,
+      enhanced: {
+        avgBalance: 5000,
+        avgMonthEndBalance: 5000,
+        creditDebitRatio: 1.15,
+        totalTransactions: 60,
+        transactionFrequency: '11.3 Days',
+        largeTransactions: 3,
+        income: {
+          avgCreditAmount: 1944.44,
+          avgCreditsPerMonth: 2.8,
+          percentile90Credit: 2500,
+          daysWithMostCredits: ['Oct 10, 2025', 'Nov 10, 2025', 'Dec 10, 2025'],
+          dayWithHighestBalance: ['Oct 15, 2025', 'Nov 15, 2025', 'Dec 15, 2025']
+        },
+        expense: {
+          avgDebitAmount: 1433.33,
+          avgDebitsPerMonth: 3.2,
+          percentile90Debit: 2100,
+          daysWithMostDebits: ['Oct 1, 2025', 'Nov 1, 2025', 'Dec 1, 2025'],
+          dayWithLowestBalance: ['Oct 28, 2025', 'Nov 28, 2025', 'Dec 28, 2025']
+        },
+        risk: {
+          score: 72,
+          label: 'High Risk',
+          nsfFee: 245,
+          nsfRate: '4.17%',
+          avgNsfAmount: 49,
+          percentile90Nsf: 65,
+          overdraft: 0
+        },
+        bankFee: 87
+      },
       transactions: {
         'Employer Income': {
           avgMonthly: 4666.67, avgDaysBetween: '14.2 days',
@@ -1676,10 +1764,35 @@
         });
         legendHTML += '</div>';
 
+        // Enhanced detail card
+        var detailHTML = '';
+        if (window.enrichPlan === 'enhanced') {
+          if (label.indexOf('Income') !== -1) {
+            var inc = DATA.enhanced.income;
+            detailHTML = '<div class="enhanced-detail-card">' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Credit Amount</div><div class="enhanced-detail-value">' + fmtUSD(inc.avgCreditAmount) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Credits/Month</div><div class="enhanced-detail-value">' + inc.avgCreditsPerMonth + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">90th Percentile Credit</div><div class="enhanced-detail-value">' + fmtUSD(inc.percentile90Credit) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Day(s) with most credits</div><div class="enhanced-detail-value">' + inc.daysWithMostCredits.join('<br>') + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Day with Highest Balance</div><div class="enhanced-detail-value">' + inc.dayWithHighestBalance.join('<br>') + '</div></div>' +
+            '</div>';
+          } else {
+            var exp = DATA.enhanced.expense;
+            detailHTML = '<div class="enhanced-detail-card">' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Debit Amount</div><div class="enhanced-detail-value">' + fmtUSD(exp.avgDebitAmount) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Debits/Month</div><div class="enhanced-detail-value">' + exp.avgDebitsPerMonth + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">90th Percentile Debit</div><div class="enhanced-detail-value">' + fmtUSD(exp.percentile90Debit) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Day(s) with most debits</div><div class="enhanced-detail-value">' + exp.daysWithMostDebits.join('<br>') + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Day with Lowest Balance</div><div class="enhanced-detail-value">' + exp.dayWithLowestBalance.join('<br>') + '</div></div>' +
+            '</div>';
+          }
+        }
+
         return '<div class="pie-card">' +
           '<div class="pie-card-header"><div class="pie-card-header-label">' + label + '</div><div class="pie-card-header-value">' + fmtUSD(total) + '</div></div>' +
           buildPieSVG(categories, total, 150) +
           legendHTML +
+          detailHTML +
           '<button class="pie-view-btn" data-type="' + (label.indexOf('Income') !== -1 ? 'income' : 'expense') + '">View ' + (label.indexOf('Income') !== -1 ? 'Income' : 'Expense') + ' Transactions</button>' +
           '</div>';
       }
@@ -1706,7 +1819,13 @@
         '<div class="chart-card" style="position:relative;">' +
           '<div class="chart-tooltip" id="chart-tooltip"></div>' +
           '<div class="chart-header">' +
-            '<div><div class="chart-net-label">Net</div><div class="chart-net-value">' + netFormatted + '</div></div>' +
+            (window.enrichPlan === 'enhanced'
+              ? '<div class="chart-header-stats">' +
+                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Net</div><div class="chart-header-stat-value">' + netFormatted + '</div></div>' +
+                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgBalance) + '</div></div>' +
+                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Month-End Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgMonthEndBalance) + '</div></div>' +
+                '</div>'
+              : '<div><div class="chart-net-label">Net</div><div class="chart-net-value">' + netFormatted + '</div></div>') +
             '<div class="chart-legend">' +
               '<div class="chart-legend-item"><div class="chart-legend-dot income"></div>Total Income</div>' +
               '<div class="chart-legend-item"><div class="chart-legend-dot expense"></div>Total Expense</div>' +
@@ -1718,6 +1837,16 @@
           '</div>' +
         '</div>' +
 
+        // Enhanced stat cards
+        (window.enrichPlan === 'enhanced'
+          ? '<div class="enhanced-stat-row">' +
+              '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Credit / Debit Ratio</div><div class="enhanced-stat-card-value">' + DATA.enhanced.creditDebitRatio + 'x</div></div>' +
+              '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Total Transactions</div><div class="enhanced-stat-card-value">' + DATA.enhanced.totalTransactions + '</div></div>' +
+              '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Transaction Frequency</div><div class="enhanced-stat-card-value">' + DATA.enhanced.transactionFrequency + '</div></div>' +
+              '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Large Transactions</div><div class="enhanced-stat-card-value">' + DATA.enhanced.largeTransactions + '</div></div>' +
+            '</div>'
+          : '') +
+
         // Pie charts
         '<div class="pie-cards-row">' +
           buildPieCard('Total Income', DATA.income.total, DATA.income.categories) +
@@ -1725,10 +1854,38 @@
         '</div>' +
 
         // Fee cards
-        '<div class="fee-cards-row">' +
-          '<div class="fee-card" data-category="NSF Fee"><div class="fee-card-value">' + fmtUSD(DATA.fees.nsf) + '</div><div class="fee-card-label">NSF Fee</div></div>' +
-          '<div class="fee-card" data-category="Bank Fee"><div class="fee-card-value">' + fmtUSD(DATA.fees.bank) + '</div><div class="fee-card-label">Bank Fee</div></div>' +
-        '</div>';
+        (window.enrichPlan === 'enhanced'
+          ? (function() {
+              var arcLen = Math.PI * 55;
+              var scoreDash = (DATA.enhanced.risk.score / 100) * arcLen;
+              return '<div class="risk-meter-card">' +
+                '<div class="risk-meter-inner">' +
+                  '<div class="risk-gauge-wrap">' +
+                    '<svg class="risk-gauge-svg" viewBox="0 0 140 70" width="140" height="70">' +
+                      '<defs><linearGradient id="riskGrad" x1="0" y1="0" x2="140" y2="0" gradientUnits="userSpaceOnUse">' +
+                        '<stop offset="0%" stop-color="#A8CFFF"/><stop offset="100%" stop-color="#2F82FF"/>' +
+                      '</linearGradient></defs>' +
+                      '<path d="M10,65 A55,55 0 0,1 130,65" fill="none" stroke="rgba(45,45,45,0.08)" stroke-width="10" stroke-linecap="round"/>' +
+                      '<path d="M10,65 A55,55 0 0,1 130,65" fill="none" stroke="url(#riskGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + scoreDash.toFixed(1) + ', ' + arcLen.toFixed(1) + '" stroke-dashoffset="0"/>' +
+                    '</svg>' +
+                    '<div class="risk-gauge-text"><span class="risk-gauge-score">' + DATA.enhanced.risk.score + '</span><span class="risk-gauge-total"> / 100</span></div>' +
+                  '</div>' +
+                  '<div class="risk-label-wrap"><div class="risk-label-title">' + DATA.enhanced.risk.label + '</div><div class="risk-label-sub">NSF Risk Score</div></div>' +
+                '</div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">NSF Fee</div><div class="risk-data-value">' + fmtUSD(DATA.enhanced.risk.nsfFee) + '</div></div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">NSF Rate</div><div class="risk-data-value">' + DATA.enhanced.risk.nsfRate + '</div></div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">Avg. NSF Amount</div><div class="risk-data-value">' + fmtUSD(DATA.enhanced.risk.avgNsfAmount) + '</div></div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">90th Percentile NSF</div><div class="risk-data-value">' + fmtUSD(DATA.enhanced.risk.percentile90Nsf) + '</div></div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">Overdraft</div><div class="risk-data-value">' + DATA.enhanced.risk.overdraft + '</div></div>' +
+              '</div>' +
+              '<div class="fee-cards-row" style="justify-content:center;">' +
+                '<div class="fee-card" data-category="Bank Fee" style="width:100%;"><div class="fee-card-value">' + fmtUSD(DATA.enhanced.bankFee) + '</div><div class="fee-card-label">Bank Fee</div></div>' +
+              '</div>';
+            })()
+          : '<div class="fee-cards-row">' +
+              '<div class="fee-card" data-category="NSF Fee"><div class="fee-card-value">' + fmtUSD(DATA.fees.nsf) + '</div><div class="fee-card-label">NSF Fee</div></div>' +
+              '<div class="fee-card" data-category="Bank Fee"><div class="fee-card-value">' + fmtUSD(DATA.fees.bank) + '</div><div class="fee-card-label">Bank Fee</div></div>' +
+            '</div>');
 
       panel.innerHTML = html;
 
@@ -2191,6 +2348,7 @@
     // Unlock Insights
     enrichUnlock?.addEventListener('click', () => {
       if (!enrichUnlock.classList.contains('enabled')) return;
+      window.enrichPlan = document.querySelector('.enrich-card.selected')?.dataset.plan || 'basic';
       enrichOverlay.style.display = 'none';
       activateEnrichedView();
     });
