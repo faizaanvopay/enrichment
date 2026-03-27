@@ -907,6 +907,44 @@
     .drawer-summary-label { font-size: 13px; color: rgba(45,45,45,0.75); font-weight: 400; }
     .drawer-summary-value { font-size: 15px; font-weight: 600; color: #2d2d2d; margin-top: 4px; }
     .drawer-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+    /* Drawer: new top-row layout (line graph + details) */
+    .drawer-content-v2 { display: flex; flex-direction: column; gap: 16px; height: 100%; }
+    .drawer-top-row { display: flex; gap: 16px; width: 100%; flex-shrink: 0; }
+    .drawer-graph-card, .drawer-details-card {
+      flex: 1; min-width: 0; border-radius: 16px; background: #fff;
+      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px 0 rgba(45,45,45,0.40);
+    }
+    .drawer-graph-card { padding: 16px; position: relative; }
+    .drawer-graph-header { display: flex; gap: 24px; margin-bottom: 16px; }
+    .drawer-graph-stat-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.5); line-height: 18px; }
+    .drawer-graph-stat-value { font-size: 17px; font-weight: 700; color: #2d2d2d; line-height: 22px; }
+    .drawer-line-svg { width: 100%; overflow: visible; }
+    .drawer-chart-line { stroke: #2F82FF; stroke-width: 2; fill: none; }
+    .drawer-chart-fill { fill: rgba(47,130,255,0.1); }
+    .drawer-chart-point { fill: #2F82FF; cursor: pointer; transition: r 0.15s; }
+    .drawer-chart-point:hover { r: 5; }
+    .drawer-chart-grid { stroke: rgba(45,45,45,0.05); stroke-width: 1; }
+    .drawer-chart-y-label { font-size: 11px; fill: rgba(45,45,45,0.5); font-family: 'Inter',sans-serif; }
+    .drawer-chart-x-label { font-size: 11px; fill: rgba(45,45,45,0.5); font-family: 'Inter',sans-serif; text-anchor: middle; }
+    .drawer-chart-tooltip {
+      position: absolute; background: #F4F4F4; background-blend-mode: plus-lighter;
+      color: #2d2d2d; border-radius: 10px; padding: 10px 14px; font-size: 13px;
+      pointer-events: none; z-index: 10; white-space: nowrap;
+      box-shadow: 4px 4px 10px 0 rgba(255,255,255,0.70) inset;
+      filter: drop-shadow(0 1px 4px rgba(0,0,0,0.25)) drop-shadow(0 0 1px rgba(0,0,0,0.60));
+      opacity: 0; transition: opacity 0.15s; line-height: 1.6;
+    }
+    .drawer-chart-tooltip.visible { opacity: 1; }
+    .drawer-details-card { padding: 12px; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+    .drawer-detail-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px; border-bottom: 1px solid rgba(45,45,45,0.08);
+    }
+    .drawer-detail-row:last-child { border-bottom: none; }
+    .drawer-detail-row.align-top { align-items: flex-start; }
+    .drawer-detail-label { font-size: 16px; font-weight: 500; color: #2d2d2d; line-height: 1.5; }
+    .drawer-detail-value { font-size: 16px; font-weight: 400; color: rgba(45,45,45,0.8); text-align: right; line-height: 1.5; }
     .drawer-table-wrap {
       background: #fff; border-radius: 20px; overflow: clip; flex: 1; display: flex; flex-direction: column;
       box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px rgba(45,45,45,0.4);
@@ -1829,23 +1867,78 @@
       if (!txn) {
         body.innerHTML = '<p style="color:rgba(45,45,45,0.5);padding:40px;text-align:center;">No transaction data available.</p>';
       } else {
-        // Summary card 1
-        var card1 = '<div class="drawer-summary-card">' +
-          '<div class="drawer-summary-title">Summary</div>' +
-          '<div class="drawer-summary-row"><div class="drawer-summary-label">Avg. Monthly Income</div><div class="drawer-summary-value">' + fmtUSD(txn.avgMonthly) + '</div></div>' +
-          '<div class="drawer-summary-row"><div class="drawer-summary-label">Avg. Days Between</div><div class="drawer-summary-value">' + txn.avgDaysBetween + '</div></div>' +
-          '<div class="drawer-summary-row"><div class="drawer-summary-label">First Transaction</div><div class="drawer-summary-value">' + txn.firstTransaction + '</div></div>' +
-          '<div class="drawer-summary-row"><div class="drawer-summary-label">Last Deposit</div><div class="drawer-summary-value">' + txn.lastDeposit + '</div></div>' +
+        // ── Line Graph Card ──
+        var ms = txn.monthlySummary;
+        var totalAmt = ms.reduce(function(s,m){ return s + m.amount; }, 0);
+        var totalTxn = ms.reduce(function(s,m){ return s + m.count; }, 0);
+        var amounts = ms.map(function(m){ return m.amount; });
+        var maxVal = Math.max.apply(null, amounts);
+        var ceilMax = Math.ceil(maxVal / 1000) * 1000;
+        if (ceilMax === 0) ceilMax = 1000;
+        var midVal = ceilMax / 2;
+
+        // SVG dimensions
+        var svgW = 460, svgH = 120, padL = 90, padR = 20, padT = 10, padB = 25;
+        var chartW = svgW - padL - padR;
+        var chartH = svgH - padT - padB;
+
+        // Map months to x/y
+        var pts = ms.map(function(m, i) {
+          var x = padL + (i / Math.max(ms.length - 1, 1)) * chartW;
+          var y = padT + chartH - (m.amount / ceilMax) * chartH;
+          return { x: x, y: y, month: m.month, count: m.count, amount: m.amount };
+        });
+
+        var polylineStr = pts.map(function(p){ return p.x + ',' + p.y; }).join(' ');
+        var fillStr = padL + ',' + (padT + chartH) + ' ' + polylineStr + ' ' + (padL + chartW) + ',' + (padT + chartH);
+
+        // Grid lines
+        var gridLines = '';
+        [ceilMax, midVal, 0].forEach(function(val) {
+          var y = padT + chartH - (val / ceilMax) * chartH;
+          gridLines += '<line x1="' + padL + '" y1="' + y + '" x2="' + (svgW - padR) + '" y2="' + y + '" class="drawer-chart-grid" />';
+          gridLines += '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" class="drawer-chart-y-label">' + fmtUSD(val) + '</text>';
+        });
+
+        // X labels
+        var xLabels = pts.map(function(p) {
+          return '<text x="' + p.x + '" y="' + (svgH - 2) + '" class="drawer-chart-x-label">' + p.month.split(' ')[0] + '</text>';
+        }).join('');
+
+        // Data points
+        var circles = pts.map(function(p, i) {
+          return '<circle cx="' + p.x + '" cy="' + p.y + '" r="3" class="drawer-chart-point" data-idx="' + i + '" />';
+        }).join('');
+
+        var svgHTML = '<svg viewBox="0 0 ' + svgW + ' ' + svgH + '" class="drawer-line-svg" preserveAspectRatio="xMidYMid meet">' +
+          gridLines + xLabels +
+          '<polygon points="' + fillStr + '" class="drawer-chart-fill" />' +
+          '<polyline points="' + polylineStr + '" class="drawer-chart-line" />' +
+          circles +
+          '</svg>';
+
+        var graphCard = '<div class="drawer-graph-card">' +
+          '<div class="drawer-graph-header">' +
+            '<div><div class="drawer-graph-stat-label">Total Amount</div><div class="drawer-graph-stat-value">' + fmtUSD(totalAmt) + '</div></div>' +
+            '<div><div class="drawer-graph-stat-label">Total Transactions</div><div class="drawer-graph-stat-value">' + totalTxn + '</div></div>' +
+          '</div>' +
+          svgHTML +
+          '<div class="drawer-chart-tooltip" id="drawer-line-tooltip"></div>' +
           '</div>';
 
-        // Summary card 2 - monthly
-        var card2 = '<div class="drawer-summary-card"><div class="drawer-summary-title">Summary</div>';
-        txn.monthlySummary.forEach(function(m) {
-          card2 += '<div class="drawer-summary-row"><div class="drawer-summary-label">' + m.month + ' &bull; ' + m.count + ' transactions</div><div class="drawer-summary-value">' + fmtUSD(m.amount) + '</div></div>';
-        });
-        card2 += '</div>';
+        // ── Details Card ──
+        var lastTwoDates = txn.rows.slice(0, 2).map(function(r){ return r.date.split(',')[0]; });
+        var last2HTML = lastTwoDates.map(function(d){ return '<div>' + d + '</div>'; }).join('');
 
-        // Table
+        var detailsCard = '<div class="drawer-details-card">' +
+          '<div class="drawer-detail-row"><span class="drawer-detail-label">Avg. ' + categoryName + '</span><span class="drawer-detail-value">' + fmtUSD(txn.avgMonthly) + '</span></div>' +
+          '<div class="drawer-detail-row"><span class="drawer-detail-label">Avg. Days Between</span><span class="drawer-detail-value">' + txn.avgDaysBetween + '</span></div>' +
+          '<div class="drawer-detail-row"><span class="drawer-detail-label">First Transaction</span><span class="drawer-detail-value">' + txn.firstTransaction + '</span></div>' +
+          '<div class="drawer-detail-row"><span class="drawer-detail-label">Last Transaction</span><span class="drawer-detail-value">' + txn.lastDeposit + '</span></div>' +
+          '<div class="drawer-detail-row align-top"><span class="drawer-detail-label">Last Two Payment Dates</span><div class="drawer-detail-value">' + last2HTML + '</div></div>' +
+          '</div>';
+
+        // ── Table ──
         var tableRows = '';
         txn.rows.forEach(function(r) {
           tableRows += '<div class="drawer-table-row">' +
@@ -1855,17 +1948,48 @@
             '</div>';
         });
 
-        body.innerHTML = '<div class="drawer-content">' +
-          '<div class="drawer-left">' + card1 + card2 + '</div>' +
-          '<div class="drawer-right"><div class="drawer-table-wrap">' +
+        body.innerHTML = '<div class="drawer-content-v2">' +
+          '<div class="drawer-top-row">' + graphCard + detailsCard + '</div>' +
+          '<div class="drawer-table-wrap">' +
             '<div class="drawer-table-header">' +
               '<div class="drawer-table-th">Transaction Date</div>' +
               '<div class="drawer-table-th">Description</div>' +
               '<div class="drawer-table-th">Amount</div>' +
             '</div>' +
             '<div class="drawer-table-body">' + tableRows + '</div>' +
-          '</div></div>' +
+          '</div>' +
           '</div>';
+
+        // ── Attach line chart tooltip listeners ──
+        var graphEl = body.querySelector('.drawer-graph-card');
+        var lineTip = document.getElementById('drawer-line-tooltip');
+        if (graphEl && lineTip) {
+          graphEl.querySelectorAll('.drawer-chart-point').forEach(function(circle) {
+            circle.addEventListener('mouseenter', function() {
+              var idx = parseInt(circle.dataset.idx);
+              var p = pts[idx];
+              lineTip.innerHTML =
+                '<div style="font-weight:600;">' + p.month + '</div>' +
+                '<div>' + p.count + ' transactions</div>' +
+                '<div style="font-weight:600;">' + fmtUSD(p.amount) + '</div>';
+              lineTip.classList.add('visible');
+              var cardRect = graphEl.getBoundingClientRect();
+              var cx = parseFloat(circle.getAttribute('cx'));
+              var cy = parseFloat(circle.getAttribute('cy'));
+              var svgEl = graphEl.querySelector('.drawer-line-svg');
+              var svgRect = svgEl.getBoundingClientRect();
+              var scaleX = svgRect.width / svgW;
+              var scaleY = svgRect.height / svgH;
+              var tipW = lineTip.offsetWidth;
+              var tipH = lineTip.offsetHeight;
+              lineTip.style.left = (svgRect.left - cardRect.left + cx * scaleX - tipW / 2) + 'px';
+              lineTip.style.top = (svgRect.top - cardRect.top + cy * scaleY - tipH - 12) + 'px';
+            });
+            circle.addEventListener('mouseleave', function() {
+              lineTip.classList.remove('visible');
+            });
+          });
+        }
       }
 
       overlay.style.display = 'block';
