@@ -308,7 +308,7 @@
     }
     .pm-verified-icon .material-icons-round {
       font-size: 18px;
-      color: #3D9F42;
+      color: #008107;
     }
 
     .pm-card-sub {
@@ -738,7 +738,7 @@
     .insights-enriched-label {
       display: flex; align-items: center; gap: 8px; font-size: 15px; color: rgba(45,45,45,0.75);
     }
-    .insights-enriched-label .material-icons-round { font-size: 20px; color: #3D9F42; }
+    .insights-enriched-label .material-icons-round { font-size: 20px; color: #008107; }
     .insights-dropdown {
       display: flex; align-items: center; gap: 2px; height: 24px; padding: 6px 4px 6px 6px;
       border-radius: 5px; border: 1px solid rgba(45,45,45,0.2); background: white;
@@ -843,16 +843,19 @@
 
     /* ── Bar Chart Tooltip ── */
     .chart-tooltip {
-      position: absolute; background: #2d2d2d; color: #fff; border-radius: 10px;
+      position: absolute; background: #F4F4F4; background-blend-mode: plus-lighter;
+      color: #2d2d2d; border-radius: 10px;
       padding: 12px 16px; font-size: 13px; pointer-events: none; z-index: 10;
-      white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      white-space: nowrap;
+      box-shadow: 4px 4px 10px 0 rgba(255,255,255,0.70) inset;
+      filter: drop-shadow(0 1px 4px rgba(0,0,0,0.25)) drop-shadow(0 0 1px rgba(0,0,0,0.60));
       opacity: 0; transition: opacity 0.15s; line-height: 1.6;
     }
     .chart-tooltip.visible { opacity: 1; }
     .chart-tooltip-row { display: flex; justify-content: space-between; gap: 24px; }
-    .chart-tooltip-divider { height: 1px; background: rgba(255,255,255,0.15); margin: 6px 0; }
-    .chart-tooltip-net { color: #4ADE80; font-weight: 600; }
-    .chart-tooltip-pct { color: rgba(255,255,255,0.6); font-size: 12px; }
+    .chart-tooltip-divider { height: 1px; background: rgba(45,45,45,0.15); margin: 6px 0; }
+    .chart-tooltip-net { color: #008107; font-weight: 600; }
+    .chart-tooltip-pct { color: rgba(45,45,45,0.5); font-size: 12px; }
 
     /* ── SVG Pie Chart ── */
     .pie-svg { display: block; margin: 0 auto; overflow: visible; }
