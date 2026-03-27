@@ -1835,17 +1835,16 @@
             '<div class="chart-grid">' + gridHTML + '</div>' +
             '<div class="chart-months-row">' + monthsHTML + '</div>' +
           '</div>' +
+          // Enhanced stat cards (inside chart-card)
+          (window.enrichPlan === 'enhanced'
+            ? '<div class="enhanced-stat-row">' +
+                '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Credit / Debit Ratio</div><div class="enhanced-stat-card-value">' + DATA.enhanced.creditDebitRatio + 'x</div></div>' +
+                '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Total Transactions</div><div class="enhanced-stat-card-value">' + DATA.enhanced.totalTransactions + '</div></div>' +
+                '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Transaction Frequency</div><div class="enhanced-stat-card-value">' + DATA.enhanced.transactionFrequency + '</div></div>' +
+                '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Large Transactions</div><div class="enhanced-stat-card-value">' + DATA.enhanced.largeTransactions + '</div></div>' +
+              '</div>'
+            : '') +
         '</div>' +
-
-        // Enhanced stat cards
-        (window.enrichPlan === 'enhanced'
-          ? '<div class="enhanced-stat-row">' +
-              '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Credit / Debit Ratio</div><div class="enhanced-stat-card-value">' + DATA.enhanced.creditDebitRatio + 'x</div></div>' +
-              '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Total Transactions</div><div class="enhanced-stat-card-value">' + DATA.enhanced.totalTransactions + '</div></div>' +
-              '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Transaction Frequency</div><div class="enhanced-stat-card-value">' + DATA.enhanced.transactionFrequency + '</div></div>' +
-              '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Large Transactions</div><div class="enhanced-stat-card-value">' + DATA.enhanced.largeTransactions + '</div></div>' +
-            '</div>'
-          : '') +
 
         // Pie charts
         '<div class="pie-cards-row">' +
