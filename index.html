@@ -978,7 +978,7 @@
     .chart-header-stat-label { font-size: 13px; font-weight: 500; color: rgba(45,45,45,0.5); line-height: 18px; }
     .chart-header-stat-value { font-size: 17px; font-weight: 700; color: #2d2d2d; line-height: 22px; }
 
-    .enhanced-stat-row { display: flex; gap: 10px; width: 100%; margin-top: 16px; }
+    .enhanced-stat-row { display: flex; gap: 10px; width: 100%; margin-top: 36px; }
     .enhanced-stat-card {
       flex: 1; background: #fff; border-radius: 12px; padding: 8px;
       box-shadow: 0 0 0 1px rgba(45,45,45,0.10), 0 10px 34px 0 rgba(45,45,45,0.05);
@@ -1028,6 +1028,110 @@
     .risk-data-row:last-child { border-bottom: none; }
     .risk-data-label { font-weight: 500; color: #2d2d2d; flex: 1; }
     .risk-data-value { font-weight: 400; color: rgba(45,45,45,0.6); text-align: right; flex: 1; }
+
+    /* ── Info Tooltip Icons ── */
+    .info-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: rgba(45,45,45,0.12); color: rgba(45,45,45,0.5);
+      font-size: 9px; font-weight: 700; font-style: normal; line-height: 1;
+      cursor: default; margin-left: 4px; vertical-align: middle; flex-shrink: 0;
+    }
+    #info-tip {
+      position: fixed; z-index: 9999; pointer-events: none;
+      background: #F4F4F4; background-blend-mode: plus-lighter; color: #2d2d2d;
+      font-size: 12px; line-height: 1.5; padding: 8px 10px; border-radius: 10px;
+      max-width: 220px; font-family: 'Inter', sans-serif; font-weight: 400;
+      opacity: 0; transition: opacity 0.12s;
+      box-shadow: 4px 4px 10px 0 rgba(255,255,255,0.70) inset;
+      filter: drop-shadow(0 1px 4px rgba(0,0,0,0.25)) drop-shadow(0 0 1px rgba(0,0,0,0.60));
+    }
+    #info-tip.tip-visible { opacity: 1; }
+
+    /* --- Verifications Tab --- */
+    .verif-header { display:flex; flex-direction:column; gap:4px; }
+    .verif-header h2 { font-size:17px; font-weight:700; color:#2d2d2d; margin:0; }
+    .verif-header p  { font-size:13px; color:rgba(45,45,45,0.5); margin:0; }
+    .verif-cards-row { display:flex; flex-direction:row; gap:16px; }
+    .verif-card {
+      flex:1; min-width:0;
+      border-radius:16px; background:#fff;
+      box-shadow: 0 0 0 0.5px rgba(0,0,0,0.25), 0 0.5px 2.5px 0 rgba(45,45,45,0.40);
+      display:flex; flex-direction:column; align-items:center;
+      padding:16px; gap:12px; position:relative;
+    }
+    .verif-card-top { width:100%; display:flex; justify-content:space-between; align-items:center; }
+    .verif-status-pill {
+      display:inline-flex; align-items:center; gap:4px;
+      padding:3px 8px; border-radius:100px;
+      background:rgba(45,45,45,0.06);
+      font-size:11px; font-weight:500; color:rgba(45,45,45,0.55);
+    }
+    .verif-checkbox {
+      width:18px; height:18px; border-radius:4px;
+      border:1.5px solid rgba(45,45,45,0.2);
+      background:transparent; opacity:0.4; flex-shrink:0;
+    }
+    .verif-icon-wrap { width:80px; height:80px; display:flex; align-items:center; justify-content:center; }
+    .verif-card-labels { display:flex; flex-direction:column; align-items:center; gap:2px; width:100%; }
+    .verif-tier-label { font-size:11px; font-weight:500; color:rgba(45,45,45,0.45); text-align:center; }
+    .verif-card-title { font-size:14px; font-weight:600; color:#2d2d2d; text-align:center; }
+    .verif-unlock-btn {
+      width:100%; padding:9px 0; border-radius:10px;
+      background:#F5C518; border:none; cursor:pointer;
+      font-size:13px; font-weight:600; color:#2d2d2d;
+      display:flex; align-items:center; justify-content:center; gap:6px;
+    }
+    .verif-footer {
+      display:flex; align-items:center; justify-content:flex-end;
+      padding:8px 0;
+    }
+    .verif-footer-btns { display:flex; gap:12px; align-items:center; }
+    .verif-footer-select-btn {
+      padding:9px 20px; border-radius:10px;
+      background:#fff; border:none; cursor:pointer;
+      font-size:13px; font-weight:600; color:#2d2d2d;
+    }
+    .verif-footer-send-btn {
+      padding:9px 20px; border-radius:10px;
+      background:#F5C518; border:none; cursor:pointer;
+      font-size:13px; font-weight:600; color:#2d2d2d;
+      opacity:0.5;
+    }
+
+    /* --- Toggle switch --- */
+    .toggle-switch {
+      display:inline-block; width:46px; height:28px;
+      border-radius:14px; background:rgba(45,45,45,0.15);
+      position:relative; flex-shrink:0; cursor:default;
+    }
+    .toggle-switch::after {
+      content:''; position:absolute;
+      width:22px; height:22px; border-radius:50%;
+      background:#fff; top:3px; left:3px;
+      box-shadow:0 1px 3px rgba(0,0,0,0.25);
+    }
+
+    /* --- cPortal Tab --- */
+    .cportal-header { display:flex; justify-content:space-between; align-items:center; }
+    .cportal-header-title { font-size:17px; font-weight:700; color:#2d2d2d; }
+    .cportal-body {
+      display:flex; flex-direction:column; gap:16px;
+      opacity:0.5;
+    }
+    .cportal-services-heading { font-size:15px; font-weight:600; color:#2d2d2d; }
+    .cportal-services-sub { font-size:13px; color:rgba(45,45,45,0.5); margin-top:2px; }
+    .cportal-rails {
+      display:flex; padding:0 16px; flex-direction:column;
+      align-items:flex-start; align-self:stretch;
+      border-radius:16px; background:#F3F2F7;
+    }
+    .cportal-toggle-row {
+      width:100%; display:flex; justify-content:space-between; align-items:center;
+      padding:14px 0;
+    }
+    .cportal-toggle-row + .cportal-toggle-row { border-top:1px solid rgba(45,45,45,0.08); }
+    .cportal-toggle-label { font-size:14px; font-weight:500; color:#2d2d2d; }
   </style>
 </head>
 <body>
@@ -1240,7 +1344,7 @@
                         <span class="pm-header-date">Added on 2025-09-09</span>
                       </div>
                     </div>
-                    <button class="pm-enrich-btn">Enrich Transaction Data</button>
+                    <button class="pm-enrich-btn">Unlock Insights</button>
                   </div>
 
                   <!-- Sub-tabs (hidden by default, shown on expand) -->
@@ -1340,12 +1444,142 @@
 
             <!-- ══ VERIFICATIONS PANEL ══ -->
             <div class="tab-panel" id="panel-verifications">
-              <p style="color:rgba(45,45,45,0.4); font-size:15px; padding:24px 0; text-align:center;">No verifications to display.</p>
+
+              <div class="verif-header">
+                <h2>Verification Types</h2>
+                <p>Select a verification type to send a request</p>
+              </div>
+
+              <div class="verif-cards-row">
+
+                <!-- Card 1: Email Basic -->
+                <div class="verif-card">
+                  <div class="verif-card-top">
+                    <span class="verif-status-pill">
+                      <img src="http://localhost:3845/assets/7aee973c92388afbf1415ebeaa050216aff749e1.svg" width="12" height="12" alt="">
+                      Not Verified
+                    </span>
+                    <span class="verif-checkbox"></span>
+                  </div>
+                  <div class="verif-icon-wrap">
+                    <img src="Assets/Verifications/Icons.svg" width="80" height="80" alt="Email icon">
+                  </div>
+                  <div class="verif-card-labels">
+                    <span class="verif-tier-label">Basic Tier</span>
+                    <span class="verif-card-title">Email Verification</span>
+                  </div>
+                  <button class="verif-unlock-btn">
+                    <img src="http://localhost:3845/assets/b0274375ee5da470393dc7bc10a905a60a9892f3.svg" width="14" height="14" alt="">
+                    Unlock Verification
+                  </button>
+                </div>
+
+                <!-- Card 2: Email Enhanced -->
+                <div class="verif-card">
+                  <div class="verif-card-top">
+                    <span class="verif-status-pill">
+                      <img src="http://localhost:3845/assets/7aee973c92388afbf1415ebeaa050216aff749e1.svg" width="12" height="12" alt="">
+                      Not Verified
+                    </span>
+                    <span class="verif-checkbox"></span>
+                  </div>
+                  <div class="verif-icon-wrap">
+                    <img src="Assets/Verifications/Icons-1.svg" width="80" height="80" alt="Email Enhanced icon">
+                  </div>
+                  <div class="verif-card-labels">
+                    <span class="verif-tier-label">Enhanced Tier</span>
+                    <span class="verif-card-title">Email Verification</span>
+                  </div>
+                  <button class="verif-unlock-btn">
+                    <img src="http://localhost:3845/assets/b0274375ee5da470393dc7bc10a905a60a9892f3.svg" width="14" height="14" alt="">
+                    Unlock Verification
+                  </button>
+                </div>
+
+                <!-- Card 3: Phone Basic -->
+                <div class="verif-card">
+                  <div class="verif-card-top">
+                    <span class="verif-status-pill">
+                      <img src="http://localhost:3845/assets/7aee973c92388afbf1415ebeaa050216aff749e1.svg" width="12" height="12" alt="">
+                      Not Verified
+                    </span>
+                    <span class="verif-checkbox"></span>
+                  </div>
+                  <div class="verif-icon-wrap">
+                    <img src="Assets/Verifications/Icons-2.svg" width="80" height="80" alt="Phone icon">
+                  </div>
+                  <div class="verif-card-labels">
+                    <span class="verif-tier-label">Basic Tier</span>
+                    <span class="verif-card-title">Phone Number Verification</span>
+                  </div>
+                  <button class="verif-unlock-btn">
+                    <img src="http://localhost:3845/assets/b0274375ee5da470393dc7bc10a905a60a9892f3.svg" width="14" height="14" alt="">
+                    Unlock Verification
+                  </button>
+                </div>
+
+                <!-- Card 4: Phone Enhanced -->
+                <div class="verif-card">
+                  <div class="verif-card-top">
+                    <span class="verif-status-pill">
+                      <img src="http://localhost:3845/assets/7aee973c92388afbf1415ebeaa050216aff749e1.svg" width="12" height="12" alt="">
+                      Not Verified
+                    </span>
+                    <span class="verif-checkbox"></span>
+                  </div>
+                  <div class="verif-icon-wrap">
+                    <img src="Assets/Verifications/Icons-3.svg" width="80" height="80" alt="Phone Enhanced icon">
+                  </div>
+                  <div class="verif-card-labels">
+                    <span class="verif-tier-label">Enhanced Tier</span>
+                    <span class="verif-card-title">Phone Number Verification</span>
+                  </div>
+                  <button class="verif-unlock-btn">
+                    <img src="http://localhost:3845/assets/b0274375ee5da470393dc7bc10a905a60a9892f3.svg" width="14" height="14" alt="">
+                    Unlock Verification
+                  </button>
+                </div>
+
+              </div><!-- /.verif-cards-row -->
+
+              <div class="verif-footer">
+                <div class="verif-footer-btns">
+                  <button class="verif-footer-select-btn">Select All</button>
+                  <button class="verif-footer-send-btn">Send Verification Request</button>
+                </div>
+              </div>
+
             </div>
 
             <!-- ══ CPORTAL PANEL ══ -->
             <div class="tab-panel" id="panel-cportal">
-              <p style="color:rgba(45,45,45,0.4); font-size:15px; padding:24px 0; text-align:center;">cPortal content coming soon.</p>
+
+              <div class="cportal-header">
+                <span class="cportal-header-title">cPortal</span>
+                <span class="toggle-switch"></span>
+              </div>
+
+              <div class="cportal-body">
+                <div>
+                  <div class="cportal-services-heading">Services</div>
+                  <div class="cportal-services-sub">Enable or disable cPortal services for this account</div>
+                </div>
+                <div class="cportal-rails">
+                  <div class="cportal-toggle-row">
+                    <span class="cportal-toggle-label">Fund wallets</span>
+                    <span class="toggle-switch"></span>
+                  </div>
+                  <div class="cportal-toggle-row">
+                    <span class="cportal-toggle-label">Withdraw from wallets</span>
+                    <span class="toggle-switch"></span>
+                  </div>
+                  <div class="cportal-toggle-row">
+                    <span class="cportal-toggle-label">Transfer between wallets</span>
+                    <span class="toggle-switch"></span>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
           </div><!-- /main-container -->
@@ -1416,9 +1650,9 @@
     // ── Data Object ──
     const DATA = {
       months: [
-        { label: 'Oct', income: 5800, expense: 4200 },
-        { label: 'Nov', income: 5500, expense: 3900 },
-        { label: 'Dec', income: 6200, expense: 4800 }
+        { label: 'Oct', income: 5800, expense: 4200, avgBalance: 4800, avgMonthEndBalance: 4600, largeTransactions: 1 },
+        { label: 'Nov', income: 5500, expense: 3900, avgBalance: 5200, avgMonthEndBalance: 5100, largeTransactions: 1 },
+        { label: 'Dec', income: 6200, expense: 4800, avgBalance: 5000, avgMonthEndBalance: 5300, largeTransactions: 1 }
       ],
       income: {
         total: 17500,
@@ -1670,6 +1904,30 @@
       return L > 0.55 ? '#2d2d2d' : 'rgba(251,251,251,0.75)';
     }
 
+    // ── Tooltip definitions ──
+    var TOOLTIPS = {
+      creditDebitRatio:   'Total credits divided by total debits. A ratio above 1.0 means more money coming in than going out. Used to assess whether cash flow is net positive.',
+      transactionFreq:    'Average number of days between all credits and debits. A lower number means more frequent activity; a higher number suggests less regular cash flow.',
+      largeTxns:          'Number of individual transactions that exceeded 3\u00d7 the account\'s average transaction amount. High counts may signal irregular or unpredictable financial behaviour.',
+      avgCreditAmt:       'The average dollar value of all credits into this account. Reflects typical deposit size over the analyzed period.',
+      avgCreditsPerMonth: 'Average number of credit transactions received per month. Helps assess how consistently and frequently income or deposits arrive.',
+      p90Credit:          '90% of all credits were below this amount. Useful for identifying the upper range of typical deposits.',
+      incomeStability:    'Measures how consistent income deposits are over time. A higher value indicates more month-to-month fluctuation; a lower number signals predictable, steady income.',
+      incomeVariability:  'The relative variability of income as a percentage. Under 10% is excellent; 10\u201320% is good; 21\u201330% is fair; above 30% suggests inconsistent earnings.',
+      nsfFee:             'Total dollar amount of non-sufficient fund (NSF) fees charged to this account over the selected period.',
+      nsfRate:            'The percentage of transactions that resulted in an NSF. A higher rate indicates a pattern of insufficient funds relative to overall account activity.',
+      avgNsfAmt:          'The average amount of NSF transactions. Helps distinguish between small accidental overdrafts and larger, more significant funding gaps.',
+      p90Debit:           '90% of all debits were below this amount. Useful for understanding the upper range of typical payments.',
+      overdraft:          'Total number of times the account balance went negative.',
+      bankFee:            'Total non-NSF bank fees charged to this account. Excludes NSF fees, which are tracked separately.',
+      avgDaysBetween:     'Average number of days between consecutive transactions of this type. A lower number indicates more frequent, regular transactions.'
+    };
+
+    function tipIcon(key) {
+      var txt = (TOOLTIPS[key] || '').replace(/"/g, '&quot;');
+      return '<i class="info-icon" data-tip="' + txt + '">i</i>';
+    }
+
     // ── Render Insights ──
     function renderInsights() {
       const panel = document.getElementById('panel-seg-insights');
@@ -1771,9 +2029,11 @@
           if (label.indexOf('Income') !== -1) {
             var inc = DATA.enhanced.income;
             detailHTML = '<div class="enhanced-detail-card">' +
-              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Credit Amount</div><div class="enhanced-detail-value">' + fmtUSD(inc.avgCreditAmount) + '</div></div>' +
-              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Credits/Month</div><div class="enhanced-detail-value">' + inc.avgCreditsPerMonth + '</div></div>' +
-              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">90th Percentile Credit</div><div class="enhanced-detail-value">' + fmtUSD(inc.percentile90Credit) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Credit Amount' + tipIcon('avgCreditAmt') + '</div><div class="enhanced-detail-value">' + fmtUSD(inc.avgCreditAmount) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Credits/Month' + tipIcon('avgCreditsPerMonth') + '</div><div class="enhanced-detail-value">' + inc.avgCreditsPerMonth + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">90th Percentile Credit' + tipIcon('p90Credit') + '</div><div class="enhanced-detail-value">' + fmtUSD(inc.percentile90Credit) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Income Stability' + tipIcon('incomeStability') + '</div><div class="enhanced-detail-value">+- USD 153.33</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Income Variability' + tipIcon('incomeVariability') + '</div><div class="enhanced-detail-value">4.7% — Excellent</div></div>' +
               '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Day(s) with most credits</div><div class="enhanced-detail-value">' + inc.daysWithMostCredits.join('<br>') + '</div></div>' +
               '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Day with Highest Balance</div><div class="enhanced-detail-value">' + inc.dayWithHighestBalance.join('<br>') + '</div></div>' +
             '</div>';
@@ -1782,7 +2042,9 @@
             detailHTML = '<div class="enhanced-detail-card">' +
               '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Debit Amount</div><div class="enhanced-detail-value">' + fmtUSD(exp.avgDebitAmount) + '</div></div>' +
               '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Avg. Debits/Month</div><div class="enhanced-detail-value">' + exp.avgDebitsPerMonth + '</div></div>' +
-              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">90th Percentile Debit</div><div class="enhanced-detail-value">' + fmtUSD(exp.percentile90Debit) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">90th Percentile Debit' + tipIcon('p90Debit') + '</div><div class="enhanced-detail-value">' + fmtUSD(exp.percentile90Debit) + '</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Expense Volatility</div><div class="enhanced-detail-value">+- USD 43.33</div></div>' +
+              '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Expense Volatility %</div><div class="enhanced-detail-value">10.6% — Excellent</div></div>' +
               '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Day(s) with most debits</div><div class="enhanced-detail-value">' + exp.daysWithMostDebits.join('<br>') + '</div></div>' +
               '<div class="enhanced-detail-row"><div class="enhanced-detail-label">Day with Lowest Balance</div><div class="enhanced-detail-value">' + exp.dayWithLowestBalance.join('<br>') + '</div></div>' +
             '</div>';
@@ -1821,11 +2083,15 @@
           '<div class="chart-tooltip" id="chart-tooltip"></div>' +
           '<div class="chart-header">' +
             (window.enrichPlan === 'enhanced'
-              ? '<div class="chart-header-stats">' +
-                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Net Balance</div><div class="chart-header-stat-value" style="color:#008107;">' + netFormatted + '</div></div>' +
-                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgBalance) + '</div></div>' +
-                  '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Month-End Balance</div><div class="chart-header-stat-value">' + fmtUSD(DATA.enhanced.avgMonthEndBalance) + '</div></div>' +
-                '</div>'
+              ? (function() {
+                  var initAvgBal = DATA.months.reduce(function(s,m){return s+m.avgBalance;},0) / DATA.months.length;
+                  var initAvgMEB = DATA.months.reduce(function(s,m){return s+m.avgMonthEndBalance;},0) / DATA.months.length;
+                  return '<div class="chart-header-stats">' +
+                    '<div class="chart-header-stat"><div class="chart-header-stat-label">Net Balance</div><div class="chart-header-stat-value" style="color:#008107;">' + netFormatted + '</div></div>' +
+                    '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Balance</div><div class="chart-header-stat-value">' + fmtUSD(initAvgBal) + '</div></div>' +
+                    '<div class="chart-header-stat"><div class="chart-header-stat-label">Avg. Month-End Balance</div><div class="chart-header-stat-value">' + fmtUSD(initAvgMEB) + '</div></div>' +
+                    '</div>';
+                })()
               : '<div style="display:flex;flex-direction:column;gap:4px;"><div class="chart-net-label">Net Balance</div><div class="chart-net-value">' + netFormatted + '</div></div>') +
             '<div class="chart-legend">' +
               '<div class="chart-legend-item"><div class="chart-legend-dot income"></div>Total Income</div>' +
@@ -1836,14 +2102,20 @@
             '<div class="chart-grid">' + gridHTML + '</div>' +
             '<div class="chart-months-row">' + monthsHTML + '</div>' +
           '</div>' +
-          // Enhanced stat cards (inside chart-card)
+          // Enhanced stat cards (inside chart-card) — values computed from real data
           (window.enrichPlan === 'enhanced'
-            ? '<div class="enhanced-stat-row">' +
-                '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Credit / Debit Ratio</div><div class="enhanced-stat-card-value">' + DATA.enhanced.creditDebitRatio + 'x</div></div>' +
-                '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Total Transactions</div><div class="enhanced-stat-card-value">' + DATA.enhanced.totalTransactions + '</div></div>' +
-                '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Transaction Frequency</div><div class="enhanced-stat-card-value">' + DATA.enhanced.transactionFrequency + '</div></div>' +
-                '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Large Transactions</div><div class="enhanced-stat-card-value">' + DATA.enhanced.largeTransactions + '</div></div>' +
-              '</div>'
+            ? (function() {
+                var initRatio = (DATA.income.total / DATA.expense.total).toFixed(2);
+                var initTxns = Object.keys(DATA.transactions).reduce(function(s, cat) { return s + DATA.transactions[cat].rows.length; }, 0);
+                var initFreq = initTxns > 0 ? (90 / initTxns).toFixed(1) + ' Days' : '—';
+                var initLarge = DATA.months.reduce(function(s, m) { return s + m.largeTransactions; }, 0);
+                return '<div class="enhanced-stat-row">' +
+                  '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Credit / Debit Ratio' + tipIcon('creditDebitRatio') + '</div><div class="enhanced-stat-card-value">' + initRatio + 'x</div></div>' +
+                  '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Total Transactions</div><div class="enhanced-stat-card-value">' + initTxns + '</div></div>' +
+                  '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Transaction Frequency' + tipIcon('transactionFreq') + '</div><div class="enhanced-stat-card-value">' + initFreq + '</div></div>' +
+                  '<div class="enhanced-stat-card"><div class="enhanced-stat-card-label">Large Transactions' + tipIcon('largeTxns') + '</div><div class="enhanced-stat-card-value">' + initLarge + '</div></div>' +
+                  '</div>';
+              })()
             : '') +
         '</div>' +
 
@@ -1870,16 +2142,16 @@
                     '</svg>' +
                     '<div class="risk-gauge-text"><span class="risk-gauge-score">' + DATA.enhanced.risk.score + '</span><span class="risk-gauge-total"> / 100</span></div>' +
                   '</div>' +
-                  '<div class="risk-label-wrap"><div class="risk-label-title">' + DATA.enhanced.risk.label + '</div><div class="risk-label-sub">NSF Risk Score</div></div>' +
+                  '<div class="risk-label-wrap"><div class="risk-label-title">' + DATA.enhanced.risk.label + '</div><div class="risk-label-sub">Risk Score</div></div>' +
                 '</div>' +
-                '<div class="risk-data-row"><div class="risk-data-label">NSF Fee</div><div class="risk-data-value">' + fmtUSD(DATA.enhanced.risk.nsfFee) + '</div></div>' +
-                '<div class="risk-data-row"><div class="risk-data-label">NSF Rate</div><div class="risk-data-value">' + DATA.enhanced.risk.nsfRate + '</div></div>' +
-                '<div class="risk-data-row"><div class="risk-data-label">Avg. NSF Amount</div><div class="risk-data-value">' + fmtUSD(DATA.enhanced.risk.avgNsfAmount) + '</div></div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">NSF Fee' + tipIcon('nsfFee') + '</div><div class="risk-data-value">' + fmtUSD(DATA.enhanced.risk.nsfFee) + '</div></div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">NSF Rate' + tipIcon('nsfRate') + '</div><div class="risk-data-value">' + DATA.enhanced.risk.nsfRate + '</div></div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">Avg. NSF Amount' + tipIcon('avgNsfAmt') + '</div><div class="risk-data-value">' + fmtUSD(DATA.enhanced.risk.avgNsfAmount) + '</div></div>' +
                 '<div class="risk-data-row"><div class="risk-data-label">90th Percentile NSF</div><div class="risk-data-value">' + fmtUSD(DATA.enhanced.risk.percentile90Nsf) + '</div></div>' +
-                '<div class="risk-data-row"><div class="risk-data-label">Overdraft</div><div class="risk-data-value">' + DATA.enhanced.risk.overdraft + '</div></div>' +
+                '<div class="risk-data-row"><div class="risk-data-label">Overdraft' + tipIcon('overdraft') + '</div><div class="risk-data-value">' + DATA.enhanced.risk.overdraft + '</div></div>' +
               '</div>' +
               '<div class="fee-cards-row" style="justify-content:center;">' +
-                '<div class="fee-card fee-card-full" data-category="Bank Fee" style="width:100%;"><div class="fee-card-value">' + fmtUSD(DATA.enhanced.bankFee) + '</div><div class="fee-card-label">Bank Fee</div></div>' +
+                '<div class="fee-card fee-card-full" data-category="Bank Fee" style="width:100%;"><div class="fee-card-value">' + fmtUSD(DATA.enhanced.bankFee) + '</div><div class="fee-card-label">Bank Fee' + tipIcon('bankFee') + '</div></div>' +
               '</div>';
             })()
           : '<div class="fee-cards-row">' +
@@ -1945,6 +2217,7 @@
             // Filter months: 90=all, 60=Nov+Dec, 30=Dec only
             var monthMap = { 90: ['Oct','Nov','Dec'], 60: ['Nov','Dec'], 30: ['Dec'] };
             var visibleMonths = monthMap[days] || monthMap[90];
+            window.currentFilterMonths = visibleMonths;
             var chartMonths = panel.querySelectorAll('.chart-month');
             chartMonths.forEach(function(cm) {
               cm.style.display = visibleMonths.indexOf(cm.dataset.month) !== -1 ? '' : 'none';
@@ -1974,12 +2247,72 @@
             if (pieHeaders.length >= 2) pieHeaders[1].textContent = fmtUSD(filteredExpense);
 
             // Update enriched label transaction count
-            var monthCount = visibleMonths.length;
-            var txnPerMonth = Math.round(DATA.transactionsEnriched / 3);
-            var filteredTxnCount = txnPerMonth * monthCount;
+            var monthPrefixMap = { 'Oct': '2025-10-', 'Nov': '2025-11-', 'Dec': '2025-12-' };
+            var filteredTxnCount = 0;
+            Object.keys(DATA.transactions).forEach(function(cat) {
+              DATA.transactions[cat].rows.forEach(function(row) {
+                visibleMonths.forEach(function(mo) {
+                  if (row.date.startsWith(monthPrefixMap[mo])) filteredTxnCount++;
+                });
+              });
+            });
             var enrichLabel = panel.querySelector('.insights-enriched-label');
             if (enrichLabel) {
               enrichLabel.innerHTML = '<span class="material-icons-round">check_circle</span>' + filteredTxnCount + ' Transactions Enriched';
+            }
+
+            // Update all Enhanced-tier dynamic values
+            if (window.enrichPlan === 'enhanced') {
+              // Credit/Debit Ratio
+              var ratio = filteredExpense > 0 ? (filteredIncome / filteredExpense).toFixed(2) : '—';
+
+              // Transaction Frequency
+              var periodDays = visibleMonths.length * 30;
+              var freq = filteredTxnCount > 0 ? (periodDays / filteredTxnCount).toFixed(1) + ' Days' : '—';
+
+              // Large Transactions + Avg Balance + Avg Month-End Balance
+              var largeTxns = 0, avgBal = 0, avgMEB = 0, mCount = 0;
+              DATA.months.forEach(function(m) {
+                if (visibleMonths.indexOf(m.label) !== -1) {
+                  largeTxns += m.largeTransactions;
+                  avgBal += m.avgBalance;
+                  avgMEB += m.avgMonthEndBalance;
+                  mCount++;
+                }
+              });
+              if (mCount > 0) { avgBal = avgBal / mCount; avgMEB = avgMEB / mCount; }
+
+              // NSF Fee + Bank Fee from monthlySummary
+              var nsfFeeVal = 0, bankFeeVal = 0;
+              ['NSF Fee', 'Bank Fee'].forEach(function(cat) {
+                DATA.transactions[cat].monthlySummary.forEach(function(ms) {
+                  var msMonth = ms.month.split(' ')[0];
+                  if (visibleMonths.indexOf(msMonth) !== -1) {
+                    if (cat === 'NSF Fee') nsfFeeVal += ms.amount;
+                    else bankFeeVal += ms.amount;
+                  }
+                });
+              });
+
+              // Update chart header stat values: [0]=Net (already set), [1]=Avg Balance, [2]=Avg Month-End
+              var headerVals = panel.querySelectorAll('.chart-header-stat-value');
+              if (headerVals[1]) headerVals[1].textContent = fmtUSD(avgBal);
+              if (headerVals[2]) headerVals[2].textContent = fmtUSD(avgMEB);
+
+              // Update enhanced stat row: [0]=Ratio, [1]=Total Txns, [2]=Frequency, [3]=Large
+              var statVals = panel.querySelectorAll('.enhanced-stat-row .enhanced-stat-card-value');
+              if (statVals[0]) statVals[0].textContent = ratio + 'x';
+              if (statVals[1]) statVals[1].textContent = filteredTxnCount;
+              if (statVals[2]) statVals[2].textContent = freq;
+              if (statVals[3]) statVals[3].textContent = largeTxns;
+
+              // NSF Fee row in risk meter (first .risk-data-value)
+              var riskVals = panel.querySelectorAll('.risk-data-row .risk-data-value');
+              if (riskVals[0]) riskVals[0].textContent = fmtUSD(nsfFeeVal);
+
+              // Bank Fee card
+              var bankFeeEl = panel.querySelector('.fee-card-full .fee-card-value');
+              if (bankFeeEl) bankFeeEl.textContent = fmtUSD(bankFeeVal);
             }
           });
         });
@@ -2069,10 +2402,19 @@
       if (!txn) {
         body.innerHTML = '<p style="color:rgba(45,45,45,0.5);padding:40px;text-align:center;">No transaction data available.</p>';
       } else {
+        // ── Filter by selected period ──
+        var visMonths = window.currentFilterMonths || ['Oct', 'Nov', 'Dec'];
+        var mPfxMap = { 'Oct': '2025-10-', 'Nov': '2025-11-', 'Dec': '2025-12-' };
+        var ms = txn.monthlySummary.filter(function(entry) {
+          return visMonths.indexOf(entry.month.split(' ')[0]) !== -1;
+        });
+        var filteredRows = txn.rows.filter(function(row) {
+          return visMonths.some(function(mo) { return row.date.startsWith(mPfxMap[mo]); });
+        });
+
         // ── Line Graph Card ──
-        var ms = txn.monthlySummary;
-        var totalAmt = ms.reduce(function(s,m){ return s + m.amount; }, 0);
-        var totalTxn = ms.reduce(function(s,m){ return s + m.count; }, 0);
+        var totalAmt = filteredRows.reduce(function(s,r){ return s + r.amount; }, 0);
+        var totalTxn = filteredRows.length;
         var amounts = ms.map(function(m){ return m.amount; });
         var maxVal = Math.max.apply(null, amounts);
         var ceilMax = Math.ceil(maxVal / 1000) * 1000;
@@ -2133,20 +2475,21 @@
           '</div>';
 
         // ── Details Card ──
-        var lastTwoDates = txn.rows.slice(0, 2).map(function(r){ return r.date.split(',')[0]; });
+        var lastTwoDates = filteredRows.slice(0, 2).map(function(r){ return r.date.split(',')[0]; });
         var last2HTML = lastTwoDates.map(function(d){ return '<div>' + d + '</div>'; }).join('');
+        var filteredAvgMonthly = ms.length > 0 ? totalAmt / ms.length : 0;
 
         var detailsCard = '<div class="drawer-details-card">' +
-          '<div class="drawer-detail-row"><span class="drawer-detail-label">Avg. ' + categoryName + '</span><span class="drawer-detail-value">' + fmtUSD(txn.avgMonthly) + '</span></div>' +
-          '<div class="drawer-detail-row"><span class="drawer-detail-label">Avg. Days Between</span><span class="drawer-detail-value">' + txn.avgDaysBetween + '</span></div>' +
-          '<div class="drawer-detail-row"><span class="drawer-detail-label">First Transaction</span><span class="drawer-detail-value">' + txn.firstTransaction + '</span></div>' +
-          '<div class="drawer-detail-row"><span class="drawer-detail-label">Last Transaction</span><span class="drawer-detail-value">' + txn.lastDeposit + '</span></div>' +
+          '<div class="drawer-detail-row"><span class="drawer-detail-label">Avg. ' + categoryName + '</span><span class="drawer-detail-value">' + fmtUSD(filteredAvgMonthly) + '</span></div>' +
+          '<div class="drawer-detail-row"><span class="drawer-detail-label">Avg. Days Between' + (window.enrichPlan === 'enhanced' ? tipIcon('avgDaysBetween') : '') + '</span><span class="drawer-detail-value">' + txn.avgDaysBetween + '</span></div>' +
+          '<div class="drawer-detail-row"><span class="drawer-detail-label">First Transaction</span><span class="drawer-detail-value">' + (filteredRows.length ? filteredRows[filteredRows.length - 1].date.split(',')[0] : '—') + '</span></div>' +
+          '<div class="drawer-detail-row"><span class="drawer-detail-label">Last Transaction</span><span class="drawer-detail-value">' + (filteredRows.length ? filteredRows[0].date.split(',')[0] : '—') + '</span></div>' +
           '<div class="drawer-detail-row align-top"><span class="drawer-detail-label">Last Two Payment Dates</span><div class="drawer-detail-value">' + last2HTML + '</div></div>' +
           '</div>';
 
         // ── Table ──
         var tableRows = '';
-        txn.rows.forEach(function(r) {
+        filteredRows.forEach(function(r) {
           tableRows += '<div class="drawer-table-row">' +
             '<div class="drawer-table-td">' + r.date + '</div>' +
             '<div class="drawer-table-td">' + r.description + '</div>' +
@@ -2213,22 +2556,26 @@
       title.textContent = type === 'income' ? 'Income Transactions' : 'Expense Transactions';
 
       var categories = type === 'income' ? DATA.income.categories : DATA.expense.categories;
-      var totalAmount = type === 'income' ? DATA.income.total : DATA.expense.total;
 
-      // Collect all rows with category name
+      // Filter rows by selected period
+      var visMonths = window.currentFilterMonths || ['Oct', 'Nov', 'Dec'];
+      var mPfxMap = { 'Oct': '2025-10-', 'Nov': '2025-11-', 'Dec': '2025-12-' };
+
       var allRows = [];
       categories.forEach(function(cat) {
         var txn = DATA.transactions[cat.name];
         if (txn && txn.rows) {
           txn.rows.forEach(function(r) {
-            allRows.push({ date: r.date, category: cat.name, description: r.description, amount: r.amount });
+            var inPeriod = visMonths.some(function(mo) { return r.date.startsWith(mPfxMap[mo]); });
+            if (inPeriod) allRows.push({ date: r.date, category: cat.name, description: r.description, amount: r.amount });
           });
         }
       });
       allRows.sort(function(a, b) { return b.date.localeCompare(a.date); });
 
+      var totalAmount = allRows.reduce(function(s, r) { return s + r.amount; }, 0);
       // Summary card
-      var avgMonthly = totalAmount / 3;
+      var avgMonthly = visMonths.length > 0 ? totalAmount / visMonths.length : 0;
       var card1 = '<div class="drawer-summary-card">' +
         '<div class="drawer-summary-title">Summary</div>' +
         '<div class="drawer-summary-row"><div class="drawer-summary-label">Total ' + (type === 'income' ? 'Income' : 'Expense') + '</div><div class="drawer-summary-value">' + fmtUSD(totalAmount) + '</div></div>' +
@@ -2422,8 +2769,32 @@
         segDetails.innerHTML = oldDetailsPanel.innerHTML;
       }
 
+      // Initialise filter state
+      window.currentFilterMonths = ['Oct', 'Nov', 'Dec'];
+
       // Render insights panel
       renderInsights();
+
+      // ── Shared info-tooltip element ──
+      if (!document.getElementById('info-tip')) {
+        var tipEl = document.createElement('div');
+        tipEl.id = 'info-tip';
+        document.body.appendChild(tipEl);
+        document.addEventListener('mouseover', function(e) {
+          var icon = e.target.closest('.info-icon');
+          if (!icon || !icon.dataset.tip) return;
+          tipEl.textContent = icon.dataset.tip;
+          tipEl.classList.add('tip-visible');
+        });
+        document.addEventListener('mousemove', function(e) {
+          if (!tipEl.classList.contains('tip-visible')) return;
+          tipEl.style.left = Math.min(e.clientX + 14, window.innerWidth - 236) + 'px';
+          tipEl.style.top = Math.max(e.clientY - tipEl.offsetHeight - 10, 4) + 'px';
+        });
+        document.addEventListener('mouseout', function(e) {
+          if (e.target.closest('.info-icon')) tipEl.classList.remove('tip-visible');
+        });
+      }
 
       // Seg tab switching
       const segTabs = document.getElementById('pm-seg-tabs');
